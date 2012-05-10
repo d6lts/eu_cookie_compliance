@@ -238,7 +238,7 @@ POPUP;
 
 function theme_eu_cookie_compliance_popup_agreed($message = NULL, $link = NULL) {
 	$hide_msg = t("Hide this message");
-	$more_info = t("More information on cookies");
+	$find_more = t("More information on cookies");
 	return <<<POPUP
 		<div>
 			<div class ="popup-content agreed">
@@ -247,7 +247,7 @@ function theme_eu_cookie_compliance_popup_agreed($message = NULL, $link = NULL) 
 				</div>
 				<div id="popup-buttons">
 					<button type="button" class="hide-popup-button">$hide_msg</button>
-					<button type="button" class="find-more-button" >$more_info</button>
+					<button type="button" class="find-more-button" >$find_more</button>
 				</div>
 			</div>
 		</div>
