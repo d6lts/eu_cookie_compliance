@@ -58,7 +58,7 @@ Drupal.eu_cookie_compliance.attachEvents = function() {
 Drupal.eu_cookie_compliance.getCurrentStatus = function() {
   var search = 'cookie-agreed-'+Drupal.settings.eu_cookie_compliance.popup_language+'=';
   var offset = document.cookie.indexOf(search);
-  if (offset < 1) {
+  if (offset < 0) {
     return 0;
   }
   offset += search.length;
