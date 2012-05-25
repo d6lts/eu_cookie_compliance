@@ -12,7 +12,7 @@ function eu_cookie_compliance_admin_form($form_state) {
   global $language;
   $ln = $language->language;
   $popup_settings = eu_cookie_compliance_get_settings();
-  $form['eu_cookie_compliance_' . $ln] = array (
+  $form['eu_cookie_compliance_' . $ln] = array(
     '#type'  => 'item',
     '#tree'   => TRUE,
   );
@@ -80,7 +80,7 @@ function eu_cookie_compliance_admin_form($form_state) {
     '#maxlength' => 5,
     '#required' => FALSE,
     '#description' => t('Enter an integer value for a desired height in pixels or leave empty for automatically adjusted height'),
-  
+
   );
 
   $form['eu_cookie_compliance_' . $ln]['popup_width'] = array(
