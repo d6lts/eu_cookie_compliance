@@ -28,7 +28,7 @@ function eu_cookie_compliance_menu() {
  */
 function eu_cookie_compliance_init() {
   $enabled = eu_cookie_compliance_get_settings('popup_enabled');
-  if ($enabled) {
+  if ($enabled && user_access( 'see EU Cookie Compliance popup' ) ) {
     $path = drupal_get_path('module', 'eu_cookie_compliance');
     drupal_add_css($path . '/css/eu_cookie_compliance.css');
     drupal_add_js($path . '/js/eu_cookie_compliance.js', 'module', 'footer');
@@ -41,7 +41,7 @@ function eu_cookie_compliance_init() {
 
 function eu_cookie_compliance_footer() {
   $popup_settings = eu_cookie_compliance_get_settings();
-  if ($popup_settings['popup_enabled']) {
+  if ($popup_settings['popup_enabled'] && user_access( 'see EU Cookie Compliance popup' )) {
     global $language;
     $popup_text_info = str_replace(array("\r", "\n"), '', $popup_settings['popup_info']['value']);
     $popup_text_agreed = str_replace(array("\r", "\n"), '', $popup_settings['popup_agreed']['value']);
@@ -66,7 +66,7 @@ function eu_cookie_compliance_footer() {
  * Implements hook_perm().
  */
 function eu_cookie_compliance_perm() {
-  return array('administer EU Cookie Compliance popup');
+  return array('administer EU Cookie Compliance popup', 'see EU Cookie Compliance popup');
 }
 
 /**

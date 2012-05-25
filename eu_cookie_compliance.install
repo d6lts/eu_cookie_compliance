@@ -59,3 +59,36 @@ function eu_cookie_compliance_update_6100() {
   variable_del('eu_cookie_compliance_popup_enabled');
   variable_del('eu_cookie_compliance_popup_position');
 }
+
+/**
+ * Implements hook_update_n().
+ */
+function eu_cookie_compliance_update_6101() {
+
+  $rids = array_keys(user_roles());
+  if ( ! empty($rids) ) {
+    foreach ( $rids as $rid ) {
+      __eu_cookie_compliance_add_permissions($rid, 'see EU Cookie Compliance popup');
+    }
+  }
+
+}
+
+/**
+ * _add_permissions() is a helper function to add permissions by role to the db
+ */
+function __eu_cookie_compliance_add_permissions($rid, $permissions) {
+  if (!is_array($permissions)) {
+    $permissions = explode(', ', $permissions);
+  }
+  $current_perms = explode(', ', db_result(db_query("SELECT perm FROM {permission} WHERE rid=%d", $rid)));
+  foreach($permissions as $permission) {
+    if (!in_array($permission, $current_perms)) {
+        $current_perms[] = $permission;
+      }
+    }
+  $current_perms = implode(', ', $current_perms);
+  $return = db_query("UPDATE {permission} SET perm= '%s' WHERE rid=%d", $current_perms, $rid);
+  return $return;
+}
+

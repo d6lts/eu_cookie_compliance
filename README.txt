@@ -28,6 +28,9 @@ Installation.
 allow users of certain roles access the administration page. You can do so on 
 the admin/user/permissions page.
 
+  - there is also a 'see EU Cookie Compliance popup' permission that helps
+    you show the popup to the roles you desire
+
 3. You may want to create a page that would explain how your site uses cookies. 
 Alternatively, if you have a privacy policy, you can link the pop-up to that 
 page (see next step).
