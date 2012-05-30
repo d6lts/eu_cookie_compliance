@@ -47,8 +47,10 @@ function eu_cookie_compliance_footer() {
     $popup_text_agreed = str_replace(array("\r", "\n"), '', $popup_settings['popup_agreed']['value']);
     $html_info = theme('eu_cookie_compliance_popup_info', check_markup($popup_text_info, $popup_settings['popup_info']['format'], FALSE));
     $html_agreed = theme('eu_cookie_compliance_popup_agreed', check_markup($popup_text_agreed, $popup_settings['popup_agreed']['format'], FALSE));
+    $clicking_confirmation = (isset($popup_settings['popup_clicking_confirmation']))? $popup_settings['popup_clicking_confirmation'] : TRUE ;
     $variables = array(
       'popup_enabled' => $popup_settings['popup_enabled'],
+      'popup_clicking_confirmation' => $clicking_confirmation,
       'popup_html_info' => $html_info,
       'popup_html_agreed' => $html_agreed,
       'popup_height' => ($popup_settings['popup_height']) ? (int) $popup_settings['popup_height'] : 'auto',
@@ -106,6 +108,7 @@ function eu_cookie_compliance_get_popup_content($text) {
 function eu_cookie_compliance_get_settings($setting = 'all') {
   global $language;
   $popup_settings = variable_get('eu_cookie_compliance_' . $language->language, array());
+
   if ($setting == 'all') {
     return $popup_settings;
   }
