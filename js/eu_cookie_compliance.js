@@ -4,7 +4,7 @@ Drupal.behaviors.eu_cookie_compliance_popup = function(context) {
     if(!enabled) {
       return;
     }    
-    if (!Drupal.eu_cookie_compliance_cookiesEnabled()) {
+    if (!Drupal.eu_cookie_compliance.cookiesEnabled()) {
       return;
     }    
     var status = Drupal.eu_cookie_compliance.getCurrentStatus();
@@ -127,7 +127,7 @@ Drupal.eu_cookie_compliance.hasAgreed = function() {
   return false;
 }
 
-Drupal.eu_cookie_compliance_cookiesEnabled() = function() {
+Drupal.eu_cookie_compliance.cookiesEnabled = function() {
   var cookieEnabled = (navigator.cookieEnabled) ? true : false;
     if (typeof navigator.cookieEnabled == "undefined" && !cookieEnabled) { 
       document.cookie="testcookie";
