@@ -12,6 +12,7 @@ function eu_cookie_compliance_admin_form($form_state) {
   global $language;
   $ln = $language->language;
   $popup_settings = eu_cookie_compliance_get_settings();
+
   $form['eu_cookie_compliance_' . $ln] = array(
     '#type'  => 'item',
     '#tree'   => TRUE,
@@ -25,6 +26,13 @@ function eu_cookie_compliance_admin_form($form_state) {
     '#type' => 'checkbox',
     '#title' => t('Enable popup'),
     '#default_value' => ($popup_settings['popup_enabled']) ? $popup_settings['popup_enabled'] : 0,
+  );
+
+  $form['eu_cookie_compliance_' . $ln]['popup_clicking_confirmation'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Consent by clicking'),
+    '#default_value' => isset($popup_settings['popup_clicking_confirmation']) ? $popup_settings['popup_clicking_confirmation'] : 1,
+    '#description' => t('By default by clicking any link on the website the visitor accepts the cookie policy. Uncheck this box if you do not require this functionality. You may want to edit the pop-up message below accordingly.'),
   );
 
   $form['eu_cookie_compliance_' . $ln]['popup_position'] = array(
