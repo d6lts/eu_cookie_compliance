@@ -25,7 +25,7 @@ function eu_cookie_compliance_menu() {
 /**
  * Provides form for cookie control popup.
  */
-function eu_cookie_compliance_admin_form($form_state) {
+function eu_cookie_compliance_admin_form() {
 
   global $locale;
   $ln = $locale;
@@ -43,6 +43,13 @@ function eu_cookie_compliance_admin_form($form_state) {
     '#type' => 'checkbox',
     '#title' => t('Enable popup'),
     '#default_value' => ($popup_settings['popup_enabled']) ? $popup_settings['popup_enabled'] : 0,
+  );
+
+	$form['eu_cookie_compliance_' . $ln]['popup_clicking_confirmation'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Consent by clicking'),
+    '#default_value' => isset($popup_settings['popup_clicking_confirmation']) ? $popup_settings['popup_clicking_confirmation'] : 1,
+    '#description' => t('By default by clicking any link on the website the visitor accepts the cookie policy. Uncheck this box if you do not require this functionality. You may want to edit the pop-up message below accordingly.'),
   );
 
   $form['eu_cookie_compliance_' . $ln]['popup_position'] = array(
@@ -82,7 +89,7 @@ function eu_cookie_compliance_admin_form($form_state) {
 
   $form['eu_cookie_compliance_' . $ln]['popup_link'] = array(
     '#type' => 'textfield',
-    '#title' => t('Private policy link'),
+    '#title' => t('Privacy policy link'),
     '#default_value' => ($popup_settings['popup_link']) ? $popup_settings['popup_link'] : '',
     '#size' => 60,
     '#maxlength' => 220,
@@ -164,8 +171,10 @@ function eu_cookie_compliance_footer() {
     $popup_text_agreed = str_replace(array("\r", "\n"), '', $popup_settings['popup_agreed']['value']);
     $html_info = theme('eu_cookie_compliance_popup_info', check_markup($popup_text_info, $popup_settings['popup_info']['format'], FALSE));
     $html_agreed = theme('eu_cookie_compliance_popup_agreed', check_markup($popup_text_agreed, $popup_settings['popup_agreed']['format'], FALSE));
+    $clicking_confirmation = (isset($popup_settings['popup_clicking_confirmation']))? $popup_settings['popup_clicking_confirmation'] : TRUE ;
     $variables = array(
       'popup_enabled' => $popup_settings['popup_enabled'],
+      'popup_clicking_confirmation' => $clicking_confirmation,
       'popup_html_info' => $html_info,
       'popup_html_agreed' => $html_agreed,
       'popup_height' => ($popup_settings['popup_height']) ? (int) $popup_settings['popup_height'] : 'auto',
@@ -187,7 +196,8 @@ function eu_cookie_compliance_perm() {
 }
 
 /**
- * Theme for popup info.
+ * This is a template function for a pop-up prompting user to give their consent for
+ * the website to set cookies.
  *
  * When overriding this template it is important to note that jQuery will use
  * the following classes to assign actions to buttons:
@@ -222,7 +232,11 @@ POPUP;
 }
 
 /**
- * Theme for agreed popup.
+ * This is a template fucntion for a pop-up informing a user that he has already
+ * agreed to cookies.
+ *
+ * When overriding this template it is important to note that jQuery will use
+ * the following classes to assign actions to buttons:
  *
  * hide-popup-button - destroy the pop-up
  * find-more-button  - link to an information page
