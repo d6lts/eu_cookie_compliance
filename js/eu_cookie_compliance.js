@@ -14,7 +14,7 @@ Drupal.behaviors.eu_cookie_compliance_popup = function(context) {
       if (status == 0) {
         var next_status = 1;
         if (clicking_confirms) {	  
-          $('a').bind('click.eu_cookie_compliance', function(){
+          $('a, input[type=submit]').bind('click.eu_cookie_compliance', function(){
             if(!agreed_enabled) {
               Drupal.eu_cookie_compliance.setStatus(1);
               next_status = 2;
@@ -83,7 +83,7 @@ Drupal.eu_cookie_compliance.attachEvents = function() {
       next_status = 2;
     }
     if (clicking_confirms) {
-      $('a').unbind('click.eu_cookie_compliance');
+      $('a, input[type=submit]').unbind('click.eu_cookie_compliance');
     }
     Drupal.eu_cookie_compliance.changeStatus(next_status);
   });
