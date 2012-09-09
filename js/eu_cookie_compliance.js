@@ -22,6 +22,7 @@ Drupal.behaviors.eu_cookie_compliance_popup = function(context) {
             Drupal.eu_cookie_compliance.changeStatus(next_status);
           });
         }
+
         $('.agree-button').click(function(){
           if(!agreed_enabled) {
             Drupal.eu_cookie_compliance.setStatus(1);
@@ -29,7 +30,6 @@ Drupal.behaviors.eu_cookie_compliance_popup = function(context) {
           }
           Drupal.eu_cookie_compliance.changeStatus(next_status);
         });
-
 
         Drupal.eu_cookie_compliance.createPopup(Drupal.settings.eu_cookie_compliance.popup_html_info);
       } else if(status == 1) {
