@@ -65,7 +65,7 @@ Drupal.eu_cookie_compliance.createPopup = function(html) {
     popup.show()
       .attr({"class": "sliding-popup-bottom"})
       .css({"bottom": -1 * height})
-      .animate({bottom: 0}, Drupal.settings.eu_cookie_compliance.popup_delay)
+      .animate({bottom: 0}, Drupal.settings.eu_cookie_compliance.popup_delay);
   }
   Drupal.eu_cookie_compliance.attachEvents();
 }
