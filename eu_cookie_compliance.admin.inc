@@ -69,7 +69,8 @@ function eu_cookie_compliance_admin_form($form_state) {
     '#required' => TRUE,
   );
 
-  $form['eu_cookie_compliance_' . $ln]['popup_info']['format'] = filter_form($popup_settings['popup_info']['format'], NULL, array('eu_cookie_compliance_' . $language->language, 'popup_info', 'format'));
+  $format = isset($popup_settings['popup_info']['format']) ? $popup_settings['popup_info']['format'] : FILTER_FORMAT_DEFAULT;
+  $form['eu_cookie_compliance_' . $ln]['popup_info']['format'] = filter_form($format, NULL, array('eu_cookie_compliance_' . $ln, 'popup_info', 'format'));
 
   $form['eu_cookie_compliance_' . $ln]['popup_agreed_enabled'] = array(
     '#type' => 'checkbox',
@@ -112,7 +113,8 @@ function eu_cookie_compliance_admin_form($form_state) {
     '#required' => TRUE,
   );
 
-  $form['eu_cookie_compliance_' . $ln]['popup_agreed']['format'] = filter_form($popup_settings['popup_agreed']['format'], NULL, array('eu_cookie_compliance_' . $language->language, 'popup_agreed', 'format'));
+  $format = isset($popup_settings['popup_agreed']['format']) ? $popup_settings['popup_agreed']['format'] : FILTER_FORMAT_DEFAULT;
+  $form['eu_cookie_compliance_' . $ln]['popup_agreed']['format'] = filter_form($format, NULL, array('eu_cookie_compliance_' . $ln, 'popup_agreed', 'format'));
 
   $form['eu_cookie_compliance_' . $ln]['popup_link'] = array(
     '#type' => 'textfield',
