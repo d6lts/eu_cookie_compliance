@@ -8,6 +8,7 @@
 namespace Drupal\eu_cookie_compliance\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Form\FormStateInterface;
 
 
 /**
@@ -25,10 +26,10 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, array &$form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state) {
 
     $language = \Drupal::languageManager()->getCurrentLanguage();
-    $ln = $language->id;
+    $ln = $language->getId();
     $popup_settings = eu_cookie_compliance_get_settings();
 
     $domainSetting = \Drupal::config('eu_cookie_compliance.settings')->get('domain');
@@ -236,43 +237,43 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, array &$form_state) {
+  public function validateForm(array &$form, FormStateInterface $form_state) {
     $language = \Drupal::languageManager()->getCurrentLanguage();
-    $ln = $language->id;
-    if (!preg_match('/^[1-9][0-9]{0,4}$/', $form_state['values']['eu_cookie_compliance_' . $ln]['popup_height']) && !empty($form_state['values']['eu_cookie_compliance_' . $ln]['popup_height'])) {
-      \Drupal::formBuilder()->setErrorByName("eu_cookie_compliance_popup_height", $form_state, t('Height must be an integer value.'));
+    $ln = $language->getId();
+    if (!preg_match('/^[1-9][0-9]{0,4}$/', $form_state->getValue(['eu_cookie_compliance_' . $ln, 'popup_height'])) && $form_state->hasValue(['eu_cookie_compliance_' . $ln, 'popup_height'])) {
+      $form_state->setErrorByName("eu_cookie_compliance_popup_height", t('Height must be an integer value.'));
     }
-    if (!preg_match('/^[1-9][0-9]{0,4}$/', $form_state['values']['eu_cookie_compliance_' . $ln]['popup_delay'])) {
-      \Drupal::formBuilder()->setErrorByName('eu_cookie_compliance_popup_delay', $form_state, t('Delay must be an integer value.'));
+    if (!preg_match('/^[1-9][0-9]{0,4}$/', $form_state->getValue(['eu_cookie_compliance_' . $ln, 'popup_delay']))) {
+      $form_state->setErrorByName('eu_cookie_compliance_popup_delay', t('Delay must be an integer value.'));
     }
-    if (!preg_match('/^[1-9][0-9]{0,4}\%?$/', $form_state['values']['eu_cookie_compliance_' . $ln]['popup_width'])) {
-      \Drupal::formBuilder()->setErrorByName('eu_cookie_compliance_popup_width', $form_state, t('Width must be an integer or a percentage value.'));
+    if (!preg_match('/^[1-9][0-9]{0,4}\%?$/', $form_state->getValue(['eu_cookie_compliance_' . $ln, 'popup_width']))) {
+      $form_state->setErrorByName('eu_cookie_compliance_popup_width', t('Width must be an integer or a percentage value.'));
     }
-    $popup_link = $form_state['values']['eu_cookie_compliance_' . $ln]['popup_link'];
+    $popup_link = $form_state->getValue(['eu_cookie_compliance_' . $ln, 'popup_link']);
     //if the link contains a fragment then check if it validates then rewrite link with full url
     if ((strpos($popup_link, '#') !== FALSE) && (strpos($popup_link, 'http') === FALSE)) {
       $fragment = explode('#', $popup_link);
-      $popup_link = url($fragment[0], array('fragment' => $fragment[1], 'absolute' => TRUE));
-      form_set_error('eu_cookie_compliance_' . $ln . '][popup_link', t('Looks like your privacy policy link contains fragment #, you should make this an absolute url eg @link', array('@link' => $popup_link)));
+      $popup_link = _url($fragment[0], array('fragment' => $fragment[1], 'absolute' => TRUE));
+      $form_state->setErrorByName(['eu_cookie_compliance_' . $ln, 'popup_link'], t('Looks like your privacy policy link contains fragment #, you should make this an absolute url eg @link', array('@link' => $popup_link)));
     }
 
-   \Drupal::cache()->delete('eu_cookie_compliance_client_settings_' . $language->id);
+   \Drupal::cache()->delete('eu_cookie_compliance_client_settings_' . $language->getId());
   }
 
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, array &$form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
     $language = \Drupal::languageManager()->getCurrentLanguage();
-    $language = $language->id;
+    $language = $language->getId();
 
-    foreach ($form_state['values']['eu_cookie_compliance_' . $language] as $field => $value) {
+    foreach ($form_state->getValue('eu_cookie_compliance_' . $language) as $field => $value) {
       $this->config('eu_cookie_compliance.settings')
         ->set("{$language}.{$field}", $value)
         ->save();
     }
     $this->config('eu_cookie_compliance.settings')
-    ->set('domain.setting', $form_state['values']['eu_cookie_compliance_domain'])
+    ->set('domain.setting', $form_state->getValue('eu_cookie_compliance_domain'))
     ->save();
     parent::submitForm($form, $form_state);
   }
