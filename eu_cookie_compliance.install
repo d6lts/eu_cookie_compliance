@@ -18,16 +18,9 @@ function eu_cookie_compliance_install() {
     'format' => "full_html",
   );
   $language = Drupal::languageManager()->getCurrentLanguage();
-  $language = $language->id;
+  $language = $language->getId();
   \Drupal::config('eu_cookie_compliance.settings')
     ->set($language . '.popup_info', $popup_info)
     ->set($language . '.popup_agreed', $popup_agreed)
     ->save();
-}
-
-/**
- * Implements hook_uninstall().
- */
-function eu_cookie_compliance_uninstall() {
-  \Drupal::config('eu_cookie_compliance.settings')->delete();
 }
