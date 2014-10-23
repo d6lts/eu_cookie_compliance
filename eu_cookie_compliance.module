@@ -68,7 +68,7 @@ function eu_cookie_compliance_page_build(&$page) {
     $language = Drupal::languageManager()->getCurrentLanguage();
     // Array storage for caching full client data.
     $data = array();
-    if($cache = \Drupal::cache()->get('eu_cookie_compliance_client_settings_' . $language->id)) {
+    if($cache = \Drupal::cache()->get('eu_cookie_compliance_client_settings_' . $language->getId())) {
       $data = $cache->data;
     }
     else {
@@ -123,7 +123,7 @@ function eu_cookie_compliance_page_build(&$page) {
           'popup_link'           => _url($popup_settings['popup_link']),
           'popup_link_new_window' => isset($popup_settings['popup_link_new_window']) ? $popup_settings['popup_link_new_window'] : 1,
           'popup_position'       => $popup_settings['popup_position'],
-          'popup_language'       => $language->id,
+          'popup_language'       => $language->getId(),
           'popup_bg_hex'         => !empty($popup_settings['popup_bg_hex']) ? $popup_settings['popup_bg_hex'] : FALSE,
           'popup_text_hex'       => !empty($popup_settings['popup_text_hex']) ? $popup_settings['popup_text_hex'] : FALSE,
           'domain'               => $domain_setting['setting'],
