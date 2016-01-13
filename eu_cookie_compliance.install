@@ -4,23 +4,3 @@
  * @file
  * Installation file.
  */
-
-/**
- * Implements hook_install().
- */
-function eu_cookie_compliance_install() {
-  $popup_info = array(
-    'value' => '<h2>We use cookies on this site to enhance your user experience</h2><p>By clicking any link on this page you are giving your consent for us to set cookies.</p>',
-    'format' => "full_html",
-  );
-  $popup_agreed = array(
-    'value' => '<h2>Thank you for accepting cookies</h2><p>You can now hide this message or find out more about cookies.</p>',
-    'format' => "full_html",
-  );
-  $language = Drupal::languageManager()->getCurrentLanguage();
-  $language = $language->getId();
-  \Drupal::config('eu_cookie_compliance.settings')
-    ->set($language . '.popup_info', $popup_info)
-    ->set($language . '.popup_agreed', $popup_agreed)
-    ->save();
-}
