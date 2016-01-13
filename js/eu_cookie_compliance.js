@@ -157,7 +157,7 @@
   Drupal.eu_cookie_compliance.setStatus = function(status) {
     var date = new Date();
     date.setDate(date.getDate() + 100);
-    var cookie = "cookie-agreed=" + status + ";expires=" + date.toUTCString() + ";path=" + drupalSettings.basePath;
+    var cookie = "cookie-agreed=" + status + ";expires=" + date.toUTCString() + ";path=" + drupalSettings.path.baseUrl;
     if(drupalSettings.eu_cookie_compliance.domain) {
       cookie += ";domain="+drupalSettings.eu_cookie_compliance.domain;
     }
@@ -192,7 +192,7 @@
     }
     return returnValue;
   };
-  
+
   Drupal.eu_cookie_compliance.cookiesEnabled = function() {
     var cookieEnabled = (navigator.cookieEnabled);
     if (typeof navigator.cookieEnabled === "undefined" && !cookieEnabled) {
