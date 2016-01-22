@@ -23,8 +23,8 @@ use Drupal\Component\Utility\Unicode;
 function eu_cookie_compliance_page_attachments(&$page) {
   $config = \Drupal::config('eu_cookie_compliance.settings');
 
- // Check Add/Remove domains.
-  $domain_allow = true;
+  // Check Add/Remove domains.
+  $domain_allow = TRUE;
   $domain_option = !empty($config->get('domains_option')) ? $config->get('domains_option') : 1;
 
   if (!empty($config->get('domains_list'))) {
@@ -35,12 +35,12 @@ function eu_cookie_compliance_page_attachments(&$page) {
     $domain_match = in_array($base_url, $domains_list);
 
     if ($domain_option && $domain_match) {
-      $domain_allow = false;
+      $domain_allow = FALSE;
     }
 
     // @TODO: Ask about this thing.
     if (!$domain_option && !$domain_match) {
-      $domain_allow = false;
+      $domain_allow = FALSE;
     }
   }
 
@@ -54,7 +54,7 @@ function eu_cookie_compliance_page_attachments(&$page) {
   }
 
   // Unsoported GeoIP feature until those modules update their code.
-  $geoip_match = false;
+  $geoip_match = TRUE;
 
   if (!empty($config->get('popup_enabled')) && \Drupal::currentUser()->hasPermission('display EU Cookie Compliance popup') && $geoip_match && $domain_allow && !$path_match) {
     $language = Drupal::languageManager()->getCurrentLanguage();
