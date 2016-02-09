@@ -11,7 +11,6 @@
   Drupal.behaviors.eu_cookie_compliance_popup = {
     attach: function () {
       var settings = drupalSettings.eu_cookie_compliance;
-      console.log(settings);
       try {
         var enabled = settings.popup_enabled;
         if (!enabled) {
