@@ -221,7 +221,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_width'] = array(
       '#type' => 'textfield',
       '#title' => t('Popup width in pixels or a percentage value'),
-      '#default_value' => !empty($config->get('popup_width')) ? $config->get('popup_width') : '100',
+      '#default_value' => !empty($config->get('popup_width')) ? $config->get('popup_width') : '100%',
       '#field_suffix' => ' ' . t('px or %'),
       '#size' => 5,
       '#maxlength' => 5,
