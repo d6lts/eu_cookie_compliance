@@ -94,14 +94,32 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
         '#agree_button' => $config->get('popup_agree_button_message'),
         '#disagree_button' => $config->get('popup_disagree_button_message'),
       );
-      $html_info = \Drupal::service('renderer')->renderRoot($html_info)->__toString();
       $html_agreed = array(
         '#theme' => 'eu_cookie_compliance_popup_agreed',
         '#message' => check_markup($popup_text_agreed, $config->get('popup_agreed.format'), FALSE),
         '#hide_button' => $config->get('popup_hide_button_message'),
         '#find_more_button' => $config->get('popup_find_more_button_message'),
       );
+
+      $was_debugging = FALSE;
+
+      /**
+       * @var $twig_service Twig_Environment
+       */
+      $twig_service = \Drupal::service('twig');
+
+      if ($twig_service->isDebug()) {
+        $was_debugging = TRUE;
+        $twig_service->disableDebug();
+      }
+
+      $html_info = \Drupal::service('renderer')->renderRoot($html_info)->__toString();
       $html_agreed = \Drupal::service('renderer')->renderRoot($html_agreed)->__toString();
+
+      if ($was_debugging) {
+        $twig_service->enableDebug();
+      }
+
       $clicking_confirmation = (!empty($config->get('popup_clicking_confirmation'))) ? $config->get('popup_clicking_confirmation') : TRUE;
       $domain_setting = $config->get('domain');
 
