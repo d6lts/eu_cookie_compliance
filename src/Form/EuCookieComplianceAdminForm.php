@@ -133,7 +133,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_agree_button_message'] = array(
       '#type' => 'textfield',
       '#title' => t('Agree button message'),
-      '#default_value' => !empty($config->get('popup_agree_button_message')) ? $config->get('popup_agree_button_message') : t('OK, I agree'),
+      '#default_value' => $config->get('popup_agree_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
@@ -141,7 +141,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_disagree_button_message'] = array(
       '#type' => 'textfield',
       '#title' => t('Disagree button message'),
-      '#default_value' => !empty($config->get('popup_disagree_button_message')) ? $config->get('popup_disagree_button_message') : t('No, give me more info'),
+      '#default_value' => $config->get('popup_disagree_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
@@ -149,7 +149,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_info'] = array(
       '#type' => 'text_format',
       '#title' => t('Popup message - requests consent'),
-      '#default_value' => !empty($config->get('popup_info.value')) ? $config->get('popup_info.value') : '',
+      '#default_value' => $config->get('popup_info.value'),
       '#required' => TRUE,
       '#format' => !empty($config->get('popup_info.format')) ? $config->get('popup_info.format') : filter_default_format(),
     );
@@ -170,7 +170,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_find_more_button_message'] = array(
       '#type' => 'textfield',
       '#title' => t('Find more button message'),
-      '#default_value' => !empty($config->get('popup_find_more_button_message')) ? $config->get('popup_find_more_button_message') : t('More info'),
+      '#default_value' => $config->get('popup_find_more_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
@@ -178,7 +178,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_hide_button_message'] = array(
       '#type' => 'textfield',
       '#title' => t('Hide button message'),
-      '#default_value' => !empty($config->get('popup_hide_button_message')) ? $config->get('popup_hide_button_message') : t('Hide'),
+      '#default_value' => $config->get('popup_hide_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
@@ -228,7 +228,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_width'] = array(
       '#type' => 'textfield',
       '#title' => t('Popup width in pixels or a percentage value'),
-      '#default_value' => !empty($config->get('popup_width')) ? $config->get('popup_width') : '100%',
+      '#default_value' => $config->get('popup_width'),
       '#field_suffix' => ' ' . t('px or %'),
       '#size' => 5,
       '#maxlength' => 5,
@@ -239,7 +239,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_delay'] = array(
       '#type' => 'number',
       '#title' => t('Popup time delay in seconds'),
-      '#default_value' => !empty($config->get('popup_delay')) ? $config->get('popup_delay') : 1,
+      '#default_value' => $config->get('popup_delay'),
       '#field_suffix' => ' ' . t('seconds'),
       '#size' => 5,
       '#maxlength' => 5,
@@ -256,7 +256,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
       '#type' => $form_color_picker_type,
       '#title' => t('Background Color'),
       // Garland colors :).
-      '#default_value' => !empty($config->get('popup_bg_hex')) ? $config->get('popup_bg_hex') : '0779BF',
+      '#default_value' => $config->get('popup_bg_hex'),
       '#description' => t('Change the background color of the popup. Provide HEX value without the #'),
       '#element_validate' => array('eu_cookie_compliance_validate_hex'),
     );
@@ -264,7 +264,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['popup_text_hex'] = array(
       '#type' => $form_color_picker_type,
       '#title' => t('Text Color'),
-      '#default_value' => !empty($config->get('popup_text_hex')) ? $config->get('popup_text_hex') : 'ffffff',
+      '#default_value' => $config->get('popup_text_hex'),
       '#description' => t('Change the text color of the popup. Provide HEX value without the #'),
       '#element_validate' => array('eu_cookie_compliance_validate_hex'),
     );
@@ -276,14 +276,14 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
     $form['eu_cookie_compliance']['domains_option'] = array(
       '#type' => 'radios',
       '#title' => t('Add/Remove popup on specified domains'),
-      '#default_value' => !empty($config->get('domains_option')) ? $config->get('domains_option') : 1,
+      '#default_value' => $config->get('domains_option'),
       '#options' => $exclude_domains_option_active,
       '#description' => t("Specify if you want to add or remove popup on the listed below domains."),
     );
     $form['eu_cookie_compliance']['domains_list'] = array(
       '#type' => 'textarea',
       '#title' => t('Domains list'),
-      '#default_value' => !empty($config->get('domains_list')) ? $config->get('domains_list') : '',
+      '#default_value' => $config->get('domains_list'),
       '#description' => t("Specify domains with protocol (e.g. http or https). Enter one domain per line."),
     );
 
