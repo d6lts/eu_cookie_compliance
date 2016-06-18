@@ -120,7 +120,6 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
         $twig_service->enableDebug();
       }
 
-      $clicking_confirmation = (!empty($config->get('popup_clicking_confirmation'))) ? $config->get('popup_clicking_confirmation') : TRUE;
       $domain_setting = $config->get('domain');
 
       // Prepare internal links (remove the internal scheme).
