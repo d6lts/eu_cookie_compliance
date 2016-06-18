@@ -22,7 +22,7 @@ popup_hide_agreed: false
 popup_hide_button_message: 'Hide'
 popup_info:
   value: '<h2>We use cookies on this site to enhance your user experience</h2><p>By clicking any link on this page you are giving your consent for us to set cookies.</p>'
-  format: ''
+  format: 'restricted_html'
 popup_link: ''
 popup_link_new_window: true
 popup_position: false
