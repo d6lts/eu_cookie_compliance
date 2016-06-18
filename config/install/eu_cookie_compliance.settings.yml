@@ -2,7 +2,7 @@ domain: ''
 domains_option: 1
 domains_list: ''
 eu_only: false
-exclude_paths: '/admin\n/admin/*\n/batch\n/node/add*\n/node/*/*\n/user/*/*'
+exclude_paths: "/admin\n/admin/*\n/batch\n/node/add*\n/node/*/*\n/user/*/*"
 export:
   folder: custom
 langcode: en
