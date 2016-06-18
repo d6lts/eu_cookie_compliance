@@ -51,7 +51,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
 
   if (!empty($config->get('exclude_paths'))) {
     // @TODO: make this more robust.
-    $path = Unicode::strtolower($_SERVER['REQUEST_URI']);
+    $path = \Drupal::service('path.current')->getPath();
     $path_match = \Drupal::service('path.matcher')->matchPath($path, $config->get('exclude_paths'));
   }
 
