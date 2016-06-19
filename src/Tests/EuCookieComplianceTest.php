@@ -15,7 +15,6 @@ class EuCookieComplianceTest extends EuCookieComplianceTestBasic {
    * @var array
    */
   public static $modules = [
-    'locale',
     'eu_cookie_compliance',
     'eu_cookie_compliance_test'
   ];
