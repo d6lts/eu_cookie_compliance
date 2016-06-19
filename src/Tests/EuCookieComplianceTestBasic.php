@@ -27,7 +27,10 @@ abstract class EuCookieComplianceTestBasic extends EuCookieComplianceTestBase {
    * @var array
    *   A list of permissions.
    */
-  protected $permissions = ['Administer EU Cookie Compliance popup', 'Display EU Cookie Compliance popup'];
+  protected $permissions = [
+    'access content',
+    'display EU Cookie Compliance popup',
+  ];
 
   /**
    * {@inheritdoc}
@@ -35,21 +38,13 @@ abstract class EuCookieComplianceTestBasic extends EuCookieComplianceTestBase {
   protected function setUp() {
     parent::setUp();
 
-    // Make sure we are using distinct default and administrative themes for
-    // the duration of these tests.
-    $this->container->get('theme_handler')->install(array('bartik', 'seven'));
-    $this->config('system.theme')
-      ->set('default', 'bartik')
-      ->set('admin', 'seven')
-      ->save();
-
-    $this->permissions[] = 'view the administration theme';
+    $admin_permissions = $this->permissions + ['administer EU Cookie Compliance popup', 'access administration pages'];
 
     // Create an admin user to manage EU Cookie Compliance.
-    $this->adminUser = $this->drupalCreateUser($this->permissions);
+    $this->adminUser = $this->drupalCreateUser($admin_permissions);
 
     // Create an anonymous user to view EU Cookie Compliance popup.
-    $this->anonUser = $this->drupalCreateUser(['view content', 'Display EU Cookie Compliance popup']);
+    $this->anonUser = $this->drupalCreateUser($this->permissions);
 
   }
 
