@@ -37,7 +37,7 @@ abstract class EuCookieComplianceTestBasic extends EuCookieComplianceTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $admin_permissions = $this->permissions + ['administer EU Cookie Compliance popup', 'access administration pages'];
+    $admin_permissions = ['display EU Cookie Compliance popup', 'administer EU Cookie Compliance popup', 'access administration pages'];
 
     // Create an admin user to manage EU Cookie Compliance.
     $this->adminUser = $this->drupalCreateUser($admin_permissions);
