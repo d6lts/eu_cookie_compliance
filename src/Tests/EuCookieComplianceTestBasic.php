@@ -28,7 +28,7 @@ abstract class EuCookieComplianceTestBasic extends EuCookieComplianceTestBase {
    *   A list of permissions.
    */
   protected $permissions = [
-    'access content',
+    'access content overview',
     'display EU Cookie Compliance popup',
   ];
 
