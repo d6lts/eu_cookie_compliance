@@ -28,13 +28,16 @@ class EuCookieComplianceTest extends EuCookieComplianceTestBasic {
   }
 
   /**
-   * Test tour functionality.
+   * Test routes.
    */
-  public function testEuCookieComplianceFunctionality() {
-    $this->drupalGet('');
+  public function testRoutes() {
 
-    $this->assertEuCookieCompliance();
+    $this->drupalLogin($this->adminUser);
 
+    $this->drupalGet('admin/config/system/eu-cookie-compliance');
+    $this->assertResponse(200);
+
+    $this->assertText('EU Cookie Compliance', 'Right Text');
   }
 
 }

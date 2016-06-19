@@ -15,13 +15,23 @@ abstract class EuCookieComplianceTestBasic extends EuCookieComplianceTestBase {
   protected $adminUser;
 
   /**
+   * An admin user with administrative permissions for EUCC.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $anonUser;
+
+  /**
    * The permissions required for a logged in user to test EUCC.
    *
    * @var array
    *   A list of permissions.
    */
-  protected $permissions = array('Administer EU Cookie Compliance popup');
+  protected $permissions = ['Administer EU Cookie Compliance popup', 'Display EU Cookie Compliance popup'];
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
 
@@ -35,9 +45,12 @@ abstract class EuCookieComplianceTestBasic extends EuCookieComplianceTestBase {
 
     $this->permissions[] = 'view the administration theme';
 
-    // Create an admin user to view tour tips.
+    // Create an admin user to manage EU Cookie Compliance.
     $this->adminUser = $this->drupalCreateUser($this->permissions);
-    $this->drupalLogin($this->adminUser);
+
+    // Create an anonymous user to view EU Cookie Compliance popup.
+    $this->anonUser = $this->drupalCreateUser(['view content', 'Display EU Cookie Compliance popup']);
+
   }
 
 }
