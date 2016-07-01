@@ -8,7 +8,7 @@
 
   'use strict';
 
-  Drupal.behaviors.eu_cookie_compliance_popup = {
+  Drupal.behaviors.euCookieCompliancePopup = {
     attach: function (context, settings) {
       $('body', context).once('sliding-popup').each(function () {
         var settings = drupalSettings.eu_cookie_compliance;
