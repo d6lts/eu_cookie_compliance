@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\eu_cookie_compliance\Form\EuCookieComplianceAdminForm.
- */
-
 namespace Drupal\eu_cookie_compliance\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
