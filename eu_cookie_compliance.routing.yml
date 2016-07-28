@@ -4,4 +4,4 @@ eu_cookie_compliance.settings:
     _form: '\Drupal\eu_cookie_compliance\Form\EuCookieComplianceAdminForm'
     _title: 'EU Cookie Compliance'
   requirements:
-    _permission: 'administer eu cookie compliance popup'
+    _permission: 'administer EU Cookie Compliance popup'
