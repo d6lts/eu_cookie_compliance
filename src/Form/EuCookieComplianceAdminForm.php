@@ -4,24 +4,15 @@ namespace Drupal\eu_cookie_compliance\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Path\AliasManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Routing\RequestContext;
-use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides form for cookie control popup.
  */
 class EuCookieComplianceAdminForm extends ConfigFormBase {
-
-  /**
-   * The path alias manager.
-   *
-   * @var \Drupal\Core\Path\AliasManagerInterface
-   */
-  protected $aliasManager;
 
   /**
    * The path validator.
@@ -42,17 +33,14 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
-   * @param \Drupal\Core\Path\AliasManagerInterface $alias_manager
-   *   The path alias manager.
    * @param \Drupal\Core\Path\PathValidatorInterface $path_validator
    *   The path validator.
    * @param \Drupal\Core\Routing\RequestContext $request_context
    *   The request context.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasManagerInterface $alias_manager, PathValidatorInterface $path_validator, RequestContext $request_context) {
+  public function __construct(ConfigFactoryInterface $config_factory, PathValidatorInterface $path_validator, RequestContext $request_context) {
     parent::__construct($config_factory);
 
-    $this->aliasManager = $alias_manager;
     $this->pathValidator = $path_validator;
     $this->requestContext = $request_context;
   }
@@ -63,7 +51,6 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('path.alias_manager'),
       $container->get('path.validator'),
       $container->get('router.request_context')
     );
@@ -186,21 +173,13 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
       '#format' => !empty($config->get('popup_agreed')['format']) ? $config->get('popup_agreed')['format'] : filter_default_format(),
     );
 
-    // In the current popup-link is an internal link, try to load the alias for
-    // that path.
-    $link = !empty($config->get('popup_link')) ? $config->get('popup_link') : '';
-    if ($link && parse_url($link, PHP_URL_SCHEME) === 'internal') {
-      $link = explode(':', $link, 2)[1];
-      $link = $this->aliasManager->getAliasByPath($link);
-    }
     $form['eu_cookie_compliance']['popup_link'] = array(
-      '#type' => 'textfield',
+      '#type' => 'url',
       '#title' => $this->t('Privacy policy link'),
-      '#default_value' => $link,
-      '#size' => 60,
-      '#maxlength' => 220,
+      '#default_value' => $config->get('popup_link'),
+      '#maxlength' => 1024,
       '#required' => TRUE,
-      '#description' => $this->t('Enter link to your privacy policy or other page that will explain cookies to your users. Internal links should start with a forward slash (/), external links should start with http:// or https://.'),
+      '#description' => $this->t('Enter link to your privacy policy or other page that will explain cookies to your users, internal/external links should start with http:// or https://.'),
     );
 
     $form['eu_cookie_compliance']['popup_link_new_window'] = array(
@@ -300,35 +279,9 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    if (!$form_state->isValueEmpty('popup_link')) {
-      $popup_link = $form_state->getValue('popup_link');
-
-      // If the popup link points does not point to an external resource,
-      // prepend the 'internal:' scheme.
-      if (parse_url($popup_link, PHP_URL_SCHEME) === NULL) {
-        if (!in_array($popup_link[0], ['/'])) {
-          $form_state->setErrorByName('popup_link', $this->t('Internal paths should start with a "/".'));
-        }
-        else {
-          $popup_link = 'internal:' . $popup_link;
-
-          // If the link contains a fragment then check if it validates then
-          // rewrite link with full url.
-          if ((strpos($popup_link, '#') !== FALSE)) {
-            $fragment = explode('#', $popup_link);
-            $link = Url::fromUri($fragment[0], array(
-              'fragment' => $fragment[1],
-              'absolute' => TRUE,
-            ));
-            $form_state->setErrorByName('popup_link', $this->t('Looks like your privacy policy link contains fragment #, you should make this an absolute url eg @link', array('@link' => $link->toString())));
-          }
-
-          $form_state->setValueForElement($form['eu_cookie_compliance']['popup_link'], $this->aliasManager->getPathByAlias($popup_link));
-        }
-      }
-    }
-
     parent::validateForm($form, $form_state);
+
+    // @TODO Validate other form elements settings.
   }
 
   /**

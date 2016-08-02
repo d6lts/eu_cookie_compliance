@@ -120,15 +120,6 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
         $twig_service->enableDebug();
       }
 
-      $domain_setting = $config->get('domain');
-
-      // Prepare internal links (remove the internal scheme).
-      $popup_link = $config->get('popup_link');
-      if (parse_url($popup_link, PHP_URL_SCHEME) === 'internal') {
-        $popup_link = explode(':', $popup_link, 2)[1];
-        $popup_link = \Drupal::service('path.alias_manager')->getAliasByPath($popup_link);
-      }
-
       $data['variables'] = array(
         'popup_enabled'        => $config->get('popup_enabled'),
         'popup_agreed_enabled' => $config->get('popup_agreed_enabled'),
@@ -141,13 +132,13 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
         'popup_delay'          => (int) ($config->get('popup_delay') * 1000),
         'popup_link'           => $config->get('popup_link'),
         'popup_link_new_window' => $config->get('popup_link_new_window'),
-        'popup_link'           => $popup_link,
+        'popup_link'           => $config->get('popup_link'),
         'popup_link_new_window' => !empty($config->get('popup_link_new_window')) ? $config->get('popup_link_new_window') : 1,
         'popup_position'       => $config->get('popup_position'),
         'popup_language'       => $language->getId(),
         'popup_bg_hex'         => !empty($config->get('popup_bg_hex')) ? $config->get('popup_bg_hex') : FALSE,
         'popup_text_hex'       => !empty($config->get('popup_text_hex')) ? $config->get('popup_text_hex') : FALSE,
-        'domain'               => $domain_setting,
+        'domain'               => $config->get('domain'),
       );
       \Drupal::cache()->set('eu_cookie_compliance_client_settings.' . $language->getId(), $data);
     }

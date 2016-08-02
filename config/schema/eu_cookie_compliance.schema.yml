@@ -62,7 +62,7 @@ eu_cookie_compliance.settings:
           type: string
           label: 'Popup message  - Format'
     popup_link:
-      type: path
+      type: string
       label: 'Privacy policy link'
     popup_link_new_window:
       type: boolean
