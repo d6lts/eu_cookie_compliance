@@ -60,7 +60,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'eu_cookie_compliance_admin_form';
+    return 'eu_cookie_compliance_config_form';
   }
 
   /**
