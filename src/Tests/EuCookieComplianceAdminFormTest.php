@@ -3,11 +3,11 @@
 namespace Drupal\eu_cookie_compliance\Tests;
 
 /**
- * Test functionality for EU Cookie Compliance Admin Config form.
+ * Test functionality for EU Cookie Compliance Config form.
  *
  * @group eu_cookie_compliance
  */
-class EuCookieComplianceAdminFormTest extends EuCookieComplianceTestBase {
+class EuCookieComplianceConfigFormTest extends EuCookieComplianceTestBase {
 
   /**
    * An admin user with administrative permissions for EUCC.
@@ -37,9 +37,9 @@ class EuCookieComplianceAdminFormTest extends EuCookieComplianceTestBase {
   }
 
   /**
-   * Tests the EuCookieComplianceAdminForm.
+   * Tests the EuCookieComplianceConfigForm.
    */
-  public function testEuCookieComplianceAdminForm() {
+  public function testEuCookieComplianceConfigForm() {
     $this->drupalGet('admin/config/system/eu-cookie-compliance');
     $this->assertNoFieldChecked('edit-popup-enabled');
     $edit = ['popup_enabled' => 1];

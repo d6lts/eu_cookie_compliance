@@ -10,9 +10,9 @@ use Drupal\Core\Routing\RequestContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides form for cookie control popup.
+ * Provides settings for eu_cookie_compliance module.
  */
-class EuCookieComplianceAdminForm extends ConfigFormBase {
+class EuCookieComplianceConfigForm extends ConfigFormBase {
 
   /**
    * The path validator.
@@ -29,7 +29,7 @@ class EuCookieComplianceAdminForm extends ConfigFormBase {
   protected $requestContext;
 
   /**
-   * Constructs an EuCookieComplianceAdminForm object.
+   * Constructs an EuCookieComplianceConfigForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
