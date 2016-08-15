@@ -58,7 +58,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
   // Unsupported GeoIP feature until those modules update their code.
   $geoip_match = TRUE;
 
-  if ($config->get('popup_enabled') && \Drupal::currentUser()->hasPermission('display EU Cookie Compliance popup') && $geoip_match && $domain_allow && !$path_match) {
+  if ($config->get('popup_enabled') && \Drupal::currentUser()->hasPermission('display eu cookie compliance popup') && $geoip_match && $domain_allow && !$path_match) {
     $language = Drupal::languageManager()->getCurrentLanguage();
     // Array storage for caching full client data.
 

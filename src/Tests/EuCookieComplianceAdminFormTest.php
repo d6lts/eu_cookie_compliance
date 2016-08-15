@@ -32,7 +32,7 @@ class EuCookieComplianceConfigFormTest extends EuCookieComplianceTestBase {
   protected function setUp() {
     parent::setUp();
     // Create and log in admin user.
-    $this->adminUser = $this->drupalCreateUser(['display EU Cookie Compliance popup', 'administer EU Cookie Compliance popup']);
+    $this->adminUser = $this->drupalCreateUser(['display eu cookie compliance popup', 'administer eu cookie compliance popup']);
     $this->drupalLogin($this->adminUser);
   }
 
