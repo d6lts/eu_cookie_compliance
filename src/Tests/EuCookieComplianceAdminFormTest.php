@@ -3,11 +3,11 @@
 namespace Drupal\eu_cookie_compliance\Tests;
 
 /**
- * Test functionality for EU Cookie Compliance.
+ * Test functionality for EU Cookie Compliance Admin Config form.
  *
  * @group eu_cookie_compliance
  */
-class EuCookieComplianceTest extends EuCookieComplianceTestBasic {
+class EuCookieComplianceAdminFormTest extends EuCookieComplianceTestBasic {
 
   /**
    * Modules to enable.
