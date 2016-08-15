@@ -7,7 +7,14 @@ namespace Drupal\eu_cookie_compliance\Tests;
  *
  * @group eu_cookie_compliance
  */
-class EuCookieComplianceAdminFormTest extends EuCookieComplianceTestBasic {
+class EuCookieComplianceAdminFormTest extends EuCookieComplianceTestBase {
+
+  /**
+   * An admin user with administrative permissions for EUCC.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $adminUser;
 
   /**
    * Modules to enable.
@@ -20,22 +27,19 @@ class EuCookieComplianceAdminFormTest extends EuCookieComplianceTestBasic {
   ];
 
   /**
-   * Test routes.
+   * {@inheritdoc}
    */
-  public function testRoutes() {
+  protected function setUp() {
+    parent::setUp();
+    // Create and log in admin user.
+    $this->adminUser = $this->drupalCreateUser(['display EU Cookie Compliance popup', 'administer EU Cookie Compliance popup']);
     $this->drupalLogin($this->adminUser);
-
-    $this->drupalGet('admin/config/system/eu-cookie-compliance');
-    $this->assertResponse(200);
-
-    $this->assertText('EU Cookie Compliance', 'Right Text');
   }
 
   /**
-   * Tests the admin UI.
+   * Tests the EuCookieComplianceAdminForm.
    */
-  public function testAdminUI() {
-    $this->drupalLogin($this->adminUser);
+  public function testEuCookieComplianceAdminForm() {
     $this->drupalGet('admin/config/system/eu-cookie-compliance');
     $this->assertNoFieldChecked('edit-popup-enabled');
     $edit = ['popup_enabled' => 1];
