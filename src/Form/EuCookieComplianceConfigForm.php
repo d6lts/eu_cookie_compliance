@@ -6,6 +6,8 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Path\PathValidatorInterface;
+use Drupal\Core\Url;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Routing\RequestContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -180,6 +182,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#maxlength' => 1024,
       '#required' => TRUE,
       '#description' => $this->t('Enter link to your privacy policy or other page that will explain cookies to your users, internal/external links should start with http:// or https://.'),
+      '#element_validate' => array(array($this, 'validatePopupLink')),
     );
 
     $form['eu_cookie_compliance']['popup_link_new_window'] = array(
@@ -278,15 +281,6 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-
-    // @TODO Validate other form elements settings.
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('eu_cookie_compliance.settings')
       ->set('domain', $form_state->getValue('domain'))
@@ -314,6 +308,43 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->save();
 
     parent::submitForm($form, $form_state);
+  }
+
+  /**
+   * Validates the popup link field.
+   */
+  public function validatePopupLink($element, FormStateInterface &$form_state) {
+    if (empty($element['#value'])) {
+      return;
+    }
+
+    $input = $element['#value'];
+    if (UrlHelper::isExternal($input)) {
+      $allowed_protocols = ['http', 'https'];
+      if (!in_array(parse_url($input, PHP_URL_SCHEME), $allowed_protocols)) {
+        $form_state->setError($element, t('Invalid protocol specified for the %name (valid protocols: %protocols).', array('%name' => $element['#title'], '%protocols' => implode(', ', $allowed_protocols))));
+      }
+      else {
+        try {
+          Url::fromUri($input);
+        }
+        catch (\Exception $exc) {
+          $form_state->setError($element, t('Invalid %name (:message).', array('%name' => $element['#title'], ':message' => $exc->getMessage())));
+        }
+      }
+    }
+    else {
+      // Special case for '<front>'.
+      if ($input === '<front>') {
+        $input = '/';
+      }
+      try {
+        Url::fromUserInput($input);
+      }
+      catch (\Exception $exc) {
+        $form_state->setError($element, t('Invalid URL in %name field (:message).', array('%name' => $element['#title'], ':message' => $exc->getMessage())));
+      }
+    }
   }
 
 }
