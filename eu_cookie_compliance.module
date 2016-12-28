@@ -178,7 +178,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       'popup_width'          => !empty($config->get('popup_width')) ? $config->get('popup_width') : '100%',
       'popup_delay'          => (int) ($config->get('popup_delay') * 1000),
       'popup_link'           => $popup_link,
-      'popup_link_new_window' => !empty($config->get('popup_link_new_window')) ? $config->get('popup_link_new_window') : 1,
+      'popup_link_new_window' => $config->get('popup_link_new_window'),
       'popup_position'       => $config->get('popup_position'),
       'popup_language'       => $language->getId(),
       'popup_bg_hex'         => !empty($config->get('popup_bg_hex')) ? $config->get('popup_bg_hex') : FALSE,
