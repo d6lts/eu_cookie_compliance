@@ -176,7 +176,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     );
 
     $form['eu_cookie_compliance']['popup_link'] = array(
-      '#type' => 'url',
+      '#type' => 'textfield',
       '#title' => $this->t('Privacy policy link'),
       '#default_value' => $config->get('popup_link'),
       '#maxlength' => 1024,

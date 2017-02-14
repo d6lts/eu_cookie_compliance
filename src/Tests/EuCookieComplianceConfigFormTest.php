@@ -71,6 +71,11 @@ class EuCookieComplianceConfigFormTest extends EuCookieComplianceTestBase {
     // Set a path alias for the second node.
     $this->drupalPostForm('/admin/config/search/path/add', ['source' => '/node/2', 'alias' => '/alias'], t('Save'));
 
+    // Verify that the popup link field is a textfield, since type='url' only
+    // accepts absolute urls.
+    $this->drupalGet('/admin/config/system/eu-cookie-compliance');
+    $this->assertFieldByXpath('//input[@id="edit-popup-link" and @type="text"]');
+
     $scenarios = [
       // Format: User-entered value, value displayed in form, actual value for link.
 
