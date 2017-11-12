@@ -23,6 +23,9 @@ eu_cookie_compliance.settings:
     popup_position:
       type: boolean
       label: 'Place the pop-up at the top of the website'
+    fixed_top_position:
+      type: boolean
+      label: 'If the banner is at the top, don’t scroll the banner with the page'
     popup_agree_button_message:
       type: label
       label: 'Agree button message'

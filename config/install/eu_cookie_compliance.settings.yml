@@ -26,5 +26,6 @@ popup_info:
 popup_link: ''
 popup_link_new_window: true
 popup_position: false
+fixed_top_position: false
 popup_text_hex: 'ffffff'
 popup_width: '100%'

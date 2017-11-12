@@ -123,6 +123,10 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       $data['css'] = '#sliding-popup.sliding-popup-' . $position . ' {background:#' . Html::escape($config->get('popup_bg_hex')) . ';}'
            . '#sliding-popup .popup-content #popup-text h2, #sliding-popup .popup-content #popup-text p {color:#' . Html::escape($config->get('popup_text_hex')) . ' !important;}';
     }
+    if (!empty($popup_settings['popup_position']) && $popup_settings['popup_position'] && !empty($popup_settings['fixed_top_position']) && $popup_settings['fixed_top_position']) {
+      $data['css'] .= '#sliding-popup.sliding-popup-top { position: fixed; }';
+    }
+
     $popup_text_info = str_replace(array("\r", "\n"), '', $config->get('popup_info.value'));
     $popup_text_agreed = str_replace(array("\r", "\n"), '', $config->get('popup_agreed.value'));
     $html_info = array(
