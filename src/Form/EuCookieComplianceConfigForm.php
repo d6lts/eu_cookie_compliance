@@ -81,117 +81,152 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $config = $this->config('eu_cookie_compliance.settings');
 
-    $form['domain'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Domain'),
-      '#default_value' => $config->get('domain'),
-      '#description' => $this->t('Sets the domain of the cookie to a specific url.  Used when you need consistency across domains.  This is language independent.'),
+    $default_filter_format = filter_default_format();
+    if ($default_filter_format == 'filtered_html') {
+      $default_filter_format = 'full_html';
+    }
+
+    $form['info'] = array(
+      '#markup' => t('<p><strong>Note:</strong> <ul><li>The permission "Display EU Cookie Compliance popup" needs to be enabled for Anonymous and Authenticated users in order for the banner to appear.</li><li>In order for the module to work, <code>js-placeholder</code> needs to be output before <code>js-bottom-placeholder</code> in your <code>html.html.twig</code>.</li></ul></p>'),
     );
 
-    $form['eu_cookie_compliance'] = array(
-      '#type' => 'details',
-      '#title' => $this->t('Settings'),
-      '#open' => TRUE,
-    );
-
-    $form['eu_cookie_compliance']['popup_enabled'] = array(
+    $form['popup_enabled'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Enable popup'),
       '#default_value' => $config->get('popup_enabled'),
     );
 
-    $form['eu_cookie_compliance']['popup_clicking_confirmation'] = array(
+    $form['popup_message'] = array(
+      '#type' => 'details',
+      '#title' => t('Popup Message'),
+      '#open' => TRUE,
+    );
+
+    $form['popup_message']['popup_clicking_confirmation'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Consent by clicking'),
       '#default_value' => $config->get('popup_clicking_confirmation'),
       '#description' => $this->t('By default by clicking any link on the website the visitor accepts the cookie policy. Uncheck this box if you do not require this functionality. You may want to edit the pop-up message below accordingly.'),
     );
 
-    $form['eu_cookie_compliance']['popup_position'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Place the pop-up at the top of the website'),
-      '#default_value' => $config->get('popup_position'),
-      '#description' => $this->t('By default the pop-up appears at the bottom of the website. Tick this box if you want it to appear at the top'),
+    $form['popup_message']['popup_info'] = array(
+      '#type' => 'text_format',
+      '#title' => $this->t('Popup message - requests consent'),
+      '#default_value' => $config->get('popup_info.value'),
+      '#required' => TRUE,
+      '#format' => !empty($config->get('popup_info.format')) ? $config->get('popup_info.format') : $default_filter_format,
     );
 
-    $form['eu_cookie_compliance']['popup_agree_button_message'] = array(
+    $form['popup_message']['popup_agree_button_message'] = array(
       '#type' => 'textfield',
-      '#title' => $this->t('Agree button message'),
+      '#title' => $this->t('Agree button label'),
       '#default_value' => $config->get('popup_agree_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
 
-    $form['eu_cookie_compliance']['popup_disagree_button_message'] = array(
+    $form['popup_message']['popup_disagree_button_message'] = array(
       '#type' => 'textfield',
-      '#title' => $this->t('Disagree button message'),
+      '#title' => $this->t('Disagree button label'),
       '#default_value' => $config->get('popup_disagree_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
 
-    $form['eu_cookie_compliance']['popup_info'] = array(
-      '#type' => 'text_format',
-      '#title' => $this->t('Popup message - requests consent'),
-      '#default_value' => $config->get('popup_info.value'),
-      '#required' => TRUE,
-      '#format' => !empty($config->get('popup_info.format')) ? $config->get('popup_info.format') : filter_default_format(),
+    $form['thank_you'] = array(
+      '#type' => 'details',
+      '#open' => TRUE,
+      '#title' => t('Thank You Message'),
     );
 
-    $form['eu_cookie_compliance']['popup_agreed_enabled'] = array(
+    $form['thank_you']['popup_agreed_enabled'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Enable thank you message'),
       '#default_value' => $config->get('popup_agreed_enabled'),
     );
 
-    $form['eu_cookie_compliance']['popup_hide_agreed'] = array(
+    $form['thank_you']['popup_hide_agreed'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Clicking hides thank you message'),
       '#default_value' => $config->get('popup_hide_agreed'),
       '#description' => $this->t('Clicking a link hides the thank you message automatically.'),
     );
 
-    $form['eu_cookie_compliance']['popup_find_more_button_message'] = array(
+    $form['thank_you']['popup_agreed'] = array(
+      '#type' => 'text_format',
+      '#title' => $this->t('Popup message - thank you for giving consent'),
+      '#default_value' => !empty($config->get('popup_agreed')['value']) ? $config->get('popup_agreed')['value'] : '',
+      '#required' => TRUE,
+      '#format' => !empty($config->get('popup_agreed')['format']) ? $config->get('popup_agreed')['format'] : $default_filter_format,
+    );
+
+    $form['thank_you']['popup_find_more_button_message'] = array(
       '#type' => 'textfield',
-      '#title' => $this->t('Find more button message'),
+      '#title' => $this->t('Find more button label'),
       '#default_value' => $config->get('popup_find_more_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
 
-    $form['eu_cookie_compliance']['popup_hide_button_message'] = array(
+    $form['thank_you']['popup_hide_button_message'] = array(
       '#type' => 'textfield',
-      '#title' => $this->t('Hide button message'),
+      '#title' => $this->t('Hide button label'),
       '#default_value' => $config->get('popup_hide_button_message'),
       '#size' => 30,
       '#required' => TRUE,
     );
 
-    $form['eu_cookie_compliance']['popup_agreed'] = array(
-      '#type' => 'text_format',
-      '#title' => $this->t('Popup message - thanks for giving consent'),
-      '#default_value' => !empty($config->get('popup_agreed')['value']) ? $config->get('popup_agreed')['value'] : '',
-      '#required' => TRUE,
-      '#format' => !empty($config->get('popup_agreed')['format']) ? $config->get('popup_agreed')['format'] : filter_default_format(),
+    $form['privacy'] = array(
+      '#type' => 'details',
+      '#open' => TRUE,
+      '#title' => t('Privacy Policy'),
     );
 
-    $form['eu_cookie_compliance']['popup_link'] = array(
+    $form['privacy']['popup_link'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Privacy policy link'),
       '#default_value' => $config->get('popup_link'),
       '#maxlength' => 1024,
       '#required' => TRUE,
-      '#description' => $this->t('Enter link to your privacy policy or other page that will explain cookies to your users, internal/external links should start with http:// or https://.'),
+      '#description' => $this->t('Enter link to your privacy policy or other page that will explain cookies to your users, external links should start with http:// or https://.'),
       '#element_validate' => array(array($this, 'validatePopupLink')),
     );
 
-    $form['eu_cookie_compliance']['popup_link_new_window'] = array(
+    $form['privacy']['popup_link_new_window'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Open privacy policy link in a new window'),
       '#default_value' => $config->get('popup_link_new_window'),
     );
 
-    $form['eu_cookie_compliance']['popup_height'] = array(
+    $form['appearance'] = array(
+      '#type' => 'details',
+      '#open' => TRUE,
+      '#title' => t('Appearance'),
+    );
+
+    $form_color_picker_type = 'textfield';
+
+    if (\Drupal::moduleHandler()->moduleExists('jquery_colorpicker')) {
+      $form_color_picker_type = 'jquery_colorpicker';
+    }
+
+    $form['appearance']['popup_text_hex'] = array(
+      '#type' => $form_color_picker_type,
+      '#title' => $this->t('Text color'),
+      '#default_value' => $config->get('popup_text_hex'),
+      '#description' => $this->t('Change the text color of the popup. Provide HEX value without the #.'),
+      '#element_validate' => array('eu_cookie_compliance_validate_hex'),
+    );
+
+    $form['appearance']['popup_bg_hex'] = array(
+      '#type' => $form_color_picker_type,
+      '#title' => $this->t('Background color'),
+      '#default_value' => $config->get('popup_bg_hex'),
+      '#description' => $this->t('Change the background color of the popup. Provide HEX value without the #.'),
+      '#element_validate' => array('eu_cookie_compliance_validate_hex'),
+    );
+
+    $form['appearance']['popup_height'] = array(
       '#type' => 'number',
       '#title' => $this->t('Popup height in pixels'),
       '#default_value' => !empty($config->get('popup_height')) ? $config->get('popup_height') : '',
@@ -199,10 +234,10 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#size' => 5,
       '#maxlength' => 5,
       '#required' => FALSE,
-      '#description' => $this->t('Enter an integer value for a desired height in pixels or leave empty for automatically adjusted height'),
+      '#description' => $this->t('Enter an integer value for a desired height in pixels or leave empty for automatically adjusted height.'),
     );
 
-    $form['eu_cookie_compliance']['popup_width'] = array(
+    $form['appearance']['popup_width'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Popup width in pixels or a percentage value'),
       '#default_value' => $config->get('popup_width'),
@@ -210,10 +245,23 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#size' => 5,
       '#maxlength' => 5,
       '#required' => TRUE,
-      '#description' => $this->t('Set the width of the popup. This can be either an integer value or percentage of the screen width. For example: 200 or 50%'),
+      '#description' => $this->t('Set the width of the popup. This can be either an integer value or percentage of the screen width. For example: 200 or 50%.'),
     );
 
-    $form['eu_cookie_compliance']['popup_delay'] = array(
+    $form['advanced'] = array(
+      '#type' => 'details',
+      '#open' => FALSE,
+      '#title' => t('Advanced'),
+    );
+
+    $form['advanced']['popup_position'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Place the pop-up at the top of the website'),
+      '#default_value' => $config->get('popup_position'),
+      '#description' => $this->t('By default the pop-up appears at the bottom of the website. Tick this box if you want it to appear at the top.'),
+    );
+
+    $form['advanced']['popup_delay'] = array(
       '#type' => 'number',
       '#title' => $this->t('Popup time delay in seconds'),
       '#default_value' => $config->get('popup_delay'),
@@ -223,48 +271,28 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#required' => TRUE,
     );
 
-    $form_color_picker_type = 'textfield';
-
-    if (\Drupal::moduleHandler()->moduleExists('jquery_colorpicker')) {
-      $form_color_picker_type = 'jquery_colorpicker';
-    }
-
-    $form['eu_cookie_compliance']['popup_bg_hex'] = array(
-      '#type' => $form_color_picker_type,
-      '#title' => $this->t('Background Color'),
-      // Garland colors :).
-      '#default_value' => $config->get('popup_bg_hex'),
-      '#description' => $this->t('Change the background color of the popup. Provide HEX value without the #'),
-      '#element_validate' => array('eu_cookie_compliance_validate_hex'),
-    );
-
-    $form['eu_cookie_compliance']['popup_text_hex'] = array(
-      '#type' => $form_color_picker_type,
-      '#title' => $this->t('Text Color'),
-      '#default_value' => $config->get('popup_text_hex'),
-      '#description' => $this->t('Change the text color of the popup. Provide HEX value without the #'),
-      '#element_validate' => array('eu_cookie_compliance_validate_hex'),
-    );
     // Adding option to add/remove popup on specified domains
     $exclude_domains_option_active = array(
       0 => $this->t('Add'),
       1 => $this->t('Remove'),
     );
-    $form['eu_cookie_compliance']['domains_option'] = array(
+
+    $form['advanced']['domains_option'] = array(
       '#type' => 'radios',
-      '#title' => $this->t('Add/Remove popup on specified domains'),
+      '#title' => $this->t('Add/remove popup on specified domains'),
       '#default_value' => $config->get('domains_option'),
       '#options' => $exclude_domains_option_active,
       '#description' => $this->t('Specify if you want to add or remove popup on the listed below domains.'),
     );
-    $form['eu_cookie_compliance']['domains_list'] = array(
+
+    $form['advanced']['domains_list'] = array(
       '#type' => 'textarea',
       '#title' => $this->t('Domains list'),
       '#default_value' => $config->get('domains_list'),
-      '#description' => $this->t('Specify domains with protocol (e.g. http or https). Enter one domain per line.'),
+      '#description' => $this->t('Specify domains with protocol (e.g., http or https). Enter one domain per line.'),
     );
 
-    $form['eu_cookie_compliance']['exclude_paths'] = array(
+    $form['advanced']['exclude_paths'] = array(
       '#type' => 'textarea',
       '#title' => $this->t('Exclude paths'),
       '#default_value' => !empty($config->get('exclude_paths')) ? $config->get('exclude_paths') : '',
@@ -273,6 +301,13 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
         '%blog-wildcard' => '/blog/*',
         '%front' => '<front>'
       )),
+    );
+
+    $form['advanced']['domain'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('Domain'),
+      '#default_value' => $config->get('domain'),
+      '#description' => $this->t('Sets the domain of the cookie to a specific url. Used when you need consistency across domains. This is language independent. Note: Make sure you actually enter a domain that the browser can make use of. For example if your site is accessible at both www.domain.com and domain.com, you will not be able to hide the banner at domain.com if your value for this field is www.domain.com.'),
     );
 
     return parent::buildForm($form, $form_state);
