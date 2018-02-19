@@ -278,6 +278,13 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#required' => TRUE,
     );
 
+    $form['advanced']['popup_scrolling_confirmation'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Consent by scrolling'),
+      '#default_value' => $config->get('popup_scrolling_confirmation'),
+      '#description' => $this->t('Scrolling makes the visitors to accept the cookie policy. In some countries, like Italy, it is permitted.'),
+    );
+
     // Adding option to add/remove popup on specified domains
     $exclude_domains_option_active = array(
       0 => $this->t('Add'),
@@ -328,6 +335,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('domain', $form_state->getValue('domain'))
       ->set('popup_enabled', $form_state->getValue('popup_enabled'))
       ->set('popup_clicking_confirmation', $form_state->getValue('popup_clicking_confirmation'))
+      ->set('popup_scrolling_confirmation', $form_state->getValue('popup_scrolling_confirmation'))
       ->set('popup_position', $form_state->getValue('popup_position'))
       ->set('popup_agree_button_message', $form_state->getValue('popup_agree_button_message'))
       ->set('popup_disagree_button_message', $form_state->getValue('popup_disagree_button_message'))

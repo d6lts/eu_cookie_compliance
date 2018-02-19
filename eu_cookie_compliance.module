@@ -176,6 +176,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       'popup_agreed_enabled' => $config->get('popup_agreed_enabled'),
       'popup_hide_agreed'    => $config->get('popup_hide_agreed'),
       'popup_clicking_confirmation' => $config->get('popup_clicking_confirmation'),
+      'popup_scrolling_confirmation' => $config->get('popup_scrolling_confirmation'),
       'popup_html_info'      => $config->get('popup_enabled') ? $html_info : FALSE,
       'popup_html_agreed'    => $config->get('popup_agreed_enabled') ? $html_agreed : FALSE,
       'popup_height'         => !empty($config->get('popup_height')) ? $config->get('popup_height') : 'auto',

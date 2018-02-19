@@ -25,6 +25,7 @@
 
           var status = Drupal.eu_cookie_compliance.getCurrentStatus();
           var clicking_confirms = settings.popup_clicking_confirmation;
+          var scroll_confirms = settings.popup_scrolling_confirmation;
           var agreed_enabled = settings.popup_agreed_enabled;
           var popup_hide_agreed = settings.popup_hide_agreed;
 
@@ -39,6 +40,17 @@
                 Drupal.eu_cookie_compliance.changeStatus(next_status);
               });
             }
+
+            if (scroll_confirms) {
+              $(window).bind('scroll.eu_cookie_compliance', function() {
+                if(!agreed_enabled) {
+                  Drupal.eu_cookie_compliance.setStatus(1);
+                  next_status = 2;
+                }
+                Drupal.eu_cookie_compliance.changeStatus(next_status);
+              });
+            }
+
             $('.agree-button').click(function () {
               if (!agreed_enabled) {
                 Drupal.eu_cookie_compliance.setStatus(1);

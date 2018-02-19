@@ -10,6 +10,9 @@ eu_cookie_compliance.settings:
     popup_clicking_confirmation:
       type: boolean
       label: 'Consent by clicking'
+    popup_scrolling_confirmation:
+      type: boolean
+      label: 'Consent by scrolling'
     eu_only:
       type: boolean
       label: 'Only display popup in EU countries'

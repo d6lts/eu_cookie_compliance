@@ -13,6 +13,7 @@ popup_agree_button_message: 'OK, I agree'
 popup_agreed_enabled: false
 popup_bg_hex: '0779bf'
 popup_clicking_confirmation: true
+popup_scrolling_confirmation: false
 popup_delay: 1
 popup_disagree_button_message: 'No, give me more info'
 popup_enabled: false
