@@ -175,13 +175,11 @@
   };
 
   Drupal.eu_cookie_compliance.setStatus = function (status) {
-    var date = new Date();
-    date.setDate(date.getDate() + 100);
-    var cookie = 'cookie-agreed=' + status + ';expires=' + date.toUTCString() + ';path=' + drupalSettings.path.baseUrl;
-    if (drupalSettings.eu_cookie_compliance.domain) {
-      cookie += ';domain=' + drupalSettings.eu_cookie_compliance.domain;
-    }
-    document.cookie = cookie;
+    $.cookie("cookie-agreed", status, {
+      expires : 100,
+      path    : drupalSettings.path.baseUrl,
+      domain  : drupalSettings.eu_cookie_compliance.domain
+    });
   };
 
   Drupal.eu_cookie_compliance.hasAgreed = function () {
@@ -196,28 +194,23 @@
    * Verbatim copy of Drupal.comment.getCookie().
    */
   Drupal.eu_cookie_compliance.getCookie = function (name) {
-    var search = name + '=';
-    var returnValue = '0';
+    var returnValue = 0;
+    var cookie = $.cookie(name);
 
-    if (document.cookie.length > 0) {
-      var offset = document.cookie.indexOf(search);
-      if (offset !== -1) {
-        offset += search.length;
-        var end = document.cookie.indexOf(';', offset);
-        if (end === -1) {
-          end = document.cookie.length;
-        }
-        returnValue = decodeURIComponent(document.cookie.substring(offset, end).replace(/\+/g, '%20'));
-      }
+    if (cookie !== undefined) {
+        returnValue = cookie;
     }
+
     return returnValue;
   };
 
   Drupal.eu_cookie_compliance.cookiesEnabled = function () {
     var cookieEnabled = (navigator.cookieEnabled);
     if (typeof navigator.cookieEnabled === 'undefined' && !cookieEnabled) {
-      document.cookie = 'testcookie';
-      cookieEnabled = (document.cookie.indexOf('testcookie') !== -1);
+        $.cookie("testcookie", "testcookie", {
+            expires: 100
+        });
+        cookieEnabled = ($.cookie("testcookie").indexOf('testcookie') !== -1);
     }
     return (cookieEnabled);
   };
