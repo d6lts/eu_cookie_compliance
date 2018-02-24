@@ -154,8 +154,8 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       $twig_service->disableDebug();
     }
 
-    $html_info = \Drupal::service('renderer')->renderRoot($html_info)->__toString();
-    $html_agreed = \Drupal::service('renderer')->renderRoot($html_agreed)->__toString();
+    $html_info = trim(\Drupal::service('renderer')->renderRoot($html_info)->__toString());
+    $html_agreed = trim(\Drupal::service('renderer')->renderRoot($html_agreed)->__toString());
 
     if ($was_debugging) {
       $twig_service->enableDebug();
