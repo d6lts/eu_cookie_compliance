@@ -16,13 +16,6 @@ eu_cookie_compliance.settings:
     eu_only:
       type: boolean
       label: 'Only display popup in EU countries'
-    export:
-      type: mapping
-      label: 'Export'
-      mapping:
-        folder:
-          type: string
-          label: 'Folder'
     popup_position:
       type: boolean
       label: 'Place the pop-up at the top of the website'
@@ -100,10 +93,3 @@ eu_cookie_compliance.settings:
     exclude_paths:
       type: text
       label: 'Exclude paths'
-    export:
-      type: mapping
-      label: 'Export'
-      mapping:
-        folder:
-          type: text
-          label: 'folder'
