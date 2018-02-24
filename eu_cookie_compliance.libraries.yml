@@ -10,3 +10,4 @@ eu_cookie_compliance:
     - core/drupal
     - core/drupalSettings
     - core/jquery.once
+    - core/jquery.cookie
