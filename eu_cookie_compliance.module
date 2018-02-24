@@ -50,6 +50,8 @@ function eu_cookie_compliance_footer() {
     $clicking_confirmation = (isset($popup_settings['popup_clicking_confirmation']))? $popup_settings['popup_clicking_confirmation'] : TRUE ;
     $variables = array(
       'popup_enabled' => $popup_settings['popup_enabled'],
+      'custom_cookie_enabled' => $popup_settings['custom_cookie_domain_enable'],
+      'custom_cookie_domain' => $popup_settings['custom_cookie_domain'],
       'popup_agreed_enabled' => $popup_settings['popup_agreed_enabled'],
       'popup_hide_agreed' => isset($popup_settings['popup_hide_agreed']) ? $popup_settings['popup_hide_agreed'] : FALSE,
       'popup_clicking_confirmation' => $clicking_confirmation,

@@ -100,6 +100,9 @@ Drupal.eu_cookie_compliance.attachEvents = function() {
 }
 
 Drupal.eu_cookie_compliance.getCurrentStatus = function() {
+  if (Drupal.settings.eu_cookie_compliance.custom_cookie_enabled == 1) {
+    document.domain = Drupal.settings.eu_cookie_compliance.custom_cookie_domain;
+  }
   var search = 'cookie-agreed-'+Drupal.settings.eu_cookie_compliance.popup_language+'=';
   var offset = document.cookie.indexOf(search);
   if (offset < 0) {
@@ -144,7 +147,12 @@ Drupal.eu_cookie_compliance.changeStatus = function(value) {
 Drupal.eu_cookie_compliance.setStatus = function(status) {
   var date = new Date();
   date.setDate(date.getDate() + 100);
-  document.cookie = "cookie-agreed-"+Drupal.settings.eu_cookie_compliance.popup_language + "="+status+";expires=" + date.toUTCString() + ";path=" + Drupal.settings.basePath;
+  var domain = '';
+  if (Drupal.settings.eu_cookie_compliance.custom_cookie_enabled == 1) {
+    domain = ';domain=' + Drupal.settings.eu_cookie_compliance.custom_cookie_domain;
+    document.domain = Drupal.settings.eu_cookie_compliance.custom_cookie_domain;
+  }
+  document.cookie = "cookie-agreed-"+Drupal.settings.eu_cookie_compliance.popup_language + "="+status+";expires=" + date.toUTCString() + domain + ";path=" + Drupal.settings.basePath;
 }
 
 Drupal.eu_cookie_compliance.hasAgreed = function() {

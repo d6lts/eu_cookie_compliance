@@ -21,6 +21,24 @@ function eu_cookie_compliance_admin_form($form_state) {
     $form['eu_cookie_compliance_' . $ln]['#title'] = t('You are editing settings for the %language language.', array('%language' => $language->name));
   }
 
+  $form['eu_cookie_compliance_' . $ln]['custom_cookie_domain_enable'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable custom cookie domain.'),
+    '#default_value' => isset($popup_settings['custom_cookie_domain_enable']) ? $popup_settings['custom_cookie_domain_enable'] : 0,
+    '#description' => t('By default the cookie takes the current domain as the cookiedomain, to override this to use it cross-site, enable this.'),
+    '#attached' => array(
+      'js' => array("(function ($) { $('#edit-eu-cookie-compliance-nl-custom-cookie-domain-enable').change(function() { if($(this).attr('checked')){ $('#cookie-domain-wrapper').show(); } else { $('#cookie-domain-wrapper').hide(); } }); })(jQuery);" => array('type' => 'inline')),
+    ),
+  );
+  $form['eu_cookie_compliance_' . $ln]['custom_cookie_domain'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Custom cookie domain'),
+    '#default_value' => isset($popup_settings['custom_cookie_domain']) ? $popup_settings['custom_cookie_domain'] : '',
+    '#description' => t('Enter the custom cookiedomain domain.'),
+    '#prefix' => '<div id="cookie-domain-wrapper">',
+    '#suffix' => '</div>',
+  );
+
   $form['eu_cookie_compliance_' . $ln]['popup_enabled'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable popup'),
