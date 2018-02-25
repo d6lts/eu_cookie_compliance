@@ -93,6 +93,9 @@ eu_cookie_compliance.settings:
     exclude_paths:
       type: text
       label: 'Exclude paths'
+    exclude_admin_theme:
+      type: boolean
+      label: 'Exclude cookie compliance from admin theme'
     cookie_lifetime:
       type: integer
       label: 'Cookie lifetime'

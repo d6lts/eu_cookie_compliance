@@ -317,6 +317,12 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       )),
     );
 
+    $form['advanced']['exclude_admin_theme'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Exclude admin pages'),
+      '#default_value' => $config->get('exclude_admin_theme'),
+    );
+
     $form['advanced']['domain'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Domain'),
@@ -366,6 +372,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('domains_option', $form_state->getValue('domains_option'))
       ->set('domains_list', $form_state->getValue('domains_list'))
       ->set('exclude_paths', $form_state->getValue('exclude_paths'))
+      ->set('exclude_admin_theme', $form_state->getValue('exclude_admin_theme'))
       ->set('cookie_lifetime', $form_state->getValue('cookie_lifetime'))
       ->save();
 

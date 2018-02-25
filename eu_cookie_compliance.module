@@ -92,10 +92,21 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     $path_match = \Drupal::service('path.matcher')->matchPath($path, $config->get('exclude_paths'));
   }
 
+  //check hide cookie compliance on admin theme
+  $admin_theme_match = FALSE;
+
+  if($config->get('exclude_admin_theme')){
+    //Determines whether the active route is an admin one
+    $is_route_admin = \Drupal::service('router.admin_context')->isAdminRoute();
+    if($is_route_admin){
+      $admin_theme_match = TRUE;
+    }
+  }
+
   // Unsupported GeoIP feature until those modules update their code.
   $geoip_match = TRUE;
 
-  if ($config->get('popup_enabled') && \Drupal::currentUser()->hasPermission('display eu cookie compliance popup') && $geoip_match && $domain_allow && !$path_match) {
+  if ($config->get('popup_enabled') && \Drupal::currentUser()->hasPermission('display eu cookie compliance popup') && $geoip_match && $domain_allow && !$path_match && !$admin_theme_match) {
     $language = Drupal::languageManager()->getCurrentLanguage();
 
     // Initialize some needed popup settings messages.
