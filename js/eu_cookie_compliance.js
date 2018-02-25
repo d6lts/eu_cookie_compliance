@@ -88,7 +88,7 @@
     var height = 0;
     if (drupalSettings.eu_cookie_compliance.popup_position) {
       popup.prependTo('body');
-      height = popup.height();
+      height = popup.outerHeight();
       popup.show()
         .attr({class: 'sliding-popup-top clearfix'})
         .css({
@@ -98,7 +98,7 @@
     }
     else {
       popup.appendTo('body');
-      height = popup.height();
+      height = popup.outerHeight();
       popup.show()
         .attr({class: 'sliding-popup-bottom'})
         .css({
@@ -152,7 +152,7 @@
       return;
     }
     if (drupalSettings.eu_cookie_compliance.popup_position) {
-      $('.sliding-popup-top').animate({top: $('#sliding-popup').height() * -1}, drupalSettings.eu_cookie_compliance.popup_delay, function () {
+      $('.sliding-popup-top').animate({top: $('#sliding-popup').outerHeight() * -1}, drupalSettings.eu_cookie_compliance.popup_delay, function () {
         if (status === 0) {
           $('#sliding-popup').html(drupalSettings.eu_cookie_compliance.popup_html_agreed).animate({top: 0}, drupalSettings.eu_cookie_compliance.popup_delay);
           Drupal.eu_cookie_compliance.attachEvents();
@@ -163,7 +163,7 @@
       });
     }
     else {
-      $('.sliding-popup-bottom').animate({bottom: $('#sliding-popup').height() * -1}, drupalSettings.eu_cookie_compliance.popup_delay, function () {
+      $('.sliding-popup-bottom').animate({bottom: $('#sliding-popup').outerHeight() * -1}, drupalSettings.eu_cookie_compliance.popup_delay, function () {
         if (status === 0) {
           $('#sliding-popup').html(drupalSettings.eu_cookie_compliance.popup_html_agreed).animate({bottom: 0}, drupalSettings.eu_cookie_compliance.popup_delay);
           Drupal.eu_cookie_compliance.attachEvents();
