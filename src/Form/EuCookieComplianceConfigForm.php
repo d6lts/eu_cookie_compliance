@@ -87,7 +87,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     }
 
     $form['info'] = array(
-      '#markup' => t('<p><strong>Note:</strong> <ul><li>The permission "Display EU Cookie Compliance popup" needs to be enabled for Anonymous and Authenticated users in order for the banner to appear.</li><li>In order for the module to work, <code>js-placeholder</code> needs to be output before <code>js-bottom-placeholder</code> in your <code>html.html.twig</code>.</li></ul></p>'),
+      '#markup' => $this->t('<p><strong>Note:</strong> <ul><li>The permission "Display EU Cookie Compliance popup" needs to be enabled for Anonymous and Authenticated users in order for the banner to appear.</li><li>In order for the module to work, <code>js-placeholder</code> needs to be output before <code>js-bottom-placeholder</code> in your <code>html.html.twig</code>.</li></ul></p>'),
     );
 
     $form['popup_enabled'] = array(
@@ -98,7 +98,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $form['popup_message'] = array(
       '#type' => 'details',
-      '#title' => t('Popup Message'),
+      '#title' => $this->t('Popup Message'),
       '#open' => TRUE,
     );
 
@@ -136,7 +136,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     $form['thank_you'] = array(
       '#type' => 'details',
       '#open' => TRUE,
-      '#title' => t('Thank You Message'),
+      '#title' => $this->t('Thank You Message'),
     );
 
     $form['thank_you']['popup_agreed_enabled'] = array(
@@ -179,7 +179,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     $form['privacy'] = array(
       '#type' => 'details',
       '#open' => TRUE,
-      '#title' => t('Privacy Policy'),
+      '#title' => $this->t('Privacy Policy'),
     );
 
     $form['privacy']['popup_link'] = array(
@@ -201,7 +201,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     $form['appearance'] = array(
       '#type' => 'details',
       '#open' => TRUE,
-      '#title' => t('Appearance'),
+      '#title' => $this->t('Appearance'),
     );
 
     $form_color_picker_type = 'textfield';
@@ -241,7 +241,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Popup width in pixels or a percentage value'),
       '#default_value' => $config->get('popup_width'),
-      '#field_suffix' => ' ' . t('px or %'),
+      '#field_suffix' => ' ' . $this->t('px or %'),
       '#size' => 5,
       '#maxlength' => 5,
       '#required' => TRUE,
@@ -251,7 +251,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     $form['advanced'] = array(
       '#type' => 'details',
       '#open' => FALSE,
-      '#title' => t('Advanced'),
+      '#title' => $this->t('Advanced'),
     );
 
     $form['advanced']['popup_position'] = array(
@@ -263,16 +263,16 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $form['advanced']['fixed_top_position'] = array(
       '#type' => 'checkbox',
-      '#title' => t('If the banner is at the top, don’t scroll the banner with the page'),
+      '#title' => $this->t('If the banner is at the top, don’t scroll the banner with the page'),
       '#default_value' => $config->get('fixed_top_position'),
-      '#description' => t('Use position:fixed for the banner when displayed at the top.'),
+      '#description' => $this->t('Use position:fixed for the banner when displayed at the top.'),
     );
 
     $form['advanced']['popup_delay'] = array(
       '#type' => 'number',
       '#title' => $this->t('Popup time delay in seconds'),
       '#default_value' => $config->get('popup_delay'),
-      '#field_suffix' => ' ' . t('seconds'),
+      '#field_suffix' => ' ' . $this->t('seconds'),
       '#size' => 5,
       '#maxlength' => 5,
       '#required' => TRUE,
@@ -285,7 +285,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('Scrolling makes the visitors to accept the cookie policy. In some countries, like Italy, it is permitted.'),
     );
 
-    // Adding option to add/remove popup on specified domains
+    // Adding option to add/remove popup on specified domains.
     $exclude_domains_option_active = array(
       0 => $this->t('Add'),
       1 => $this->t('Remove'),
@@ -313,7 +313,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array(
         '%blog' => '/blog',
         '%blog-wildcard' => '/blog/*',
-        '%front' => '<front>'
+        '%front' => '<front>',
       )),
     );
 
@@ -374,6 +374,11 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
   /**
    * Validates the popup link field.
+   *
+   * @param array $element
+   *   Element.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state.
    */
   public function validatePopupLink($element, FormStateInterface &$form_state) {
     if (empty($element['#value'])) {
@@ -384,14 +389,17 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     if (UrlHelper::isExternal($input)) {
       $allowed_protocols = ['http', 'https'];
       if (!in_array(parse_url($input, PHP_URL_SCHEME), $allowed_protocols)) {
-        $form_state->setError($element, t('Invalid protocol specified for the %name (valid protocols: %protocols).', array('%name' => $element['#title'], '%protocols' => implode(', ', $allowed_protocols))));
+        $form_state->setError($element, $this->t('Invalid protocol specified for the %name (valid protocols: %protocols).', array(
+          '%name' => $element['#title'],
+          '%protocols' => implode(', ', $allowed_protocols),
+        )));
       }
       else {
         try {
           Url::fromUri($input);
         }
         catch (\Exception $exc) {
-          $form_state->setError($element, t('Invalid %name (:message).', array('%name' => $element['#title'], ':message' => $exc->getMessage())));
+          $form_state->setError($element, $this->t('Invalid %name (:message).', array('%name' => $element['#title'], ':message' => $exc->getMessage())));
         }
       }
     }
@@ -404,7 +412,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
         Url::fromUserInput($input);
       }
       catch (\Exception $exc) {
-        $form_state->setError($element, t('Invalid URL in %name field (:message).', array('%name' => $element['#title'], ':message' => $exc->getMessage())));
+        $form_state->setError($element, $this->t('Invalid URL in %name field (:message).', array('%name' => $element['#title'], ':message' => $exc->getMessage())));
       }
     }
   }

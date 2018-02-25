@@ -2,7 +2,10 @@
 
 /**
  * @file
- * Contains database additions to drupal-8.eu-cookie-compliance-beta5.minimal.php.gz
+ * Name: drupal-8.user-role-manager-2774143.php.
+ *
+ * Contains database additions to
+ * drupal-8.eu-cookie-compliance-beta5.minimal.php.gz.
  * for testing the upgrade path of https://www.drupal.org/node/2774143.
  */
 
@@ -42,7 +45,7 @@ $existing_roles = unserialize($existing_roles);
 
 $connection->update('key_value')
   ->fields([
-    'value' => serialize(array_merge($existing_roles, ['user.role.testfor2774143', 'user.role.secondtestfor2774143']))
+    'value' => serialize(array_merge($existing_roles, ['user.role.testfor2774143', 'user.role.secondtestfor2774143'])),
   ])
   ->condition('collection', 'config.entity.key_store.user_role')
   ->condition('name', 'theme:bartik')

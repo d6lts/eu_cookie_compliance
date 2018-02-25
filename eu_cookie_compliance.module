@@ -1,6 +1,9 @@
 <?php
+
 /**
  * @file
+ * The main file for the EU Cookie Compliance module.
+ *
  * This module intends to deal with the EU Directive on Privacy and Electronic
  * Communications that comes into effect in the UK on 26th May 2012.
  */
@@ -33,7 +36,8 @@ function eu_cookie_compliance_help($route_name, RouteMatchInterface $route_match
       $output .= '<h3>' . t('Installation') . '</h3>';
       $output .= '<ol><p><li>' . t('Unzip the files to the "sites/all/modules" OR "modules" directory and enable the module.') . '</li></p>';
       $output .= '<p><li>' . t('If desired, give the administer EU Cookie Compliance pop-up permissions that allow users of certain roles access the administration page. You can do so on the admin/user/permissions page.') . '</li></p>';
-      $output .= '<p><label>-&nbsp;</label>' . t('there is also a \'display eu cookie compliance popup\' permission that helps you show the popup to the roles you desire.') . '</p>';
+      // @codingStandardsIgnoreLine
+      $output .= "<p><label>-&nbsp;</label>" . t("there is also a 'display eu cookie compliance popup' permission that helps you show the popup to the roles you desire.") . "</p>";
       $output .= '<p><li>' . t('You may want to create a page that would explain how your site uses cookies. Alternatively, if you have a privacy policy, you can link the pop-up to that page (see next step).') . '</li></p>';
       $output .= '<p><li>' . t('Go to the admin/config/system/eu-cookie-compliance page to configure and enable the pop-up.') . '</li></p>';
       $output .= '<p><li>' . t('If you want to customize the pop-up background and text color, either type in the hex values or simply install http://drupal.org/project/jquery_colorpicker.') . '</li></p>';
@@ -49,9 +53,8 @@ function eu_cookie_compliance_help($route_name, RouteMatchInterface $route_match
       $output .= '<p><code>drupal tr --url=<http://example.com> "\Drupal\eu_cookie_compliance\Tests\EuCookieComplianceTest"</code></p>';
 
       return ['#markup' => $output];
-    }
+  }
 }
-
 
 /**
  * Implements hook_page_attachments().
@@ -100,7 +103,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       'popup_agree_button_message',
       'popup_disagree_button_message',
       'popup_hide_button_message',
-      'popup_find_more_button_message'
+      'popup_find_more_button_message',
     );
     foreach ($popup_settings_messages as $key) {
       if (!isset($popup_settings[$key])) {
@@ -135,7 +138,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
 
     $was_debugging = FALSE;
 
-    /**
+    /*
      * @var $twig_service Twig_Environment
      */
     $twig_service = \Drupal::service('twig');
@@ -200,7 +203,7 @@ function eu_cookie_compliance_theme($existing, $type, $theme, $path) {
       'variables' => array(
         'message' => NULL,
         'agree_button' => NULL,
-        'disagree_button' => NULL
+        'disagree_button' => NULL,
       ),
     ),
     'eu_cookie_compliance_popup_agreed' => array(
@@ -208,7 +211,7 @@ function eu_cookie_compliance_theme($existing, $type, $theme, $path) {
       'variables' => array(
         'message' => NULL,
         'hide_button' => NULL,
-        'find_more_button' => NULL
+        'find_more_button' => NULL,
       ),
     ),
   );
@@ -216,6 +219,11 @@ function eu_cookie_compliance_theme($existing, $type, $theme, $path) {
 
 /**
  * Validate field for a HEX value if a value is set.
+ *
+ * @param array $element
+ *   Element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form State Interface.
  */
 function eu_cookie_compliance_validate_hex($element, FormStateInterface &$form_state) {
   if (!empty($element['#value']) && !preg_match('/^[0-9a-fA-F]{3,6}$/', $element['#value'])) {

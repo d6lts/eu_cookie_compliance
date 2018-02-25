@@ -36,7 +36,12 @@ class EuCookieComplianceConfigFormTest extends EuCookieComplianceTestBase {
   protected function setUp() {
     parent::setUp();
     // Create and log in admin user.
-    $this->adminUser = $this->drupalCreateUser(['display eu cookie compliance popup', 'administer eu cookie compliance popup', 'access content', 'administer url aliases']);
+    $this->adminUser = $this->drupalCreateUser([
+      'display eu cookie compliance popup',
+      'administer eu cookie compliance popup',
+      'access content',
+      'administer url aliases',
+    ]);
     $this->drupalCreateContentType(['type' => 'page', 'name' => 'Basic page']);
   }
 
@@ -77,8 +82,8 @@ class EuCookieComplianceConfigFormTest extends EuCookieComplianceTestBase {
     $this->assertFieldByXpath('//input[@id="edit-popup-link" and @type="text"]');
 
     $scenarios = [
-      // Format: User-entered value, value displayed in form, actual value for link.
-
+      // Format: User-entered value, value displayed in form, actual value for
+      // link.
       // External URLs.
       ['http://example.com/', 'http://example.com/', 'http://example.com/'],
       ['https://drupal.org', 'https://drupal.org', 'https://drupal.org'],

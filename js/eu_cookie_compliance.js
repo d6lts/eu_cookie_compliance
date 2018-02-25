@@ -186,10 +186,8 @@
 
   Drupal.eu_cookie_compliance.hasAgreed = function () {
     var status = Drupal.eu_cookie_compliance.getCurrentStatus();
-    if (status === 1 || status === 2) {
-      return true;
-    }
-    return false;
+    return status === 1 || status === 2;
+
   };
 
   /**

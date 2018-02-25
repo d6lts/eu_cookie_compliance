@@ -10,6 +10,8 @@ use Drupal\simpletest\WebTestBase;
 abstract class EuCookieComplianceTestBase extends WebTestBase {
 
   /**
+   * Assert function.
+   *
    * Assert function to determine if EU Cookie Compliance rendered to the page
    * have a corresponding page element.
    *
