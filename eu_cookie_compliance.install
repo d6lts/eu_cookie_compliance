@@ -2,5 +2,18 @@
 
 /**
  * @file
- * Installation file.
+ * Update scripts for the EU Cookie Compliance module.
  */
+
+/**
+ * Implementations of hook_update_N().
+ */
+
+/**
+ * Force default value for "cookie_lifetime" item.
+ */
+function eu_cookie_compliance_update_8101() {
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('cookie_lifetime', 100)->save();
+}

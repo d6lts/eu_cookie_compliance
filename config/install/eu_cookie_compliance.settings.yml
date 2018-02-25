@@ -1,3 +1,4 @@
+cookie_lifetime: 100
 domain: ''
 domains_option: 1
 domains_list: ''

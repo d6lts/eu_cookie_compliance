@@ -189,6 +189,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       'popup_bg_hex'         => !empty($config->get('popup_bg_hex')) ? $config->get('popup_bg_hex') : FALSE,
       'popup_text_hex'       => !empty($config->get('popup_text_hex')) ? $config->get('popup_text_hex') : FALSE,
       'domain'               => $config->get('domain'),
+      'cookie_lifetime'      => $config->get('cookie_lifetime')
     );
 
     $attachments['#attached']['drupalSettings']['eu_cookie_compliance'] = $data['variables'];

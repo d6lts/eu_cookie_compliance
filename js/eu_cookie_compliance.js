@@ -176,7 +176,7 @@
 
   Drupal.eu_cookie_compliance.setStatus = function (status) {
     $.cookie("cookie-agreed", status, {
-      expires : 100,
+      expires : parseInt(drupalSettings.eu_cookie_compliance.cookie_lifetime),
       path    : drupalSettings.path.baseUrl,
       domain  : drupalSettings.eu_cookie_compliance.domain
     });

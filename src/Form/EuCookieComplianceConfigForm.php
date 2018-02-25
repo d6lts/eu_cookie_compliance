@@ -324,6 +324,17 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('Sets the domain of the cookie to a specific url. Used when you need consistency across domains. This is language independent. Note: Make sure you actually enter a domain that the browser can make use of. For example if your site is accessible at both www.domain.com and domain.com, you will not be able to hide the banner at domain.com if your value for this field is www.domain.com.'),
     );
 
+    $form['advanced']['cookie_lifetime'] = array(
+      '#type' => 'number',
+      '#title' => $this->t('Cookie lifetime'),
+      '#description' => $this->t('How long does the system remember the user\'s choice, in days.'),
+      '#default_value' => $config->get('cookie_lifetime'),
+      '#field_suffix' => ' ' . $this->t('days'),
+      '#size' => 5,
+      '#maxlength' => 5,
+      '#required' => TRUE,
+    );
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -355,6 +366,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('domains_option', $form_state->getValue('domains_option'))
       ->set('domains_list', $form_state->getValue('domains_list'))
       ->set('exclude_paths', $form_state->getValue('exclude_paths'))
+      ->set('cookie_lifetime', $form_state->getValue('cookie_lifetime'))
       ->save();
 
     parent::submitForm($form, $form_state);
