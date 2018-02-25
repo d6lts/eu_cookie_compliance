@@ -117,6 +117,40 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#format' => !empty($config->get('popup_info.format')) ? $config->get('popup_info.format') : $default_filter_format,
     );
 
+    $form['popup_message']['use_mobile_message'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Use a different message for mobile phones'),
+      '#default_value' => ($config->get('mobile_popup_info.value') != ''),
+    );
+
+    $form['popup_message']['container'] = array(
+      '#type' => 'container',
+      '#states' => array('visible' => array('input[name="use_mobile_message"]' => array('checked' => true))),
+    );
+
+    $form['popup_message']['container']['mobile_popup_info'] = array(
+      '#type' => 'text_format',
+      '#title' => $this->t('Mobile popup message - requests consent'),
+      '#default_value' => $config->get('mobile_popup_info.value'),
+      '#required' => FALSE,
+      '#format' => !empty($config->get('mobile_popup_info.format')) ? $config->get('mobile_popup_info.format') : $default_filter_format,
+    );
+
+    $form['popup_message']['mobile_breakpoint'] = array(
+      '#type' => 'number',
+      '#title' => $this->t('Mobile breakpoint'),
+      '#default_value' => !empty($config->get('mobile_breakpoint')) ? $config->get('mobile_breakpoint') : '768',
+      '#field_suffix' => ' ' . $this->t('pixels'),
+      '#size' => 4,
+      '#maxlength' => 4,
+      '#required' => FALSE,
+      '#description' => $this->t('The mobile message will be used when the window width is below or equal to the given value.'),
+      '#states' => array(
+        "visible" => array(
+          "input[name='use_mobile_message']" => array("checked" => TRUE)),
+      ),
+    );
+
     $form['popup_message']['popup_agree_button_message'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Agree button label'),
@@ -348,6 +382,10 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    if (trim($form_state->getValue('mobile_popup_info')['value']) == '') {
+      $form_state->setValue('use_mobile_message', FALSE);
+    }
+
     $this->config('eu_cookie_compliance.settings')
       ->set('domain', $form_state->getValue('domain'))
       ->set('popup_enabled', $form_state->getValue('popup_enabled'))
@@ -357,6 +395,9 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('popup_agree_button_message', $form_state->getValue('popup_agree_button_message'))
       ->set('popup_disagree_button_message', $form_state->getValue('popup_disagree_button_message'))
       ->set('popup_info', $form_state->getValue('popup_info'))
+      ->set('use_mobile_message', $form_state->getValue('use_mobile_message'))
+      ->set('mobile_popup_info', $form_state->getValue('use_mobile_message') ? $form_state->getValue('mobile_popup_info') : '')
+      ->set('mobile_breakpoint', $form_state->getValue('mobile_breakpoint'))
       ->set('popup_agreed_enabled', $form_state->getValue('popup_agreed_enabled'))
       ->set('popup_hide_agreed', $form_state->getValue('popup_hide_agreed'))
       ->set('popup_find_more_button_message', $form_state->getValue('popup_find_more_button_message'))

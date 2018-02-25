@@ -38,6 +38,19 @@ eu_cookie_compliance.settings:
         format:
           type: string
           label: 'Popup message - Format'
+    mobile_popup_info:
+      type: mapping
+      label: 'Mobile popup message - requests consent'
+      mapping:
+        value:
+          type: text
+          label: 'Mobile popup message - Value'
+        format:
+          type: string
+          label: 'Mobile popup message - Format'
+    mobile_breakpoint:
+      type: integer
+      label: 'Mobile breakpoint'
     popup_agreed_enabled:
       type: boolean
       label: 'Enable thank you message'

@@ -140,6 +140,13 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       '#agree_button' => $config->get('popup_agree_button_message'),
       '#disagree_button' => $config->get('popup_disagree_button_message'),
     );
+    $mobile_popup_text_info = str_replace(array("\r", "\n"), '', $config->get('mobile_popup_info.value'));
+    $mobile_html_info = array(
+      '#theme' => 'eu_cookie_compliance_popup_info',
+      '#message' => check_markup($mobile_popup_text_info, $config->get('popup_info.format'), FALSE),
+      '#agree_button' => $config->get('popup_agree_button_message'),
+      '#disagree_button' => $config->get('popup_disagree_button_message'),
+    );
     $html_agreed = array(
       '#theme' => 'eu_cookie_compliance_popup_agreed',
       '#message' => check_markup($popup_text_agreed, $config->get('popup_agreed.format'), FALSE),
@@ -160,6 +167,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     }
 
     $html_info = trim(\Drupal::service('renderer')->renderRoot($html_info)->__toString());
+    $mobile_html_info = trim(\Drupal::service('renderer')->renderRoot($mobile_html_info)->__toString());
     $html_agreed = trim(\Drupal::service('renderer')->renderRoot($html_agreed)->__toString());
 
     if ($was_debugging) {
@@ -183,6 +191,9 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       'popup_clicking_confirmation' => $config->get('popup_clicking_confirmation'),
       'popup_scrolling_confirmation' => $config->get('popup_scrolling_confirmation'),
       'popup_html_info'      => $config->get('popup_enabled') ? $html_info : FALSE,
+      'use_mobile_message'    => !empty($config->get('use_mobile_message')) ? $config->get('use_mobile_message') : FALSE,
+      'mobile_popup_html_info' => $config->get('popup_enabled') ? $mobile_html_info : FALSE,
+      'mobile_breakpoint'    => !empty($config->get('mobile_breakpoint')) ? $config->get('mobile_breakpoint') : '768',
       'popup_html_agreed'    => $config->get('popup_agreed_enabled') ? $html_agreed : FALSE,
       'popup_height'         => !empty($config->get('popup_height')) ? $config->get('popup_height') : 'auto',
       'popup_width'          => !empty($config->get('popup_width')) ? $config->get('popup_width') : '100%',

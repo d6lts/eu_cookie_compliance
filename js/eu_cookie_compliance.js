@@ -59,7 +59,13 @@
               Drupal.eu_cookie_compliance.changeStatus(next_status);
             });
 
-            Drupal.eu_cookie_compliance.createPopup(settings.popup_html_info);
+            // Detect mobile here and use mobile_popup_html_info, if we have a mobile device.
+            if (window.matchMedia('(max-width: ' + settings.mobile_breakpoint + 'px)').matches && settings.use_mobile_message) {
+              Drupal.eu_cookie_compliance.createPopup(settings.mobile_popup_html_info);
+            }
+            else {
+              Drupal.eu_cookie_compliance.createPopup(settings.popup_html_info);
+            }
           }
           else if (status === 1) {
             Drupal.eu_cookie_compliance.createPopup(settings.popup_html_agreed);
