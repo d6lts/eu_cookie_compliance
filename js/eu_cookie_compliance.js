@@ -85,9 +85,10 @@
       .height(drupalSettings.eu_cookie_compliance.popup_height)
       .width(drupalSettings.eu_cookie_compliance.popup_width)
       .hide();
-    var height = popup.height();
+    var height = 0;
     if (drupalSettings.eu_cookie_compliance.popup_position) {
       popup.prependTo('body');
+      height = popup.height();
       popup.show()
         .attr({class: 'sliding-popup-top clearfix'})
         .css({
@@ -97,6 +98,7 @@
     }
     else {
       popup.appendTo('body');
+      height = popup.height();
       popup.show()
         .attr({class: 'sliding-popup-bottom'})
         .css({
