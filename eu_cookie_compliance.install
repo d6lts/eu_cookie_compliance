@@ -17,3 +17,16 @@ function eu_cookie_compliance_update_8101() {
     ->getEditable('eu_cookie_compliance.settings')
     ->set('cookie_lifetime', 100)->save();
 }
+
+/**
+ * Reverse the setting for "Consent by clicking" (solving a module beta bug).
+ */
+function eu_cookie_compliance_update_8102() {
+  $consent_by_clicking_value = \Drupal::configFactory()
+    ->get('eu_cookie_compliance.settings')
+    ->get('popup_clicking_confirmation');
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('popup_clicking_confirmation', !$consent_by_clicking_value)->save();
+}
+

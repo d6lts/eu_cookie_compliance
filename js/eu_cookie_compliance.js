@@ -31,7 +31,7 @@
 
           if (status === 0) {
             var next_status = 1;
-            if (!clicking_confirms) {
+            if (clicking_confirms) {
               $('a, input[type=submit], button[type=submit]').bind('click.eu_cookie_compliance', function () {
                 if (!agreed_enabled) {
                   Drupal.eu_cookie_compliance.setStatus(1);
