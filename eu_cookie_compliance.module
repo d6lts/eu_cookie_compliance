@@ -213,6 +213,14 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
 
     $attachments['#attached']['drupalSettings']['eu_cookie_compliance'] = $data['variables'];
     $attachments['#attached']['library'][] = 'eu_cookie_compliance/eu_cookie_compliance';
+    // Add inline css.
+    $attachments['#attached']['html_head'][] = [
+      [
+        '#tag' => 'style',
+        '#value' => $data['css'],
+      ],
+      'eu-cookie-compliance-css'
+    ];
     $cache_tags = isset($attachments['#cache']['tags']) ? $attachments['#cache']['tags'] : [];
     $attachments['#cache']['tags'] = Cache::mergeTags($cache_tags, $config->getCacheTags());
   }
