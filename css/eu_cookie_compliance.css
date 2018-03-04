@@ -1,15 +1,12 @@
-#sliding-popup {
+.sliding-popup-bottom,
+.sliding-popup-top {
+  background: url('../images/gradient.png') center center scroll repeat-y transparent;
   margin: 0;
   padding: 0;
   width: 100%;
   z-index: 99999;
   left: 0;
   text-align: center;
-}
-
-.sliding-popup-bottom,
-.sliding-popup-top {
-  background: url('../images/gradient.png') center center scroll repeat-y transparent;
 }
 
 .sliding-popup-bottom {
@@ -20,7 +17,7 @@
   position: relative;
 }
 
-#sliding-popup .popup-content {
+.eu-cookie-compliance-content {
   margin: 0 auto;
   max-width: 80%;
   display: inline-block;
@@ -28,17 +25,19 @@
   width: 100%;
 }
 
-#sliding-popup .popup-content #popup-buttons {
+.eu-cookie-compliance-buttons {
   float: right; /* LTR */
   margin: 0 0 1em 0;
   max-width: 40%;
 }
 
-[dir="rtl"] #sliding-popup .popup-content #popup-buttons {
+[dir="rtl"] .eu-cookie-compliance-buttons {
   float: left;
 }
 
-#sliding-popup .popup-content #popup-buttons button {
+.eu-cookie-compliance-agree-button,
+.eu-cookie-compliance-more-button,
+.eu-cookie-compliance-hide-button {
   cursor: pointer;
   margin-right: 5px;
   margin-top: 1em;
@@ -67,13 +66,15 @@
   text-shadow: 1px 1px 0 #ffffff;
 }
 
-[dir="rtl"] #sliding-popup .popup-content #popup-buttons button {
+[dir="rtl"] .eu-cookie-compliance-buttons button {
   -moz-box-shadow: inset 0 0 0 1px #ffffff;
   -webkit-box-shadow: inset 0 0 0 1px #ffffff;
   box-shadow: inset 0 0 0 1px #ffffff;
 }
 
-#sliding-popup .popup-content #popup-buttons button:hover {
+.eu-cookie-compliance-agree-button:hover,
+.eu-cookie-compliance-more-button:hover,
+.eu-cookie-compliance-hide-button:hover {
   background-color: #dfdfdf;
   background-image: -moz-linear-gradient(top, #dfdfdf 5%, #ededed 100%);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #dfdfdf), color-stop(100%, #ededed));
@@ -83,63 +84,64 @@
   background-image: linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
 }
 
-#sliding-popup .popup-content #popup-buttons button:active {
+.eu-cookie-compliance-agree-button:active,
+.eu-cookie-compliance-more-button:active,
+.eu-cookie-compliance-hide-button:active {
   position: relative;
   top: 1px;
 }
 
-#sliding-popup .popup-content #popup-text {
+.eu-cookie-compliance-message {
   color: #fff;
   float: left; /* LTR */
-  font-weight: bold;
   margin: 5px 0 0;
   max-width: 60%;
 }
 
-[dir="rtl"] #sliding-popup .popup-content #popup-text {
+[dir="rtl"] .eu-cookie-compliance-message {
   float: right;
   text-align: right;
 }
 
-#sliding-popup .popup-content #popup-text h1,
-#sliding-popup .popup-content #popup-text h2,
-#sliding-popup .popup-content #popup-text h3,
-#sliding-popup .popup-content #popup-text p {
+.eu-cookie-compliance-message h1,
+.eu-cookie-compliance-message h2,
+.eu-cookie-compliance-message h3,
+.eu-cookie-compliance-message p {
   color: #fff;
-  font-size: 16px;
   font-weight: bold;
   line-height: 1.4;
   margin: 0 0 5px 0;
 }
 
-#sliding-popup .popup-content #popup-text h1 {
+.eu-cookie-compliance-message h1 {
   font-size: 24px;
 }
 
-#sliding-popup .popup-content #popup-text h3 {
+.eu-cookie-compliance-message h2 {
+  font-size: 16px;
+}
+
+.eu-cookie-compliance-message h3 {
   font-size: 12px;
 }
 
-#sliding-popup .popup-content #popup-text p {
+.eu-cookie-compliance-message p {
   font-size: 12px;
 }
 
 @media screen and (max-width: 600px) {
-  #sliding-popup .popup-content {
+  .eu-cookie-compliance-content {
     max-width: 95%;
   }
 
-  #sliding-popup .popup-content #popup-text {
+  .eu-cookie-compliance-message {
     max-width: 100%;
   }
 
-  #sliding-popup .popup-content #popup-buttons {
+  .eu-cookie-compliance-buttons {
     clear: both;
     float: none;
     max-width: 100%;
     margin: 5px 0 1em;
-  }
-  #sliding-popup .popup-content #popup-buttons button {
-
   }
 }
