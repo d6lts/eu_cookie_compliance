@@ -96,7 +96,7 @@
       popup.prependTo('body');
       height = popup.outerHeight();
       popup.show()
-        .attr({class: 'sliding-popup-top clearfix'})
+        .addClass('sliding-popup-top clearfix')
         .css({
           top: -1 * height
         })
@@ -106,15 +106,12 @@
       popup.appendTo('body');
       height = popup.outerHeight();
       popup.show()
-        .attr({class: 'sliding-popup-bottom'})
+        .addClass('sliding-popup-bottom')
         .css({
           bottom: -1 * height
         })
         .animate({bottom: 0}, drupalSettings.eu_cookie_compliance.popup_delay);
     }
-    popup.css({
-      background: '#' + drupalSettings.eu_cookie_compliance.popup_bg_hex
-    }).find('h2, p').css('color', '#' + drupalSettings.eu_cookie_compliance.popup_text_hex);
     Drupal.eu_cookie_compliance.attachEvents();
   };
 

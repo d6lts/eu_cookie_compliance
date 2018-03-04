@@ -1,6 +1,9 @@
+.eu-cookie-compliance-banner {
+  background: url('../images/gradient.png') center center scroll repeat-y transparent;
+}
+
 .sliding-popup-bottom,
 .sliding-popup-top {
-  background: url('../images/gradient.png') center center scroll repeat-y transparent;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -92,7 +95,6 @@
 }
 
 .eu-cookie-compliance-message {
-  color: #fff;
   float: left; /* LTR */
   margin: 5px 0 0;
   max-width: 60%;

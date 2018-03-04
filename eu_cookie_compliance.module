@@ -127,9 +127,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     $data['css'] = '';
     // Color overrides.
     if ($config->get('popup_bg_hex') !== '' and $config->get('popup_text_hex') !== '') {
-      $position = $config->get('popup_position') ? 'top' : 'bottom';
-      $data['css'] = '#sliding-popup.sliding-popup-' . $position . ' {background:#' . Html::escape($config->get('popup_bg_hex')) . ';}'
-           . '#sliding-popup .popup-content #popup-text h2, #sliding-popup .popup-content #popup-text p {color:#' . Html::escape($config->get('popup_text_hex')) . ' !important;}';
+      $data['css'] = '#sliding-popup {background:#' . Html::escape($config->get('popup_bg_hex')) . '} #sliding-popup h1, #sliding-popup h2, #sliding-popup h3, #sliding-popup p { color:#' . Html::escape($config->get('popup_text_hex')) . ';}';
     }
     if (!empty($popup_settings['popup_position']) && $popup_settings['popup_position'] && !empty($popup_settings['fixed_top_position']) && $popup_settings['fixed_top_position']) {
       $data['css'] .= '#sliding-popup.sliding-popup-top { position: fixed; }';
