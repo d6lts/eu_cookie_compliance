@@ -120,7 +120,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     $form['popup_message']['use_mobile_message'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Use a different message for mobile phones'),
-      '#default_value' => ($config->get('mobile_popup_info.value') != ''),
+      '#default_value' => !empty($config->get('use_mobile_message')) ? $config->get('use_mobile_message') : FALSE,
     );
 
     $form['popup_message']['container'] = array(
