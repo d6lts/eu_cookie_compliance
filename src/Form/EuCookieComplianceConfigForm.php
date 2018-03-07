@@ -82,7 +82,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     $config = $this->config('eu_cookie_compliance.settings');
 
     $default_filter_format = filter_default_format();
-    if ($default_filter_format == 'filtered_html') {
+    if ($default_filter_format == 'restricted_html') {
       $default_filter_format = 'full_html';
     }
 
@@ -106,7 +106,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Consent by clicking'),
       '#default_value' => $config->get('popup_clicking_confirmation'),
-      '#description' => $this->t('By default by clicking any link on the website the visitor accepts the cookie policy. Uncheck this box if you do not require this functionality. You may want to edit the pop-up message below accordingly.'),
+      '#description' => $this->t('By default by clicking any link or button on the website the visitor accepts the cookie policy. Uncheck this box if you do not require this functionality. You may want to edit the pop-up message below accordingly.'),
     );
 
     $form['popup_message']['popup_info'] = array(
@@ -183,7 +183,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Clicking hides thank you message'),
       '#default_value' => $config->get('popup_hide_agreed'),
-      '#description' => $this->t('Clicking a link hides the thank you message automatically.'),
+      '#description' => $this->t('Clicking a link or button hides the thank you message automatically.'),
     );
 
     $form['thank_you']['popup_agreed'] = array(
@@ -244,12 +244,23 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $form_color_picker_type = 'jquery_colorpicker';
     }
 
+    $form['appearance']['use_bare_css'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Include minimal CSS, I want to style the overlay in the theme CSS.'),
+      '#default_value' => !empty($config->get('use_bare_css')) ? $config->get('use_bare_css') : 0,
+      '#description' => $this->t('This may be useful if you want the overlay to share the button style of your theme. Note that you will have to configure values like the overlay width, text color and background color in your CSS file.'),
+    );
+
     $form['appearance']['popup_text_hex'] = array(
       '#type' => $form_color_picker_type,
       '#title' => $this->t('Text color'),
       '#default_value' => $config->get('popup_text_hex'),
       '#description' => $this->t('Change the text color of the popup. Provide HEX value without the #.'),
       '#element_validate' => array('eu_cookie_compliance_validate_hex'),
+      '#states' => array(
+        "visible" => array(
+          "input[name='use_bare_css']" => array("checked" => FALSE)),
+      ),
     );
 
     $form['appearance']['popup_bg_hex'] = array(
@@ -258,6 +269,10 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('popup_bg_hex'),
       '#description' => $this->t('Change the background color of the popup. Provide HEX value without the #.'),
       '#element_validate' => array('eu_cookie_compliance_validate_hex'),
+      '#states' => array(
+        "visible" => array(
+          "input[name='use_bare_css']" => array("checked" => FALSE)),
+      ),
     );
 
     $form['appearance']['popup_height'] = array(
@@ -269,6 +284,10 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#maxlength' => 5,
       '#required' => FALSE,
       '#description' => $this->t('Enter an integer value for a desired height in pixels or leave empty for automatically adjusted height.'),
+      '#states' => array(
+        "visible" => array(
+          "input[name='use_bare_css']" => array("checked" => FALSE)),
+      ),
     );
 
     $form['appearance']['popup_width'] = array(
@@ -280,6 +299,10 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#maxlength' => 5,
       '#required' => TRUE,
       '#description' => $this->t('Set the width of the popup. This can be either an integer value or percentage of the screen width. For example: 200 or 50%.'),
+      '#states' => array(
+        "visible" => array(
+          "input[name='use_bare_css']" => array("checked" => FALSE)),
+      ),
     );
 
     $form['advanced'] = array(
@@ -302,14 +325,42 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('Use position:fixed for the banner when displayed at the top.'),
     );
 
+    if (\Drupal::moduleHandler()->moduleExists('smart_ip') || extension_loaded('geoip')) {
+      $form['advanced']['eu_only'] = array(
+        '#type' => 'checkbox',
+        '#title' => $this->t('Only display popup in EU countries'),
+        '#default_value' => !empty($config->get('eu_only')) ? $config->get('eu_only') : 0,
+        '#description' => $this->t('You can limit the number of countries for which the banner is displayed by checking this option. If you want to provide a list of countries other than current EU states, you may place an array in <code>$conf[\'eu_cookie_compliance_eu_countries\']</code> in your <code>settings.php</code> file. Using the <a href="http://drupal.org/project/geoip">geoip</a> module or the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or the <a href="http://www.php.net/manual/fr/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
+      );
+      $form['advanced']['eu_only_js'] = array(
+        '#type' => 'checkbox',
+        '#title' => $this->t('JavaScript-based (for Varnish): Only display popup in EU countries'),
+        '#default_value' => !empty($config->get('eu_only_js')) ? $config->get('eu_only_js') : 0,
+        '#description' => $this->t('You can limit the number of countries for which the banner is displayed by checking this option. If you want to provide a list of countries other than current EU states, you may place an array in <code>$conf[\'eu_cookie_compliance_eu_countries\']</code> in your <code>settings.php</code> file. Using the <a href="http://drupal.org/project/geoip">geoip</a> module or the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or the <a href="http://www.php.net/manual/fr/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
+      );
+    }
+
     $form['advanced']['popup_delay'] = array(
       '#type' => 'number',
-      '#title' => $this->t('Popup time delay in seconds'),
+      '#title' => $this->t('Popup time delay in milliseconds'),
       '#default_value' => $config->get('popup_delay'),
-      '#field_suffix' => ' ' . $this->t('seconds'),
+      '#field_suffix' => ' ' . $this->t('milliseconds'),
       '#size' => 5,
       '#maxlength' => 5,
       '#required' => TRUE,
+    );
+
+    $form['advanced']['disagree_do_not_show_popup'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Do not show popup after user clicks on "Disagree" button.'),
+      '#default_value' => !empty($config->get('disagree_do_not_show_popup')) ? $config->get('disagree_do_not_show_popup') : 0,
+      '#description' => $this->t('Enabling this will make it possible to record the fact that the user disagrees without the user having to see the privacy policy.'),
+    );
+
+    $form['advanced']['reload_page'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Reload page after user clicks on “Agree” button.'),
+      '#default_value' => !empty($config->get('reload_page')) ? $config->get('reload_page') : 0,
     );
 
     $form['advanced']['popup_scrolling_confirmation'] = array(
@@ -317,6 +368,13 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#title' => $this->t('Consent by scrolling'),
       '#default_value' => $config->get('popup_scrolling_confirmation'),
       '#description' => $this->t('Scrolling makes the visitors to accept the cookie policy. In some countries, like Italy, it is permitted.'),
+    );
+
+    $form['advanced']['cookie_name'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('Cookie name'),
+      '#default_value' => !empty($config->get('cookie_name')) ? $config->get('cookie_name') : '',
+      '#description' => $this->t('Sets the cookie name that is used to check whether the user has agreed or not.  This option is useful when policies change and the user needs to agree again.'),
     );
 
     // Adding option to add/remove popup on specified domains.
@@ -355,6 +413,27 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Exclude admin pages'),
       '#default_value' => $config->get('exclude_admin_theme'),
+    );
+
+    $form['advanced']['exclude_uid_1'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Don’t show the banner for UID 1.'),
+      '#default_value' => !empty($config->get('exclude_uid_1')) ? $config->get('exclude_uid_1') : 0,
+    );
+
+    $form['advanced']['script_scope'] = array(
+      '#type' => 'select',
+      '#title' => $this->t('Script scope'),
+      '#options' => array('header' => $this->t('Header'), 'footer' => $this->t('Footer')),
+      '#default_value' => !empty($config->get('script_scope')) ? $config->get('script_scope') : 'footer',
+      '#description' => $this->t('If you want to use the hasAgreed() function from other scripts, you may want to change this to header.'),
+    );
+
+    $form['advanced']['better_support_for_screen_readers'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Let screen readers see the banner before other links on the page.'),
+      '#default_value' => !empty($config->get('better_support_for_screen_readers')) ? $config->get('better_support_for_screen_readers') : 0,
+      '#description' => $this->t('Enable this if you want to place the banner as the first HTML element on the page. This will make it possible for screen readers to close the banner without tabbing through all links on the page.'),
     );
 
     $form['advanced']['domain'] = array(
@@ -396,7 +475,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('popup_disagree_button_message', $form_state->getValue('popup_disagree_button_message'))
       ->set('popup_info', $form_state->getValue('popup_info'))
       ->set('use_mobile_message', $form_state->getValue('use_mobile_message'))
-      ->set('mobile_popup_info', $form_state->getValue('use_mobile_message') ? $form_state->getValue('mobile_popup_info') : '')
+      ->set('mobile_popup_info', $form_state->getValue('use_mobile_message') ? $form_state->getValue('mobile_popup_info') : array('value' => '', 'format' => filter_default_format()))
       ->set('mobile_breakpoint', $form_state->getValue('mobile_breakpoint'))
       ->set('popup_agreed_enabled', $form_state->getValue('popup_agreed_enabled'))
       ->set('popup_hide_agreed', $form_state->getValue('popup_hide_agreed'))
@@ -415,6 +494,16 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('exclude_paths', $form_state->getValue('exclude_paths'))
       ->set('exclude_admin_theme', $form_state->getValue('exclude_admin_theme'))
       ->set('cookie_lifetime', $form_state->getValue('cookie_lifetime'))
+      ->set('eu_only', $form_state->getValue('eu_only'))
+      ->set('eu_only_js', $form_state->getValue('eu_only_js'))
+      ->set('use_bare_css', $form_state->getValue('use_bare_css'))
+      ->set('disagree_do_not_show_popup', $form_state->getValue('disagree_do_not_show_popup'))
+      ->set('reload_page', $form_state->getValue('reload_page'))
+      ->set('cookie_name', $form_state->getValue('cookie_name'))
+      ->set('exclude_uid_1', $form_state->getValue('exclude_uid_1'))
+      ->set('better_support_for_screen_readers', $form_state->getValue('better_support_for_screen_readers'))
+      ->set('fixed_top_position', $form_state->getValue('fixed_top_position'))
+      ->set('script_scope', $form_state->getValue('script_scope'))
       ->save();
 
     parent::submitForm($form, $form_state);

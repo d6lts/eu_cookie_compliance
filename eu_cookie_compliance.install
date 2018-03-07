@@ -30,3 +30,15 @@ function eu_cookie_compliance_update_8102() {
     ->set('popup_clicking_confirmation', !$consent_by_clicking_value)->save();
 }
 
+
+/**
+ * Change seconds to milliseconds for animation duration.
+ */
+function eu_cookie_compliance_update_8103() {
+  $popup_delay = \Drupal::configFactory()
+                                      ->get('eu_cookie_compliance.settings')
+                                      ->get('popup_delay');
+  \Drupal::configFactory()
+         ->getEditable('eu_cookie_compliance.settings')
+         ->set('popup_delay', $popup_delay * 1000)->save();
+}

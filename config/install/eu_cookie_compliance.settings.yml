@@ -3,10 +3,9 @@ domain: ''
 domains_option: 1
 domains_list: ''
 eu_only: false
+eu_only_js: false
 exclude_paths: "/admin\n/admin/*\n/batch\n/node/add*\n/node/*/*\n/user/*/*"
 exclude_admin_theme: false
-export:
-  folder: custom
 langcode: en
 popup_agreed:
   value: '<h2>Thank you for accepting cookies</h2><p>You can now hide this message or find out more about cookies.</p>'
@@ -16,7 +15,7 @@ popup_agreed_enabled: false
 popup_bg_hex: '0779bf'
 popup_clicking_confirmation: true
 popup_scrolling_confirmation: false
-popup_delay: 1
+popup_delay: 1000
 popup_disagree_button_message: 'No, give me more info'
 popup_enabled: false
 popup_find_more_button_message: 'More info'
@@ -36,3 +35,11 @@ popup_position: false
 fixed_top_position: false
 popup_text_hex: 'ffffff'
 popup_width: '100%'
+use_bare_css: false
+disagree_do_not_show_popup: false
+reload_page: false
+cookie_name: ''
+exclude_uid_1: false
+script_scope: 'footer'
+better_support_for_screen_readers: false
+use_mobile_message: false

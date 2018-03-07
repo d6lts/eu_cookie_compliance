@@ -14,6 +14,7 @@ use Drupal\Core\Url;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\smart_ip\SmartIp;
 
 /**
  * Implements hook_help().
@@ -42,15 +43,11 @@ function eu_cookie_compliance_help($route_name, RouteMatchInterface $route_match
       $output .= '<p><li>' . t('Go to the admin/config/system/eu-cookie-compliance page to configure and enable the pop-up.') . '</li></p>';
       $output .= '<p><li>' . t('If you want to customize the pop-up background and text color, either type in the hex values or simply install http://drupal.org/project/jquery_colorpicker.') . '</li></p>';
       $output .= '<p><li>' . t('If you want to theme your pop-up override the themes in the template file.') . '</li></p>';
-      $output .= '<p><li>' . t('If you want to show the message in EU countries only, install the geoip module: http://drupal.org/project/geoip and enable the option on the admin page.') . '</li></p></ol>';
+      $output .= '<p><li>' . t('If you want to show the message in EU countries only, install the Smart IP module: http://drupal.org/project/smart_ip and enable the option on the admin page.') . '</li></p></ol>';
       $output .= '<p><b>' . t('NOTICE: The module does not audit your cookies nor does it prevent cookies from being set.') . '</b></p>';
       $output .= '<h3>' . t('For developers') . '</h3>';
       $output .= '<p>' . t('If you want to conditionally set cookies in your module, there is a javascript function provided that returns TRUE if the current user has given his consent:') . '</p>';
       $output .= '<p><code>Drupal.eu_cookie_compliance.hasAgreed()</code></p>';
-      $output .= '<p>' . t('To run test you should run next script:') . '</p>';
-      $output .= '<p><code>php ./core/scripts/run-tests.sh --color --verbose --browser --url <http://example.com> --class "\Drupal\eu_cookie_compliance\Tests\EuCookieComplianceTest"</code></p>';
-      $output .= '<p>' . t('If you have Drupal Console installed:') . '</p>';
-      $output .= '<p><code>drupal tr --url=<http://example.com> "\Drupal\eu_cookie_compliance\Tests\EuCookieComplianceTest"</code></p>';
 
       return ['#markup' => $output];
   }
@@ -60,7 +57,7 @@ function eu_cookie_compliance_help($route_name, RouteMatchInterface $route_match
  * Implements hook_page_attachments().
  */
 function eu_cookie_compliance_page_attachments(&$attachments) {
-  $config = \Drupal::config('eu_cookie_compliance.settings');
+  $config = Drupal::config('eu_cookie_compliance.settings');
 
   // Check Add/Remove domains.
   $domain_allow = TRUE;
@@ -71,13 +68,13 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
 
     $domains_list = str_replace(array("\r\n", "\r"), "\n", $config->get('domains_list'));
     $domains_list = explode("\n", $domains_list);
+    $domains_list = preg_replace('{/$}', '', $domains_list);
     $domain_match = in_array($base_url, $domains_list);
 
     if ($domain_option && $domain_match) {
       $domain_allow = FALSE;
     }
 
-    // @TODO: Ask about this thing.
     if (!$domain_option && !$domain_match) {
       $domain_allow = FALSE;
     }
@@ -87,9 +84,10 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
   $path_match = FALSE;
 
   if (!empty($config->get('exclude_paths'))) {
-    // @TODO: make this more robust.
-    $path = \Drupal::service('path.current')->getPath();
-    $path_match = \Drupal::service('path.matcher')->matchPath($path, $config->get('exclude_paths'));
+    $path = Drupal::service('path.current')->getPath();
+    $path_match = Drupal::service('path.matcher')->matchPath($path, $config->get('exclude_paths'));
+    $exclude_paths = $config->get('exclude_paths');
+    Drupal::moduleHandler()->alter('eu_cookie_compliance_path_match', $path_match, $path, $exclude_paths);
   }
 
   //check hide cookie compliance on admin theme
@@ -97,39 +95,38 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
 
   if($config->get('exclude_admin_theme')){
     //Determines whether the active route is an admin one
-    $is_route_admin = \Drupal::service('router.admin_context')->isAdminRoute();
+    $is_route_admin = Drupal::service('router.admin_context')->isAdminRoute();
     if($is_route_admin){
       $admin_theme_match = TRUE;
     }
   }
 
-  // Unsupported GeoIP feature until those modules update their code.
   $geoip_match = TRUE;
+  if (!empty($config->get('eu_only')) && $config->get('eu_only')) {
+    $geoip_match = eu_cookie_compliance_user_in_eu();
+  }
 
   // Allow other modules to alter the geo IP matching logic.
-  \Drupal::moduleHandler()->alter('eu_cookie_compliance_geoip_match', $geoip_match);
+  Drupal::moduleHandler()->alter('eu_cookie_compliance_geoip_match', $geoip_match);
 
-  if ($config->get('popup_enabled') && \Drupal::currentUser()->hasPermission('display eu cookie compliance popup') && $geoip_match && $domain_allow && !$path_match && !$admin_theme_match) {
+  $uid1_match = TRUE;
+  if (Drupal::currentUser()->id() == 1 && !empty($config->get('exclude_uid_1')) && $config->get('exclude_uid_1')) {
+    $uid1_match = FALSE;
+  }
+
+  // Allow other modules to alter if the popup needs to be shown or not.
+  $modules_allow_popup = TRUE;
+  Drupal::moduleHandler()->alter('eu_cookie_compliance_show_popup', $modules_allow_popup);
+
+  if ($config->get('popup_enabled') && Drupal::currentUser()->hasPermission('display eu cookie compliance popup') && $geoip_match && $domain_allow && !$path_match && !$admin_theme_match && $uid1_match && $modules_allow_popup) {
     $language = Drupal::languageManager()->getCurrentLanguage();
 
-    // Initialize some needed popup settings messages.
-    $popup_settings_messages = array(
-      'popup_agree_button_message',
-      'popup_disagree_button_message',
-      'popup_hide_button_message',
-      'popup_find_more_button_message',
-    );
-    foreach ($popup_settings_messages as $key) {
-      if (!isset($popup_settings[$key])) {
-        $popup_settings[$key] = '';
-      }
-    }
     $data['css'] = '';
     // Color overrides.
-    if ($config->get('popup_bg_hex') !== '' and $config->get('popup_text_hex') !== '') {
-      $data['css'] = '#sliding-popup {background:#' . Html::escape($config->get('popup_bg_hex')) . '} #sliding-popup h1, #sliding-popup h2, #sliding-popup h3, #sliding-popup p { color:#' . Html::escape($config->get('popup_text_hex')) . ';}';
+    if ($config->get('popup_bg_hex') !== '' && $config->get('popup_text_hex') !== '') {
+      $data['css'] = 'div#sliding-popup {background:#' . Html::escape($config->get('popup_bg_hex')) . '} #sliding-popup h1, #sliding-popup h2, #sliding-popup h3, #sliding-popup p { color:#' . Html::escape($config->get('popup_text_hex')) . ';}';
     }
-    if (!empty($popup_settings['popup_position']) && $popup_settings['popup_position'] && !empty($popup_settings['fixed_top_position']) && $popup_settings['fixed_top_position']) {
+    if (!empty($config->get('popup_position')) && $config->get('popup_position') && !empty($config->get('fixed_top_position')) && $config->get('fixed_top_position')) {
       $data['css'] .= '#sliding-popup.sliding-popup-top { position: fixed; }';
     }
 
@@ -160,16 +157,16 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     /*
      * @var $twig_service Twig_Environment
      */
-    $twig_service = \Drupal::service('twig');
+    $twig_service = Drupal::service('twig');
 
     if ($twig_service->isDebug()) {
       $was_debugging = TRUE;
       $twig_service->disableDebug();
     }
 
-    $html_info = trim(\Drupal::service('renderer')->renderRoot($html_info)->__toString());
-    $mobile_html_info = trim(\Drupal::service('renderer')->renderRoot($mobile_html_info)->__toString());
-    $html_agreed = trim(\Drupal::service('renderer')->renderRoot($html_agreed)->__toString());
+    $html_info = trim(Drupal::service('renderer')->renderRoot($html_info)->__toString());
+    $mobile_html_info = trim(Drupal::service('renderer')->renderRoot($mobile_html_info)->__toString());
+    $html_agreed = trim(Drupal::service('renderer')->renderRoot($html_agreed)->__toString());
 
     if ($was_debugging) {
       $twig_service->enableDebug();
@@ -192,21 +189,25 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       'popup_clicking_confirmation' => $config->get('popup_clicking_confirmation'),
       'popup_scrolling_confirmation' => $config->get('popup_scrolling_confirmation'),
       'popup_html_info'      => $config->get('popup_enabled') ? $html_info : FALSE,
-      'use_mobile_message'    => !empty($config->get('use_mobile_message')) ? $config->get('use_mobile_message') : FALSE,
+      'use_mobile_message'   => !empty($config->get('use_mobile_message')) ? $config->get('use_mobile_message') : FALSE,
       'mobile_popup_html_info' => $config->get('popup_enabled') ? $mobile_html_info : FALSE,
       'mobile_breakpoint'    => !empty($config->get('mobile_breakpoint')) ? $config->get('mobile_breakpoint') : '768',
       'popup_html_agreed'    => $config->get('popup_agreed_enabled') ? $html_agreed : FALSE,
+      'popup_use_bare_css'   => !empty($config->get('popup_use_bare_css')) ? $config->get('popup_use_bare_css') : FALSE,
       'popup_height'         => !empty($config->get('popup_height')) ? $config->get('popup_height') : 'auto',
       'popup_width'          => !empty($config->get('popup_width')) ? $config->get('popup_width') : '100%',
-      'popup_delay'          => (int) ($config->get('popup_delay') * 1000),
+      'popup_delay'          => (int) ($config->get('popup_delay')),
       'popup_link'           => $popup_link,
       'popup_link_new_window' => $config->get('popup_link_new_window'),
       'popup_position'       => $config->get('popup_position'),
       'popup_language'       => $language->getId(),
-      'popup_bg_hex'         => !empty($config->get('popup_bg_hex')) ? $config->get('popup_bg_hex') : FALSE,
-      'popup_text_hex'       => !empty($config->get('popup_text_hex')) ? $config->get('popup_text_hex') : FALSE,
+      'better_support_for_screen_readers'         => !empty($config->get('better_support_for_screen_readers')) ? $config->get('better_support_for_screen_readers') : FALSE,
+      'cookie_name'         => !empty($config->get('cookie_name')) ? $config->get('cookie_name') : '',
+      'reload_page'         => !empty($config->get('reload_page')) ? $config->get('reload_page') : FALSE,
       'domain'               => $config->get('domain'),
-      'cookie_lifetime'      => $config->get('cookie_lifetime')
+      'popup_eu_only_js'     => !empty($config->get('eu_only_js')) ? $config->get('eu_only_js') : FALSE,
+      'cookie_lifetime'      => $config->get('cookie_lifetime'),
+      'disagree_do_not_show_popup'         => !empty($config->get('disagree_do_not_show_popup')) ? $config->get('disagree_do_not_show_popup') : FALSE,
     );
 
     $attachments['#attached']['drupalSettings']['eu_cookie_compliance'] = $data['variables'];
@@ -260,4 +261,66 @@ function eu_cookie_compliance_validate_hex($element, FormStateInterface &$form_s
   if (!empty($element['#value']) && !preg_match('/^[0-9a-fA-F]{3,6}$/', $element['#value'])) {
     $form_state->setError($element, t('%name must be a HEX value (without leading #) or empty.', array('%name' => $element['#title'])));
   }
+}
+
+/**
+ * Implements hook_js_alter().
+ */
+function eu_cookie_compliance_js_alter(&$javascript, \Drupal\Core\Asset\AttachedAssetsInterface $assets) {
+  // Set scope of Javascript to header if it's set in configuration.
+  $scope = Drupal::config('eu_cookie_compliance.settings')->get('script_scope');
+  if ($scope == 'header') {
+    foreach ($javascript as $script_path => $script_settings) {
+      if (strpos($script_path, 'js/eu_cookie_compliance.js') !== FALSE) {
+        $javascript[$script_path]['scope'] = 'header';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_css_alter().
+ */
+function eu_cookie_compliance_css_alter(&$css, \Drupal\Core\Asset\AttachedAssetsInterface $assets) {
+  // Switch to bare css if set in settings.
+  $use_bare_css = Drupal::config('eu_cookie_compliance.settings')->get('use_bare_css');
+  if ($use_bare_css) {
+    foreach ($css as $css_path => $css_settings) {
+      if (strpos($css_path, 'css/eu_cookie_compliance.css') !== FALSE) {
+        $css[$css_path]['data'] = str_replace('eu_cookie_compliance.css', 'eu_cookie_compliance.bare.css', $css[$css_path]['data']);
+      }
+    }
+  }
+}
+
+/**
+ * Check if the user is in the EU.
+ */
+function eu_cookie_compliance_user_in_eu() {
+  $geoip_match = FALSE;
+  $eu_countries_default = array(
+    NULL, 'BE', 'BG', 'CZ', 'DK', 'DE', 'EE', 'IE', 'EL', 'ES', 'FR', 'HR',
+    'IT', 'CY', 'LV', 'LT', 'LU', 'HU', 'MT', 'NL', 'AT', 'PL', 'PT', 'RO',
+    'SI', 'SK', 'FI', 'SE', 'UK', 'GB', 'NO',
+  );
+  // Allow custom array of countries to be loaded from settings.php, defaulting
+  // to the array above.
+  $config = Drupal::config('eu_cookie_compliance.settings');
+  $eu_countries = !empty($config->get('eu_countries')) ? $config->get('eu_countries') : $eu_countries_default;
+
+  $ip_address = Drupal::request()->getClientIp();
+
+  $country_code = extension_loaded('geoip') ? geoip_country_code_by_name($ip_address) : '';
+  if (Drupal::moduleHandler()->moduleExists('smart_ip')) {
+    $smart_ip_session = SmartIp::query($ip_address);
+    $country_code = isset($smart_ip_session['countryCode']) ? $smart_ip_session['countryCode'] : NULL;
+  }
+  if (in_array($country_code, $eu_countries) || $country_code == '' || $country_code == '-') {
+    $geoip_match = TRUE;
+  }
+
+  return array(
+    'country' => $country_code,
+    'in_eu' => $geoip_match,
+  );
 }

@@ -16,6 +16,9 @@ eu_cookie_compliance.settings:
     eu_only:
       type: boolean
       label: 'Only display popup in EU countries'
+    eu_only_js:
+      type: boolean
+      label: 'Only display popup in EU countries (Javascript based)'
     popup_position:
       type: boolean
       label: 'Place the pop-up at the top of the website'
@@ -59,13 +62,13 @@ eu_cookie_compliance.settings:
       label: 'Clicking hides thank you message'
     popup_find_more_button_message:
       type: label
-      label: 'Find more button message'
+      label: 'Find more button label'
     popup_hide_button_message:
       type: label
-      label: 'Hide button message'
+      label: 'Hide button label'
     popup_agreed:
       type: mapping
-      label: 'Popup message Agree - thanks for giving consent'
+      label: 'Popup message - thank you for giving consent'
       mapping:
         value:
           type: text
@@ -87,7 +90,7 @@ eu_cookie_compliance.settings:
       label: 'Popup width in pixels or a percentage value'
     popup_delay:
       type: integer
-      label: 'Popup time delay in seconds'
+      label: 'Popup time delay in milliseconds'
     popup_bg_hex:
       type: string
       label: 'Background Color'
@@ -112,3 +115,27 @@ eu_cookie_compliance.settings:
     cookie_lifetime:
       type: integer
       label: 'Cookie lifetime'
+    use_mobile_message:
+      type: boolean
+      label: 'Use a different message for mobile phones'
+    use_bare_css:
+      type: boolean
+      label: 'Include minimal CSS, I want to style the overlay in the theme CSS'
+    disagree_do_not_show_popup:
+      type: boolean
+      label: 'Do not show popup after user clicks on "Disagree" button.'
+    reload_page:
+      type: boolean
+      label: 'Reload page after user clicks on “Agree” button.'
+    cookie_name:
+      type: string
+      label: 'Cookie name'
+    exclude_uid_1:
+      type: boolean
+      label: 'Don’t show the banner for UID 1.'
+    script_scope:
+      type: string
+      label: 'Script scope'
+    better_support_for_screen_readers:
+      type: boolean
+      label: 'Let screen readers see the banner before other links on the page'

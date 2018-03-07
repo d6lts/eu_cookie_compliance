@@ -5,3 +5,5 @@ eu_cookie_compliance.settings:
     _title: 'EU Cookie Compliance'
   requirements:
     _permission: 'administer eu cookie compliance popup'
+route_callbacks:
+  - '\Drupal\eu_cookie_compliance\Routing\CheckIfEuCountryJs::routes'
