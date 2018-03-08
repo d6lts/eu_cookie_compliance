@@ -32,13 +32,33 @@ function eu_cookie_compliance_update_8102() {
 
 
 /**
- * Change seconds to milliseconds for animation duration.
+ * Fix bug with mobile popup message from beta 9.
  */
 function eu_cookie_compliance_update_8103() {
-  $popup_delay = \Drupal::configFactory()
+  $mobile_popup_info = \Drupal::configFactory()
                                       ->get('eu_cookie_compliance.settings')
-                                      ->get('popup_delay');
-  \Drupal::configFactory()
-         ->getEditable('eu_cookie_compliance.settings')
-         ->set('popup_delay', $popup_delay * 1000)->save();
+                                      ->get('mobile_popup_info');
+  if (!is_array($mobile_popup_info) && $mobile_popup_info == '') {
+    \Drupal::configFactory()
+           ->getEditable('eu_cookie_compliance.settings')
+           ->set('mobile_popup_info', [
+             'value' => '',
+             'format' => filter_default_format(),
+           ])->save();
+    echo 'Saved value.';
+  }
+}
+
+/**
+ * Change seconds to milliseconds for animation duration.
+ */
+function eu_cookie_compliance_update_8104() {
+  $popup_delay = \Drupal::configFactory()
+                        ->get('eu_cookie_compliance.settings')
+                        ->get('popup_delay');
+  if ($popup_delay < 10) {
+    \Drupal::configFactory()
+           ->getEditable('eu_cookie_compliance.settings')
+           ->set('popup_delay', $popup_delay * 1000)->save();
+  }
 }
