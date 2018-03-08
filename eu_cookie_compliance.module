@@ -136,20 +136,20 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       '#theme' => 'eu_cookie_compliance_popup_info',
       '#message' => check_markup($popup_text_info, $config->get('popup_info.format'), FALSE),
       '#agree_button' => $config->get('popup_agree_button_message'),
-      '#disagree_button' => $config->get('popup_disagree_button_message'),
+      '#disagree_button' => ($config->get('show_disagree_button') == TRUE) ? $config->get('popup_disagree_button_message') : FALSE,
     );
     $mobile_popup_text_info = str_replace(array("\r", "\n"), '', $config->get('mobile_popup_info.value'));
     $mobile_html_info = array(
       '#theme' => 'eu_cookie_compliance_popup_info',
       '#message' => check_markup($mobile_popup_text_info, $config->get('popup_info.format'), FALSE),
       '#agree_button' => $config->get('popup_agree_button_message'),
-      '#disagree_button' => $config->get('popup_disagree_button_message'),
+      '#disagree_button' => ($config->get('show_disagree_button') == TRUE) ? $config->get('popup_disagree_button_message') : FALSE,
     );
     $html_agreed = array(
       '#theme' => 'eu_cookie_compliance_popup_agreed',
       '#message' => check_markup($popup_text_agreed, $config->get('popup_agreed.format'), FALSE),
       '#hide_button' => $config->get('popup_hide_button_message'),
-      '#find_more_button' => $config->get('popup_find_more_button_message'),
+      '#find_more_button' => ($config->get('show_disagree_button') == TRUE) ? $config->get('popup_find_more_button_message') : FALSE,
     );
 
     $was_debugging = FALSE;

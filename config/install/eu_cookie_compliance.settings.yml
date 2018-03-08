@@ -16,6 +16,7 @@ popup_bg_hex: '0779bf'
 popup_clicking_confirmation: true
 popup_scrolling_confirmation: false
 popup_delay: 1000
+show_disagree_button: true
 popup_disagree_button_message: 'No, give me more info'
 popup_enabled: false
 popup_find_more_button_message: 'More info'

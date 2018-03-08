@@ -91,6 +91,9 @@ eu_cookie_compliance.settings:
     popup_delay:
       type: integer
       label: 'Popup time delay in milliseconds'
+    show_disagree_button:
+      type: boolean
+      label: 'Show "Disagree" and "More info" buttons'
     popup_bg_hex:
       type: string
       label: 'Background Color'

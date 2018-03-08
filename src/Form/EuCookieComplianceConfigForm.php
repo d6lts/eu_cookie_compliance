@@ -159,12 +159,26 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#required' => TRUE,
     );
 
+    $form['popup_message']['disagree_button'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show "Disagree" and "More info" buttons'),
+      '#description' => $this->t('If this option is checked, the disagree button will be shown on the site. Disabling this option will hide both the "Disagree" button on the information banner and the "More info" button on the "Thank you" banner.'),
+      '#default_value' => $config->get('show_disagree_button'),
+    ];
+
     $form['popup_message']['popup_disagree_button_message'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Disagree button label'),
       '#default_value' => $config->get('popup_disagree_button_message'),
       '#size' => 30,
-      '#required' => TRUE,
+      '#states' => [
+        'visible' => [
+          'input[name="disagree_button"]' => ['checked' => TRUE],
+        ],
+        'required' => [
+          'input[name="disagree_button"]' => ['checked' => TRUE],
+        ],
+      ],
     );
 
     $form['thank_you'] = array(
@@ -199,7 +213,14 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#title' => $this->t('Find more button label'),
       '#default_value' => $config->get('popup_find_more_button_message'),
       '#size' => 30,
-      '#required' => TRUE,
+      '#states' => [
+        'visible' => [
+          'input[name="disagree_button"]' => ['checked' => TRUE],
+        ],
+        'required' => [
+          'input[name="disagree_button"]' => ['checked' => TRUE],
+        ],
+      ],
     );
 
     $form['thank_you']['popup_hide_button_message'] = array(
@@ -472,6 +493,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('popup_scrolling_confirmation', $form_state->getValue('popup_scrolling_confirmation'))
       ->set('popup_position', $form_state->getValue('popup_position'))
       ->set('popup_agree_button_message', $form_state->getValue('popup_agree_button_message'))
+      ->set('show_disagree_button', $form_state->getValue('disagree_button'))
       ->set('popup_disagree_button_message', $form_state->getValue('popup_disagree_button_message'))
       ->set('popup_info', $form_state->getValue('popup_info'))
       ->set('use_mobile_message', $form_state->getValue('use_mobile_message'))
