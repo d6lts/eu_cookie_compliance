@@ -45,7 +45,6 @@ function eu_cookie_compliance_update_8103() {
              'value' => '',
              'format' => filter_default_format(),
            ])->save();
-    echo 'Saved value.';
   }
 }
 
