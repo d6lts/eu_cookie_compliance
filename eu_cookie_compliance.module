@@ -211,7 +211,12 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     );
 
     $attachments['#attached']['drupalSettings']['eu_cookie_compliance'] = $data['variables'];
-    $attachments['#attached']['library'][] = 'eu_cookie_compliance/eu_cookie_compliance';
+    if ($config->get('use_bare_css')) {
+      $attachments['#attached']['library'][] = 'eu_cookie_compliance/eu_cookie_compliance_bare';
+    }
+    else {
+      $attachments['#attached']['library'][] = 'eu_cookie_compliance/eu_cookie_compliance';
+    }
     // Add inline css.
     $attachments['#attached']['html_head'][] = [
       [
@@ -273,21 +278,6 @@ function eu_cookie_compliance_js_alter(&$javascript, \Drupal\Core\Asset\Attached
     foreach ($javascript as $script_path => $script_settings) {
       if (strpos($script_path, 'js/eu_cookie_compliance.js') !== FALSE) {
         $javascript[$script_path]['scope'] = 'header';
-      }
-    }
-  }
-}
-
-/**
- * Implements hook_css_alter().
- */
-function eu_cookie_compliance_css_alter(&$css, \Drupal\Core\Asset\AttachedAssetsInterface $assets) {
-  // Switch to bare css if set in settings.
-  $use_bare_css = Drupal::config('eu_cookie_compliance.settings')->get('use_bare_css');
-  if ($use_bare_css) {
-    foreach ($css as $css_path => $css_settings) {
-      if (strpos($css_path, 'css/eu_cookie_compliance.css') !== FALSE) {
-        $css[$css_path]['data'] = str_replace('eu_cookie_compliance.css', 'eu_cookie_compliance.bare.css', $css[$css_path]['data']);
       }
     }
   }

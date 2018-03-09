@@ -318,11 +318,10 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#field_suffix' => ' ' . $this->t('px or %'),
       '#size' => 5,
       '#maxlength' => 5,
-      '#required' => TRUE,
       '#description' => $this->t('Set the width of the popup. This can be either an integer value or percentage of the screen width. For example: 200 or 50%.'),
       '#states' => array(
-        "visible" => array(
-          "input[name='use_bare_css']" => array("checked" => FALSE)),
+        "visible" => array("input[name='use_bare_css']" => array("checked" => FALSE)),
+        'required' => array("input[name='use_bare_css']" => array("checked" => FALSE)),
       ),
     );
 
@@ -482,6 +481,15 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Clear values if we are using minimal css.
+    if ($form_state->getValue('use_bare_css')) {
+      $form_state->setValue('popup_bg_hex', '');
+      $form_state->setValue('popup_text_hex', '');
+      $form_state->setValue('popup_height', '');
+      $form_state->setValue('popup_width', '');
+    }
+
+    // If there's no mobile message entered, disable the feature.
     if (trim($form_state->getValue('mobile_popup_info')['value']) == '') {
       $form_state->setValue('use_mobile_message', FALSE);
     }
