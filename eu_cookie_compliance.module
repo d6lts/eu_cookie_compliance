@@ -29,7 +29,7 @@ function eu_cookie_compliance_help($route_name, RouteMatchInterface $route_match
         you run the risk of enforcement action, which can include a fine of up to
         half a million pounds for a serious breach.') . '</p>';
       $output .= '<h3>' . t('How it works') . '</h3>';
-      $output .= '<p>' . t('The module displays a banner at the bottom or at the top of website to make users aware of the fact that cookies are being set. The user may then give
+      $output .= '<p>' . t('The module displays a banner at the bottom or the top of website to make users aware of the fact that cookies are being set. The user may then give
         his/her consent or move to a page that provides more details. Consent is given
         by user pressing the agree buttons or by continuing browsing the website. Once
         consent is given another banner appears with a thank you message.') . '</p>';
