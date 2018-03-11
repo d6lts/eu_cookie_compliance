@@ -10,7 +10,7 @@ half a million pounds for a serious breach.
 How it works.
 =============
 
-The module displays a banner at the bottom or at the top of website to make
+The module displays a banner at the bottom or the top of website to make
 users aware of the fact that cookies are being set. The user may then give
 his/her consent or move to a page that provides more details. Consent is given
 by user pressing the agree buttons or by continuing browsing the website. Once
@@ -47,12 +47,13 @@ Installation.
 
 7. If you want to show the message in EU countries only, install the Smart IP
    module: http://drupal.org/project/smart_ip and enable the option "Only
-   display banner in EU countries" on the admin page. There is a JavaScript based
-   option available for sites that use Varnish (or other caching strategies).
-   The JavaScript based variant also works for visitors that bypass Varnish.
+   display banner in EU countries" on the admin page. There is a JavaScript
+   based option available for sites that use Varnish (or other caching
+   strategies). The JavaScript based variant also works for visitors that bypass
+   Varnish.
 
-NOTICE: The module does not audit your cookies nor does it prevent cookies
-from being set.
+NOTICE: The module does not audit your cookies nor does it prevent cookies from
+being set.
 
 For developers.
 ===============
