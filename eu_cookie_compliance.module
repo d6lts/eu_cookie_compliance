@@ -269,21 +269,6 @@ function eu_cookie_compliance_validate_hex($element, FormStateInterface &$form_s
 }
 
 /**
- * Implements hook_js_alter().
- */
-function eu_cookie_compliance_js_alter(&$javascript, \Drupal\Core\Asset\AttachedAssetsInterface $assets) {
-  // Set scope of Javascript to header if it's set in configuration.
-  $scope = Drupal::config('eu_cookie_compliance.settings')->get('script_scope');
-  if ($scope == 'header') {
-    foreach ($javascript as $script_path => $script_settings) {
-      if (strpos($script_path, 'js/eu_cookie_compliance.js') !== FALSE) {
-        $javascript[$script_path]['scope'] = 'header';
-      }
-    }
-  }
-}
-
-/**
  * Check if the user is in the EU.
  */
 function eu_cookie_compliance_user_in_eu() {

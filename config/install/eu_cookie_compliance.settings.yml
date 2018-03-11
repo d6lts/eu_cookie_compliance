@@ -41,6 +41,5 @@ disagree_do_not_show_popup: false
 reload_page: false
 cookie_name: ''
 exclude_uid_1: false
-script_scope: 'footer'
 better_support_for_screen_readers: false
 use_mobile_message: false

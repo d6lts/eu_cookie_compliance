@@ -441,14 +441,6 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#default_value' => !empty($config->get('exclude_uid_1')) ? $config->get('exclude_uid_1') : 0,
     );
 
-    $form['advanced']['script_scope'] = array(
-      '#type' => 'select',
-      '#title' => $this->t('Script scope'),
-      '#options' => array('header' => $this->t('Header'), 'footer' => $this->t('Footer')),
-      '#default_value' => !empty($config->get('script_scope')) ? $config->get('script_scope') : 'footer',
-      '#description' => $this->t('If you want to use the hasAgreed() function from other scripts, you may want to change this to header.'),
-    );
-
     $form['advanced']['better_support_for_screen_readers'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Let screen readers see the banner before other links on the page.'),
@@ -533,7 +525,6 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('exclude_uid_1', $form_state->getValue('exclude_uid_1'))
       ->set('better_support_for_screen_readers', $form_state->getValue('better_support_for_screen_readers'))
       ->set('fixed_top_position', $form_state->getValue('fixed_top_position'))
-      ->set('script_scope', $form_state->getValue('script_scope'))
       ->save();
 
     parent::submitForm($form, $form_state);

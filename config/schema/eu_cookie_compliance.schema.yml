@@ -136,9 +136,6 @@ eu_cookie_compliance.settings:
     exclude_uid_1:
       type: boolean
       label: 'Don’t show the banner for UID 1.'
-    script_scope:
-      type: string
-      label: 'Script scope'
     better_support_for_screen_readers:
       type: boolean
       label: 'Let screen readers see the banner before other links on the page'
