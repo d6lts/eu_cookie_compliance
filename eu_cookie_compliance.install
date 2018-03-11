@@ -31,7 +31,7 @@ function eu_cookie_compliance_update_8102() {
 }
 
 /**
- * Fix bug with mobile popup message from beta 9.
+ * Fix bug with mobile banner message from beta 9.
  */
 function eu_cookie_compliance_update_8103() {
   $mobile_popup_info = \Drupal::configFactory()

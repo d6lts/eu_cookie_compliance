@@ -1,7 +1,7 @@
 /**
  * @file eu_cookie_compliance.js
  *
- * Defines the behavior of the eu cookie compliance popup.
+ * Defines the behavior of the eu cookie compliance banner.
  */
 
 (function ($, Drupal, drupalSettings) {
@@ -17,7 +17,7 @@
             var url = drupalSettings.path.baseUrl + 'eu-cookie-compliance-check';
             var data = {};
             $.getJSON(url, data, function (data) {
-              // If in the EU, show the compliance popup.
+              // If in the EU, show the compliance banner.
               if (data.in_eu) {
                 Drupal.eu_cookie_compliance.execute();
               }
@@ -30,7 +30,7 @@
           }
         }
 
-        // Otherwise, fallback to standard behavior which is to render the popup.
+        // Otherwise, fallback to standard behavior which is to render the banner.
         else {
           Drupal.eu_cookie_compliance.execute();
         }

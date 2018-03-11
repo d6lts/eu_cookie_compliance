@@ -29,16 +29,16 @@ function eu_cookie_compliance_help($route_name, RouteMatchInterface $route_match
         you run the risk of enforcement action, which can include a fine of up to
         half a million pounds for a serious breach.') . '</p>';
       $output .= '<h3>' . t('How it works') . '</h3>';
-      $output .= '<p>' . t('The module displays a pop-up at the bottom or at the top of website to make users aware of the fact that cookies are being set. The user may then give
+      $output .= '<p>' . t('The module displays a banner at the bottom or at the top of website to make users aware of the fact that cookies are being set. The user may then give
         his/her consent or move to a page that provides more details. Consent is given
         by user pressing the agree buttons or by continuing browsing the website. Once
-        consent is given another pop-up appears with a thank you message.') . '</p>';
-      $output .= '<p>' . t('The module provides a settings page where the pop-up can be customized. There are also template files for the pop-ups that can be overridden by your theme.') . '</p>';
+        consent is given another banner appears with a thank you message.') . '</p>';
+      $output .= '<p>' . t('The module provides a settings page where the banner can be customized. There are also template files for the pop-ups that can be overridden by your theme.') . '</p>';
       $output .= '<h3>' . t('Installation') . '</h3>';
       $output .= '<ol><p><li>' . t('Unzip the files to the "sites/all/modules" OR "modules" directory and enable the module.') . '</li></p>';
-      $output .= '<p><li>' . t('If desired, give the administer EU Cookie Compliance pop-up permissions that allow users of certain roles access the administration page. You can do so on the admin/user/permissions page.') . '</li></p>';
+      $output .= '<p><li>' . t('If desired, give the administer EU Cookie Compliance banner permissions that allow users of certain roles access the administration page. You can do so on the admin/user/permissions page.') . '</li></p>';
       // @codingStandardsIgnoreLine
-      $output .= "<p><label>-&nbsp;</label>" . t("there is also a 'display eu cookie compliance popup' permission that helps you show the popup to the roles you desire.") . "</p>";
+      $output .= "<p><label>-&nbsp;</label>" . t("there is also a 'display eu cookie compliance banner' permission that helps you show the banner to the roles you desire.") . "</p>";
       $output .= '<p><li>' . t('You may want to create a page that would explain how your site uses cookies. Alternatively, if you have a privacy policy, you can link the pop-up to that page (see next step).') . '</li></p>';
       $output .= '<p><li>' . t('Go to the admin/config/system/eu-cookie-compliance page to configure and enable the pop-up.') . '</li></p>';
       $output .= '<p><li>' . t('If you want to customize the pop-up background and text color, either type in the hex values or simply install http://drupal.org/project/jquery_colorpicker.') . '</li></p>';
@@ -114,7 +114,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     $uid1_match = FALSE;
   }
 
-  // Allow other modules to alter if the popup needs to be shown or not.
+  // Allow other modules to alter if the banner needs to be shown or not.
   $modules_allow_popup = TRUE;
   Drupal::moduleHandler()->alter('eu_cookie_compliance_show_popup', $modules_allow_popup);
 
