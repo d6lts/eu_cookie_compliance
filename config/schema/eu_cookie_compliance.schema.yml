@@ -56,7 +56,7 @@ eu_cookie_compliance.settings:
       label: 'Mobile breakpoint'
     popup_agreed_enabled:
       type: boolean
-      label: 'Enable thank you banner'
+      label: 'Enable “Thank you” banner'
     popup_hide_agreed:
       type: boolean
       label: 'Clicking hides “Thank you” banner'
@@ -126,7 +126,7 @@ eu_cookie_compliance.settings:
       label: 'Include minimal CSS, I want to style the overlay in the theme CSS'
     disagree_do_not_show_popup:
       type: boolean
-      label: 'Do not show cookie policy when the user clicks the “Disagree” button.'
+      label: 'Don’t show cookie policy when the user clicks the “Disagree” button.'
     reload_page:
       type: boolean
       label: 'Reload page after user clicks the “Agree” button.'

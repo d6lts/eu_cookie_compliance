@@ -106,7 +106,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Consent by clicking'),
       '#default_value' => $config->get('popup_clicking_confirmation'),
-      '#description' => $this->t('By default by clicking any link or button on the website the visitor accepts the cookie policy. Uncheck this box if you do not require this functionality. You may want to edit the pop-up message below accordingly.'),
+      '#description' => $this->t('By default by clicking any link or button on the website the visitor accepts the cookie policy. Uncheck this box if you don’t require this functionality. You may want to edit the banner message below accordingly.'),
     );
 
     $form['popup_message']['popup_info'] = array(
@@ -189,7 +189,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $form['thank_you']['popup_agreed_enabled'] = array(
       '#type' => 'checkbox',
-      '#title' => $this->t('Enable thank you banner'),
+      '#title' => $this->t('Enable “Thank you” banner'),
       '#default_value' => $config->get('popup_agreed_enabled'),
     );
 
@@ -197,12 +197,12 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Clicking hides “Thank you” banner'),
       '#default_value' => $config->get('popup_hide_agreed'),
-      '#description' => $this->t('Clicking a link or button hides the thank you message automatically.'),
+      '#description' => $this->t('Clicking a link or button hides the “Thank you” message automatically.'),
     );
 
     $form['thank_you']['popup_agreed'] = array(
       '#type' => 'text_format',
-      '#title' => $this->t('Thank you banner message'),
+      '#title' => $this->t('“Thank you” banner message'),
       '#default_value' => !empty($config->get('popup_agreed')['value']) ? $config->get('popup_agreed')['value'] : '',
       '#required' => TRUE,
       '#format' => !empty($config->get('popup_agreed')['format']) ? $config->get('popup_agreed')['format'] : $default_filter_format,
@@ -372,7 +372,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $form['advanced']['disagree_do_not_show_popup'] = array(
       '#type' => 'checkbox',
-      '#title' => $this->t('Do not show cookie policy when the user clicks the “Disagree” button.'),
+      '#title' => $this->t('Don’t show cookie policy when the user clicks the “Disagree” button.'),
       '#default_value' => !empty($config->get('disagree_do_not_show_popup')) ? $config->get('disagree_do_not_show_popup') : 0,
       '#description' => $this->t('Enabling this will make it possible to record the fact that the user disagrees without the user having to see the privacy policy.'),
     );
