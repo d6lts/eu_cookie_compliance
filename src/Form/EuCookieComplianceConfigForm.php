@@ -161,14 +161,14 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $form['popup_message']['disagree_button'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Show “Disagree” and “More info” buttons'),
-      '#description' => $this->t('If this option is checked, the disagree button will be shown on the site. Disabling this option will hide both the “Disagree” button on the information banner and the “More info” button on the “Thank you” banner.'),
+      '#title' => $this->t('Show “Cookie Policy” and “More info” buttons'),
+      '#description' => $this->t('If this option is checked, the cookie policy button will be shown on the site. Disabling this option will hide both the “Cookie Policy” button on the information banner and the “More info” button on the “Thank you” banner.'),
       '#default_value' => $config->get('show_disagree_button'),
     ];
 
     $form['popup_message']['popup_disagree_button_message'] = array(
       '#type' => 'textfield',
-      '#title' => $this->t('Disagree button label'),
+      '#title' => $this->t('Cookie policy button label'),
       '#default_value' => $config->get('popup_disagree_button_message'),
       '#size' => 30,
       '#states' => [
@@ -372,7 +372,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $form['advanced']['disagree_do_not_show_popup'] = array(
       '#type' => 'checkbox',
-      '#title' => $this->t('Don’t show cookie policy when the user clicks the “Disagree” button.'),
+      '#title' => $this->t('Don’t show cookie policy when the user clicks the “Cookie Policy” button.'),
       '#default_value' => !empty($config->get('disagree_do_not_show_popup')) ? $config->get('disagree_do_not_show_popup') : 0,
       '#description' => $this->t('Enabling this will make it possible to record the fact that the user disagrees without the user having to see the privacy policy.'),
     );

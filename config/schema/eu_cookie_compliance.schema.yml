@@ -30,7 +30,7 @@ eu_cookie_compliance.settings:
       label: 'Agree button message'
     popup_disagree_button_message:
       type: label
-      label: 'Disagree button message'
+      label: 'Cookie Policy button message'
     popup_info:
       type: mapping
       label: 'Cookie information banner message'
@@ -93,7 +93,7 @@ eu_cookie_compliance.settings:
       label: 'Banner sliding animation time in milliseconds'
     show_disagree_button:
       type: boolean
-      label: 'Show "Disagree" and "More info" buttons'
+      label: 'Show "Cookie Policy" and "More info" buttons'
     popup_bg_hex:
       type: string
       label: 'Background Color'
@@ -126,7 +126,7 @@ eu_cookie_compliance.settings:
       label: 'Include minimal CSS, I want to style the overlay in the theme CSS'
     disagree_do_not_show_popup:
       type: boolean
-      label: 'Don’t show cookie policy when the user clicks the “Disagree” button.'
+      label: 'Don’t show cookie policy when the user clicks the “Cookie Policy” button.'
     reload_page:
       type: boolean
       label: 'Reload page after user clicks the “Agree” button.'

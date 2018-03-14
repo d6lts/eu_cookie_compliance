@@ -62,7 +62,7 @@ function eu_cookie_compliance_update_8104() {
 }
 
 /**
- * Create new config value for show or hide the disagree button.
+ * Create new config value for show or hide the cookie policy button.
  */
 function eu_cookie_compliance_update_8105() {
   \Drupal::configFactory()
