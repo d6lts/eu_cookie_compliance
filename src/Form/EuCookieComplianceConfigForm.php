@@ -331,6 +331,20 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $form_color_picker_type = 'jquery_colorpicker';
     }
 
+    $popup_position_options = [
+      'bottom' => 'Bottom',
+      'top' => 'Top',
+    ];
+
+    $popup_position_value = ($config->get('popup_position') === TRUE ? 'top' : ($config->get('popup_position') === FALSE ? 'bottom' : $config->get('popup_position')));
+
+    $form['appearance']['popup_position'] = array(
+      '#type' => 'radios',
+      '#title' => $this->t('Position'),
+      '#default_value' => $popup_position_value,
+      '#options' => $popup_position_options,
+    );
+
     $form['appearance']['use_bare_css'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Include minimal CSS, I want to style the banner in the theme CSS.'),
@@ -394,17 +408,36 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ),
     );
 
+    $form['eu_only'] = array(
+      '#type' => 'details',
+      '#open' => TRUE,
+      '#title' => t('EU countries'),
+    );
+
+    if ($this->moduleHandler->moduleExists('smart_ip') || extension_loaded('geoip')) {
+      $form['eu_only']['eu_only'] = array(
+        '#type' => 'checkbox',
+        '#title' => $this->t('Only display banner in EU countries'),
+        '#default_value' => !empty($config->get('eu_only')) ? $config->get('eu_only') : 0,
+        '#description' => $this->t('You can limit the number of countries for which the banner is displayed by checking this option. If you want to provide a list of countries other than current EU states, you may place an array in <code>$conf[\'eu_cookie_compliance_eu_countries\']</code> in your <code>settings.php</code> file. Using the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or the <a href="http://www.php.net/manual/fr/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
+      );
+      $form['eu_only']['eu_only_js'] = array(
+        '#type' => 'checkbox',
+        '#title' => $this->t('JavaScript-based (for Varnish): Only display banner in EU countries'),
+        '#default_value' => !empty($config->get('eu_only_js')) ? $config->get('eu_only_js') : 0,
+        '#description' => $this->t('This option also works for visitors that bypass Varnish. You can limit the number of countries for which the banner is displayed by checking this option. If you want to provide a list of countries other than current EU states, you may place an array in <code>$conf[\'eu_cookie_compliance_eu_countries\']</code> in your <code>settings.php</code> file. Using the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or the <a href="http://www.php.net/manual/fr/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
+      );
+    }
+    else {
+      $form['eu_only']['info'] = array(
+        '#markup' => t('You can choose to show the banner only to visitors from EU countries. In order to achieve this, you need to install the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or enable the <a href="http://www.php.net/manual/fr/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
+      );
+    }
+
     $form['advanced'] = array(
       '#type' => 'details',
       '#open' => FALSE,
       '#title' => $this->t('Advanced'),
-    );
-
-    $form['advanced']['popup_position'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Place the banner at the top of the website'),
-      '#default_value' => $config->get('popup_position'),
-      '#description' => $this->t('By default the banner appears at the bottom of the website. Tick this box if you want it to appear at the top.'),
     );
 
     $form['advanced']['fixed_top_position'] = array(
@@ -413,21 +446,6 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('fixed_top_position'),
       '#description' => $this->t('Use position:fixed for the banner when displayed at the top.'),
     );
-
-    if ($this->moduleHandler->moduleExists('smart_ip') || extension_loaded('geoip')) {
-      $form['advanced']['eu_only'] = array(
-        '#type' => 'checkbox',
-        '#title' => $this->t('Only display banner in EU countries'),
-        '#default_value' => !empty($config->get('eu_only')) ? $config->get('eu_only') : 0,
-        '#description' => $this->t('You can limit the number of countries for which the banner is displayed by checking this option. If you want to provide a list of countries other than current EU states, you may place an array in <code>$conf[\'eu_cookie_compliance_eu_countries\']</code> in your <code>settings.php</code> file. Using the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or the <a href="http://www.php.net/manual/fr/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
-      );
-      $form['advanced']['eu_only_js'] = array(
-        '#type' => 'checkbox',
-        '#title' => $this->t('JavaScript-based (for Varnish): Only display banner in EU countries'),
-        '#default_value' => !empty($config->get('eu_only_js')) ? $config->get('eu_only_js') : 0,
-        '#description' => $this->t('This option also works for visitors that bypass Varnish. You can limit the number of countries for which the banner is displayed by checking this option. If you want to provide a list of countries other than current EU states, you may place an array in <code>$conf[\'eu_cookie_compliance_eu_countries\']</code> in your <code>settings.php</code> file. Using the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or the <a href="http://www.php.net/manual/fr/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
-      );
-    }
 
     $form['advanced']['popup_delay'] = array(
       '#type' => 'number',
@@ -571,6 +589,14 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
           user_role_revoke_permissions($role_name, [$permission_name]);
         }
       }
+    }
+
+    // Handle legacy settings for popup_position:
+    if ($form_state->getValue('popup_position') == 'top') {
+      $form_state->setValue('popup_position', TRUE);
+    }
+    elseif ($form_state->getValue('popup_position') == 'bottom') {
+      $form_state->setValue('popup_position', FALSE);
     }
 
     // Save settings.

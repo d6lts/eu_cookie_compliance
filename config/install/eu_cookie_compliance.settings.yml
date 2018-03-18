@@ -33,7 +33,7 @@ mobile_breakpoint: 768
 popup_link: '<front>'
 popup_link_new_window: true
 popup_position: false
-fixed_top_position: false
+fixed_top_position: true
 popup_text_hex: 'ffffff'
 popup_width: '100%'
 use_bare_css: false
