@@ -10,6 +10,8 @@ use Drupal\Core\Url;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Routing\RequestContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\user\RoleStorageInterface;
 
 /**
  * Provides settings for eu_cookie_compliance module.
@@ -31,6 +33,20 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
   protected $requestContext;
 
   /**
+   * The role storage.
+   *
+   * @var \Drupal\user\RoleStorageInterface
+   */
+  protected $roleStorage;
+
+  /**
+   * The module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
    * Constructs an EuCookieComplianceConfigForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -39,12 +55,18 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
    *   The path validator.
    * @param \Drupal\Core\Routing\RequestContext $request_context
    *   The request context.
+   * @param \Drupal\user\RoleStorageInterface $role_storage
+   *   The role storage.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, PathValidatorInterface $path_validator, RequestContext $request_context) {
+  public function __construct(ConfigFactoryInterface $config_factory, PathValidatorInterface $path_validator, RequestContext $request_context, RoleStorageInterface $role_storage, ModuleHandlerInterface $module_handler) {
     parent::__construct($config_factory);
 
     $this->pathValidator = $path_validator;
     $this->requestContext = $request_context;
+    $this->roleStorage = $role_storage;
+    $this->moduleHandler = $module_handler;
   }
 
   /**
@@ -54,7 +76,9 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('path.validator'),
-      $container->get('router.request_context')
+      $container->get('router.request_context'),
+      $container->get('entity.manager')->getStorage('user_role'),
+      $container->get('module_handler')
     );
   }
 
@@ -63,6 +87,16 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
    */
   public function getFormId() {
     return 'eu_cookie_compliance_config_form';
+  }
+
+  /**
+   * Gets the roles to display in this form.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   An array of role objects.
+   */
+  protected function getRoles() {
+    return $this->roleStorage->loadMultiple();
   }
 
   /**
@@ -86,15 +120,46 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $default_filter_format = 'full_html';
     }
 
-    $form['info'] = array(
-      '#markup' => $this->t('<p><strong>Note:</strong> <ul><li>The permission “Display EU Cookie Compliance banner" needs to be enabled for Anonymous and Authenticated users in order for the banner to appear.</li><li>In order for the module to work, <code>js-placeholder</code> needs to be output before <code>js-bottom-placeholder</code> in your <code>html.html.twig</code>.</li></ul></p>'),
-    );
-
     $form['popup_enabled'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Enable banner'),
       '#default_value' => $config->get('popup_enabled'),
     );
+
+    // List of checkbox values.
+    $role_names = [];
+    // Permissions per role.
+    $role_permissions = [];
+    // Which checkboxes should be ticked.
+    $role_values = [];
+
+    $perm = 'display eu cookie compliance popup';
+
+    foreach ($this->getRoles() as $role_name => $role) {
+      // Exclude Admin roles.
+      if (!$role->isAdmin()) {
+        $role_names[$role_name] = $role->label();
+        // Fetch permissions for the roles.
+        $role_permissions[$role_name] = $role->getPermissions();
+        // Indicate whether the checkbox should be ticked.
+        if (in_array($perm, $role_permissions[$role_name])) {
+          $role_values[] = $role_name;
+        }
+      }
+    }
+
+    $form['permissions'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Permissions'),
+      '#open' => TRUE,
+    ];
+
+    $form['permissions']['see_the_banner'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Display the banner for'),
+      '#options' => $role_names,
+      '#default_value' => $role_values,
+    ];
 
     $form['popup_message'] = array(
       '#type' => 'details',
@@ -486,6 +551,21 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $form_state->setValue('use_mobile_message', FALSE);
     }
 
+    // Save permissions.
+    $permission_name = 'display eu cookie compliance popup';
+
+    foreach ($this->getRoles() as $role_name => $role) {
+      if (!$role->isAdmin()) {
+        if (array_key_exists($role_name, $form_state->getValue('see_the_banner')) && $form_state->getValue('see_the_banner')[$role_name]) {
+          user_role_grant_permissions($role_name, [$permission_name]);
+        }
+        else {
+          user_role_revoke_permissions($role_name, [$permission_name]);
+        }
+      }
+    }
+
+    // Save settings.
     $this->config('eu_cookie_compliance.settings')
       ->set('domain', $form_state->getValue('domain'))
       ->set('popup_enabled', $form_state->getValue('popup_enabled'))

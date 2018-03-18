@@ -18,7 +18,7 @@ popup_scrolling_confirmation: false
 popup_delay: 1000
 show_disagree_button: true
 popup_disagree_button_message: 'Give me more info'
-popup_enabled: false
+popup_enabled: true
 popup_find_more_button_message: 'More info'
 popup_height: 0
 popup_hide_agreed: false
@@ -30,7 +30,7 @@ mobile_popup_info:
   value: '<h2>We use cookies on this site to enhance your user experience</h2><p>By tapping any link on this page you are giving your consent for us to set cookies.</p>'
   format: 'restricted_html'
 mobile_breakpoint: 768
-popup_link: ''
+popup_link: '<front>'
 popup_link_new_window: true
 popup_position: false
 fixed_top_position: false

@@ -5,9 +5,18 @@
  * Update scripts for the EU Cookie Compliance module.
  */
 
+use Drupal\user\Entity\Role;
+
 /**
- * Implementations of hook_update_N().
+ * Implements hook_install().
  */
+function eu_cookie_compliance_install() {
+  $roles = Role::loadMultiple();
+  $permission = 'display eu cookie compliance popup';
+  foreach ($roles as $rid => $role) {
+    user_role_grant_permissions($rid, [$permission]);
+  }
+}
 
 /**
  * Force default value for "cookie_lifetime" item.
