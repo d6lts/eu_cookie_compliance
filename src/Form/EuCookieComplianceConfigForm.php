@@ -163,7 +163,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $form['popup_message'] = array(
       '#type' => 'details',
-      '#title' => $this->t('Cookie information banner message'),
+      '#title' => $this->t('Cookie information banner'),
       '#open' => TRUE,
     );
 
@@ -326,7 +326,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $form_color_picker_type = 'textfield';
 
-    if (\Drupal::moduleHandler()->moduleExists('jquery_colorpicker')) {
+    if ($this->moduleHandler->moduleExists('jquery_colorpicker')) {
       $form_color_picker_type = 'jquery_colorpicker';
     }
 
@@ -410,7 +410,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('Use position:fixed for the banner when displayed at the top.'),
     );
 
-    if (\Drupal::moduleHandler()->moduleExists('smart_ip') || extension_loaded('geoip')) {
+    if ($this->moduleHandler->moduleExists('smart_ip') || extension_loaded('geoip')) {
       $form['advanced']['eu_only'] = array(
         '#type' => 'checkbox',
         '#title' => $this->t('Only display banner in EU countries'),
