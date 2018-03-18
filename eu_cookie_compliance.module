@@ -314,8 +314,7 @@ function _eu_cookie_compliance_find_privacy_policy() {
 
   $result = $query->execute();
   if (!empty($result)) {
-    $nodes = array_keys($result);
-    return ('node/' . array_shift($nodes));
+    return ('node/' . array_shift($result));
   }
   return FALSE;
 }
