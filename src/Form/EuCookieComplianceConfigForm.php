@@ -12,6 +12,7 @@ use Drupal\Core\Routing\RequestContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\user\RoleStorageInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 
 /**
  * Provides settings for eu_cookie_compliance module.
@@ -47,6 +48,13 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
   protected $moduleHandler;
 
   /**
+   * The message handler.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messageHandler;
+
+  /**
    * Constructs an EuCookieComplianceConfigForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -59,14 +67,17 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
    *   The role storage.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
+   * @param \Drupal\Core\Messenger\MessengerInterface $message_handler
+   *   The message handler interface.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, PathValidatorInterface $path_validator, RequestContext $request_context, RoleStorageInterface $role_storage, ModuleHandlerInterface $module_handler) {
+  public function __construct(ConfigFactoryInterface $config_factory, PathValidatorInterface $path_validator, RequestContext $request_context, RoleStorageInterface $role_storage, ModuleHandlerInterface $module_handler, MessengerInterface $message_handler) {
     parent::__construct($config_factory);
 
     $this->pathValidator = $path_validator;
     $this->requestContext = $request_context;
     $this->roleStorage = $role_storage;
     $this->moduleHandler = $module_handler;
+    $this->messageHandler = $message_handler;
   }
 
   /**
@@ -78,7 +89,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $container->get('path.validator'),
       $container->get('router.request_context'),
       $container->get('entity.manager')->getStorage('user_role'),
-      $container->get('module_handler')
+      $container->get('module_handler'),
+      $container->get('messenger')
     );
   }
 
@@ -553,6 +565,10 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     // If there's no mobile message entered, disable the feature.
     if (trim($form_state->getValue('mobile_popup_info')['value']) == '') {
       $form_state->setValue('use_mobile_message', FALSE);
+    }
+
+    if ($form_state->getValue('popup_link') == '<front>') {
+      $this->messageHandler->addMessage($this->t('Your privacy policy link is pointing at the front page. This is the default value after installation, and unless your privacy policy is actually posted at the front page, you will need to create a separate page for the privacy policy and link to that page.'), 'error');
     }
 
     // Save permissions.
