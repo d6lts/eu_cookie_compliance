@@ -555,7 +555,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $form_state->setValue('use_mobile_message', FALSE);
     }
 
-    if ($form_state->getValue('popup_link') == '<front>') {
+    if ($form_state->getValue('popup_link') == '<front>' && $form_state->getValue('disagree_button')) {
       drupal_set_message($this->t('Your privacy policy link is pointing at the front page. This is the default value after installation, and unless your privacy policy is actually posted at the front page, you will need to create a separate page for the privacy policy and link to that page.'), 'error');
     }
 

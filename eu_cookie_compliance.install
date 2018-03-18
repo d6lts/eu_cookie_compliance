@@ -24,8 +24,9 @@ function eu_cookie_compliance_install() {
 function eu_cookie_compliance_requirements($phase) {
   $requirements = array();
   $popup_link = Drupal::config('eu_cookie_compliance.settings')->get('popup_link');
+  $show_policy = Drupal::config('eu_cookie_compliance.settings')->get('show_disagree_button');
 
-  if ($popup_link == '<front>') {
+  if ($popup_link == '<front>' && $show_policy) {
     $requirements['eu_cookie_compliance'] = array(
       'title' => t('EU Cookie Compliance'),
       'severity' => REQUIREMENT_ERROR,
