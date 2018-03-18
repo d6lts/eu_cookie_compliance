@@ -299,3 +299,23 @@ function eu_cookie_compliance_user_in_eu() {
     'in_eu' => $geoip_match,
   );
 }
+
+/**
+ * Attempt to find the cookie/privacy policy by searching for common titles.
+ *
+ * @return bool|string
+ *   URL to the node if found, otherwise FALSE.
+ */
+function _eu_cookie_compliance_find_privacy_policy() {
+  $pattern = 'privacy|privacy +policy|cookie +policy|terms +of +use|terms +of +service|terms +and +conditions';
+
+  $query = \Drupal::entityQuery('node')
+    ->condition('title', $pattern, 'RLIKE');
+
+  $result = $query->execute();
+  if (!empty($result)) {
+    $nodes = array_keys($result);
+    return ('node/' . array_shift($nodes));
+  }
+  return FALSE;
+}

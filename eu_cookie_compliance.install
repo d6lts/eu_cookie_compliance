@@ -16,6 +16,14 @@ function eu_cookie_compliance_install() {
   foreach ($roles as $rid => $role) {
     user_role_grant_permissions($rid, [$permission]);
   }
+
+  $cookie_policy = _eu_cookie_compliance_find_privacy_policy();
+  if ($cookie_policy != FALSE) {
+    \Drupal::configFactory()
+      ->getEditable('eu_cookie_compliance.settings')
+      ->set('popup_link', $cookie_policy)
+      ->save();
+  }
 }
 
 /**
