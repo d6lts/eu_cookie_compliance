@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\example\Routing\CheckIfEuCountryJs.
- */
 
 namespace Drupal\eu_cookie_compliance\Routing;
 

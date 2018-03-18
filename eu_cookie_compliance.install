@@ -44,15 +44,15 @@ function eu_cookie_compliance_update_8102() {
  */
 function eu_cookie_compliance_update_8103() {
   $mobile_popup_info = \Drupal::configFactory()
-                                      ->get('eu_cookie_compliance.settings')
-                                      ->get('mobile_popup_info');
+    ->get('eu_cookie_compliance.settings')
+    ->get('mobile_popup_info');
   if (!is_array($mobile_popup_info) && $mobile_popup_info == '') {
     \Drupal::configFactory()
-           ->getEditable('eu_cookie_compliance.settings')
-           ->set('mobile_popup_info', [
-             'value' => '',
-             'format' => filter_default_format(),
-           ])->save();
+      ->getEditable('eu_cookie_compliance.settings')
+      ->set('mobile_popup_info', [
+        'value' => '',
+        'format' => filter_default_format(),
+      ])->save();
   }
 }
 
@@ -61,12 +61,12 @@ function eu_cookie_compliance_update_8103() {
  */
 function eu_cookie_compliance_update_8104() {
   $popup_delay = \Drupal::configFactory()
-                        ->get('eu_cookie_compliance.settings')
-                        ->get('popup_delay');
+    ->get('eu_cookie_compliance.settings')
+    ->get('popup_delay');
   if ($popup_delay < 10) {
     \Drupal::configFactory()
-           ->getEditable('eu_cookie_compliance.settings')
-           ->set('popup_delay', $popup_delay * 1000)->save();
+      ->getEditable('eu_cookie_compliance.settings')
+      ->set('popup_delay', $popup_delay * 1000)->save();
   }
 }
 
@@ -75,7 +75,7 @@ function eu_cookie_compliance_update_8104() {
  */
 function eu_cookie_compliance_update_8105() {
   \Drupal::configFactory()
-         ->getEditable('eu_cookie_compliance.settings')
-         ->set('show_disagree_button', TRUE)
-         ->save();
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('show_disagree_button', TRUE)
+    ->save();
 }

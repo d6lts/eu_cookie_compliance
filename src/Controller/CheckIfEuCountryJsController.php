@@ -1,8 +1,5 @@
 <?php
-/**
- * @file
- * Contains \Drupal\example\Controller\CheckIfEuCountryJsController.
- */
+
 namespace Drupal\eu_cookie_compliance\Controller;
 
 use Drupal\Core\Controller\ControllerBase;

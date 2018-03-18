@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Hooks specific to the EU Cookie Compliance module.

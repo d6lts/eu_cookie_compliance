@@ -190,7 +190,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $form['popup_message']['container'] = array(
       '#type' => 'container',
-      '#states' => array('visible' => array('input[name="use_mobile_message"]' => array('checked' => true))),
+      '#states' => array('visible' => array('input[name="use_mobile_message"]' => array('checked' => TRUE))),
     );
 
     $form['popup_message']['container']['mobile_popup_info'] = array(
@@ -212,7 +212,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('The mobile message will be used when the window width is below or equal to the given value.'),
       '#states' => array(
         'visible' => array(
-          "input[name='use_mobile_message']" => array('checked' => TRUE)),
+          "input[name='use_mobile_message']" => array('checked' => TRUE),
+        ),
       ),
     );
 
@@ -345,7 +346,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#element_validate' => array('eu_cookie_compliance_validate_hex'),
       '#states' => array(
         'visible' => array(
-          "input[name='use_bare_css']" => array('checked' => FALSE)),
+          "input[name='use_bare_css']" => array('checked' => FALSE),
+        ),
       ),
     );
 
@@ -357,7 +359,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#element_validate' => array('eu_cookie_compliance_validate_hex'),
       '#states' => array(
         'visible' => array(
-          "input[name='use_bare_css']" => array('checked' => FALSE)),
+          "input[name='use_bare_css']" => array('checked' => FALSE),
+        ),
       ),
     );
 
@@ -372,7 +375,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('Enter an integer value for a desired height in pixels or leave empty for automatically adjusted height.'),
       '#states' => array(
         'visible' => array(
-          "input[name='use_bare_css']" => array('checked' => FALSE)),
+          "input[name='use_bare_css']" => array('checked' => FALSE),
+        ),
       ),
     );
 
