@@ -17,7 +17,7 @@ eu_cookie_compliance_bare:
     js/eu_cookie_compliance.js: {}
   css:
     state:
-      css/eu_cookie_compliance_bare.css: {}
+      css/eu_cookie_compliance.bare.css: {}
   dependencies:
     - core/jquery
     - core/drupal
