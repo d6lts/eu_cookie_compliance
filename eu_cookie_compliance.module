@@ -15,6 +15,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\smart_ip\SmartIp;
+use Drupal\Core\Database\Database;
 
 /**
  * Implements hook_help().
@@ -309,8 +310,23 @@ function eu_cookie_compliance_user_in_eu() {
 function _eu_cookie_compliance_find_privacy_policy() {
   $pattern = 'privacy|privacy +policy|cookie +policy|terms +of +use|terms +of +service|terms +and +conditions';
 
+  $connection = Database::getConnection();
+  // Select operator based on the database type.
+  switch ($connection->databaseType()) {
+    case 'pgsql':
+      $op = '~*';
+      break;
+
+    case 'sqlite':
+      $op = 'REGEXP';
+      break;
+
+    default:
+      $op = 'RLIKE';
+  }
+
   $query = \Drupal::entityQuery('node')
-    ->condition('title', $pattern, 'RLIKE');
+    ->condition('title', $pattern, $op);
 
   $result = $query->execute();
   if (!empty($result)) {
