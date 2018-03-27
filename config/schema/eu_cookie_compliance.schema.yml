@@ -25,12 +25,6 @@ eu_cookie_compliance.settings:
     fixed_top_position:
       type: boolean
       label: 'If the banner is at the top, don’t scroll the banner with the page'
-    popup_agree_button_message:
-      type: label
-      label: 'Agree button message'
-    popup_disagree_button_message:
-      type: label
-      label: 'Cookie Policy button message'
     popup_info:
       type: mapping
       label: 'Cookie information banner message'
@@ -51,6 +45,12 @@ eu_cookie_compliance.settings:
         format:
           type: string
           label: 'Cookie information banner message - mobile - Format'
+    popup_agree_button_message:
+      type: label
+      label: 'Agree button message'
+    popup_disagree_button_message:
+      type: label
+      label: 'Cookie Policy button message'
     mobile_breakpoint:
       type: integer
       label: 'Mobile breakpoint'
@@ -60,12 +60,9 @@ eu_cookie_compliance.settings:
     popup_hide_agreed:
       type: boolean
       label: 'Clicking hides “Thank you” banner'
-    popup_find_more_button_message:
+    disagree_button_label:
       type: label
-      label: 'More info button label'
-    popup_hide_button_message:
-      type: label
-      label: 'Hide button label'
+      label: 'Disagree button label'
     popup_agreed:
       type: mapping
       label: 'Thank you banner message'
@@ -76,6 +73,12 @@ eu_cookie_compliance.settings:
         format:
           type: string
           label: 'Thank you banner message - Format'
+    popup_find_more_button_message:
+      type: label
+      label: 'More info button label'
+    popup_hide_button_message:
+      type: label
+      label: 'Hide button label'
     popup_link:
       type: label
       label: 'Privacy policy link'
@@ -107,10 +110,10 @@ eu_cookie_compliance.settings:
       type: integer
       label: 'Add/Remove banner on specified domains'
     domains_list:
-      type: text
+      type: string
       label: 'Domains list'
     exclude_paths:
-      type: text
+      type: string
       label: 'Exclude paths'
     exclude_admin_theme:
       type: boolean
@@ -139,3 +142,12 @@ eu_cookie_compliance.settings:
     better_support_for_screen_readers:
       type: boolean
       label: 'Let screen readers see the banner before other links on the page'
+    mehod:
+      type: string
+      label: 'Consent method'
+    disabled_javascripts:
+      type: string
+      label: 'Disable JavaScripts'
+    whitelisted_cookies:
+      type: string
+      label: 'Whitelisted cookies'

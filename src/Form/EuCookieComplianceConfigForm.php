@@ -161,6 +161,64 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#default_value' => $role_values,
     ];
 
+    $form['consent_option'] = array(
+      '#type' => 'details',
+      '#title' => $this->t('Consent for processing of personal information'),
+      '#open' => TRUE,
+    );
+
+    $form['consent_option']['info'] = array(
+      '#type' => 'markup',
+      '#markup' => $this->t('The EU General Data Protection Regulation (GDPR) (see <a href="https://www.eugdpr.org/" target="_blank">https://www.eugdpr.org/</a>) comes into enforcement from 25 May 2018 and introduces new requirements for web sites which handle information that can be used to identify individuals. The regulation underlines that consent must be <strong>unambiguous</strong> and involve a <strong>clear affirmative action</strong>. When evaluating how to best handle the requirements in the GDPR, remember that if you have a basic web site where the visitors don’t log in, you always have the option to <strong>not process data that identifies individuals</strong>, in which case you may not need this module. Also note that GDPR applies to any electronic processing or storage of personal data that your organization may do, and simply installing a module may not be enough to become fully GDPR compliant.'),
+    );
+
+    $form['consent_option']['method'] = array(
+      '#type' => 'radios',
+      '#title' => $this->t('Consent method'),
+      '#options' => [
+        'default' => $this->t('Consent by default. Don’t provide any option to opt out.'),
+        'opt_in' => $this->t('Opt-in. Don’t track visitors unless they specifically give consent. (GDPR compliant)'),
+        'opt_out' => $this->t('Opt-out. Track visitors by default, unless they choose to opt out.'),
+      ],
+      '#default_value' => $config->get('method'),
+    );
+
+    $form['javascripts'] = array(
+      '#type' => 'details',
+      '#title' => $this->t('Disable the following Javascripts when consent isn’t given'),
+      '#open' => TRUE,
+      '#states' => array(
+        'visible' => array(
+          "input[name='method']" => array('!value' => 'default'),
+        ),
+      ),
+    );
+
+    $form['javascripts']['disabled_javascripts'] = array(
+      '#type' => 'textarea',
+      '#title' => $this->t('Disable JavaScripts'),
+      '#default_value' => $config->get('disabled_javascripts'),
+      '#description' => $this->t('Include the full path of JavaScripts, each on a separate line. When using the opt-in or opt-out consent options, you can block certain JavaScript files from being loaded when consent isn’t given. The on-site JavaScripts should be written as root relative paths <strong>without the leading slash</strong>, and off-site JavaScripts should be written as complete URLs <strong>with the leading http(s)://</strong>. Note that after the user gives consent, the scripts will be executed in the order you enter here.'),
+    );
+
+    $form['cookies'] = array(
+      '#type' => 'details',
+      '#title' => $this->t('Cookie handling'),
+      '#open' => TRUE,
+      '#states' => array(
+        'visible' => array(
+          "input[name='method']" => array('!value' => 'default'),
+        ),
+      ),
+    );
+
+    $form['cookies']['whitelisted_cookies'] = array(
+      '#type' => 'textarea',
+      '#title' => $this->t('Whitelisted cookies'),
+      '#default_value' => $config->get('whitelisted_cookies'),
+      '#description' => $this->t('Include the name of cookies, each on a separate line. When using the opt-in or opt-out consent options, this module will <strong>prevent cookies that are not on the whitelist</strong> from being stored in the browser when consent isn’t given. PHP session cookies and the cookie for this module are always whitelisted.'),
+    );
+
     $form['popup_message'] = array(
       '#type' => 'details',
       '#title' => $this->t('Cookie information banner'),
@@ -172,6 +230,11 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#title' => $this->t('Consent by clicking'),
       '#default_value' => $config->get('popup_clicking_confirmation'),
       '#description' => $this->t('By default by clicking any link or button on the website the visitor accepts the cookie policy. Uncheck this box if you don’t require this functionality. You may want to edit the banner message below accordingly.'),
+      '#states' => [
+        'visible' => [
+          'input[name="method"]' => ['value' => 'default'],
+        ],
+      ],
     );
 
     $form['popup_message']['popup_info'] = array(
@@ -230,6 +293,14 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#title' => $this->t('Show “Cookie Policy” and “More info” buttons'),
       '#description' => $this->t('If this option is checked, the cookie policy button will be shown on the site. Disabling this option will hide both the “Cookie Policy” button on the information banner and the “More info” button on the “Thank you” banner.'),
       '#default_value' => $config->get('show_disagree_button'),
+      '#states' => [
+        'visible' => array(
+          "input[name='method']" => array('value' => 'default'),
+        ),
+        'checked' => [
+          'input[name="method"]' => ['value' => 'default'],
+        ],
+      ],
     ];
 
     $form['popup_message']['popup_disagree_button_message'] = array(
@@ -239,10 +310,27 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#size' => 30,
       '#states' => [
         'visible' => [
-          'input[name="disagree_button"]' => ['checked' => TRUE],
+          ['input[name="disagree_button"]' => ['checked' => TRUE]],
+          ['input[name="method"]' => ['!value' => 'default']],
         ],
         'required' => [
-          'input[name="disagree_button"]' => ['checked' => TRUE],
+          ['input[name="disagree_button"]' => ['checked' => TRUE]],
+          ['input[name="method"]' => ['!value' => 'default']],
+        ],
+      ],
+    );
+
+    $form['popup_message']['disagree_button_label'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('Disagree button label'),
+      '#default_value' => $config->get('disagree_button_label'),
+      '#size' => 30,
+      '#states' => [
+        'visible' => [
+          'input[name="method"]' => ['!value' => 'default'],
+        ],
+        'required' => [
+          'input[name="method"]' => ['!value' => 'default'],
         ],
       ],
     );
@@ -281,10 +369,12 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#size' => 30,
       '#states' => [
         'visible' => [
-          'input[name="disagree_button"]' => ['checked' => TRUE],
+          ['input[name="disagree_button"]' => ['checked' => TRUE]],
+          ['input[name="method"]' => ['!value' => 'default']],
         ],
         'required' => [
-          'input[name="disagree_button"]' => ['checked' => TRUE],
+          ['input[name="disagree_button"]' => ['checked' => TRUE]],
+          ['input[name="method"]' => ['!value' => 'default']],
         ],
       ],
     );
@@ -475,6 +565,11 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#title' => $this->t('Consent by scrolling'),
       '#default_value' => $config->get('popup_scrolling_confirmation'),
       '#description' => $this->t('Scrolling makes the visitors to accept the cookie policy. In some countries, like Italy, it is permitted.'),
+      '#states' => [
+        'visible' => [
+          ['input[name="method"]' => ['value' => 'default']],
+        ],
+      ],
     );
 
     $form['advanced']['cookie_name'] = array(
@@ -599,6 +694,23 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $form_state->setValue('popup_position', FALSE);
     }
 
+    $method = $form_state->getValue('method');
+
+    if ($method != 'default') {
+      $form_state->setValue('disagree_button', TRUE);
+      $form_state->setValue('popup_clicking_confirmation', FALSE);
+      $form_state->setValue('popup_scrolling_confirmation', FALSE);
+
+    }
+    else {
+      $form_state->setValue('whitelisted_cookies', '');
+      $form_state->setValue('disabled_javascripts', '');
+    }
+
+    $query = \Drupal::database()->delete('cache_data');
+    $query->condition('cid', 'js:%', 'LIKE');
+    $query->execute();
+
     // Save settings.
     $this->config('eu_cookie_compliance.settings')
       ->set('domain', $form_state->getValue('domain'))
@@ -639,6 +751,10 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('exclude_uid_1', $form_state->getValue('exclude_uid_1'))
       ->set('better_support_for_screen_readers', $form_state->getValue('better_support_for_screen_readers'))
       ->set('fixed_top_position', $form_state->getValue('fixed_top_position'))
+      ->set('method', $form_state->getValue('method'))
+      ->set('disagree_button_label', $form_state->getValue('disagree_button_label'))
+      ->set('whitelisted_cookies', $form_state->getValue('whitelisted_cookies'))
+      ->set('disabled_javascripts', $form_state->getValue('disabled_javascripts'))
       ->save();
 
     parent::submitForm($form, $form_state);

@@ -51,7 +51,7 @@
       }
 
       var status = Drupal.eu_cookie_compliance.getCurrentStatus();
-      if (status === 0 || status === null) {
+      if ((status === 0 && drupalSettings.eu_cookie_compliance.method === 'default') || status === null) {
         if (!drupalSettings.eu_cookie_compliance.disagree_do_not_show_popup || status === null) {
           // Detect mobile here and use mobile_popup_html_info, if we have a mobile device.
           if (window.matchMedia('(max-width: ' + drupalSettings.eu_cookie_compliance.mobile_breakpoint + 'px)').matches && drupalSettings.eu_cookie_compliance.use_mobile_message) {
@@ -113,6 +113,7 @@
     var scrollConfirms = drupalSettings.eu_cookie_compliance.popup_scrolling_confirmation;
 
     $('.agree-button').click(Drupal.eu_cookie_compliance.acceptAction);
+    $('.decline-button').click(Drupal.eu_cookie_compliance.declineAction);
 
     if (clickingConfirms) {
       $('a, input[type=submit], button[type=submit]').bind('click.euCookieCompliance', Drupal.eu_cookie_compliance.acceptAction);
@@ -163,7 +164,20 @@
       nextStatus = 2;
     }
 
+    if (!euCookieComplianceHasLoadedScripts) {
+      euCookieComplianceLoadScripts();
+    }
+
+    if (typeof euCookieComplianceBlockCookies !== 'undefined') {
+      clearInterval(euCookieComplianceBlockCookies);
+    }
+
     Drupal.eu_cookie_compliance.changeStatus(nextStatus);
+  };
+
+  Drupal.eu_cookie_compliance.declineAction = function () {
+    Drupal.eu_cookie_compliance.setStatus(0);
+    $('#sliding-popup').animate({ bottom: $('#sliding-popup').outerHeight() * -1 }).trigger('eu_cookie_compliance_popup_close');
   };
 
   Drupal.eu_cookie_compliance.moreInfoAction = function () {
@@ -249,7 +263,7 @@
   Drupal.eu_cookie_compliance.showBanner = function () {
     var showBanner = false;
     var status = Drupal.eu_cookie_compliance.getCurrentStatus();
-    if (status === 0 || status === null) {
+    if ((status === 0 && drupalSettings.eu_cookie_compliance.method === 'default') || status === null) {
       if (!drupalSettings.eu_cookie_compliance.disagree_do_not_show_popup || status === null) {
         showBanner = true;
       }
@@ -270,8 +284,66 @@
     return (cookieEnabled);
   };
 
-  Drupal.eu_cookie_compliance.reloadPage = function () {
+  // Load blocked scripts if the user has agreed to being tracked.
+  var euCookieComplianceHasLoadedScripts = false;
+  $(function () {
+    if (Drupal.eu_cookie_compliance.hasAgreed()
+        || (Drupal.eu_cookie_compliance.getCurrentStatus() === null && drupalSettings.eu_cookie_compliance.method !== 'opt_in')
+    ) {
+      euCookieComplianceLoadScripts();
+      euCookieComplianceHasLoadedScripts = true;
+    }
+  });
 
-  };
+  // Block cookies when the user hasn't agreed.
+  if ((drupalSettings.eu_cookie_compliance.method === 'opt_in' && (Drupal.eu_cookie_compliance.getCurrentStatus() === null  || !Drupal.eu_cookie_compliance.hasAgreed()))
+      || (drupalSettings.eu_cookie_compliance.method === 'opt_out' && !Drupal.eu_cookie_compliance.hasAgreed() && Drupal.eu_cookie_compliance.getCurrentStatus() !== null)
+  ) {
+    // Split the white-listed cookies.
+    var euCookieComplianceWhitelist = drupalSettings.eu_cookie_compliance.whitelisted_cookies.split(/\r\n|\n|\r/g);
+
+    // Add the EU Cookie Compliance cookie.
+    euCookieComplianceWhitelist.push((drupalSettings.eu_cookie_compliance.cookie_name === '') ? 'cookie-agreed' : drupalSettings.eu_cookie_compliance.cookie_name);
+    var euCookieComplianceBlockCookies = setInterval(function () {
+      // Load all cookies from jQuery.
+      var cookies = $.cookie();
+
+      // Check each cookie and try to remove it if it's not white-listed.
+      for (var i in cookies) {
+        var remove = true;
+        var hostname = window.location.hostname;
+        var cookieRemoved = false;
+        var index = 0;
+
+        // Skip the PHP session cookie.
+        if (i.indexOf('SESS') === 0 || i.indexOf('SSESS') === 0) {
+          remove = false;
+        }
+
+        // Check if the cookie is white-listed.
+        for (var item in euCookieComplianceWhitelist) {
+          if (i === euCookieComplianceWhitelist[item]) {
+            remove = false;
+          }
+        }
+
+        // Remove the cookie if it's not white-listed.
+        if (remove) {
+          while (!cookieRemoved && hostname !== '') {
+            // Attempt to remove.
+            cookieRemoved = $.removeCookie(i, { domain: '.' + hostname, path: '/' });
+            if (!cookieRemoved) {
+              cookieRemoved = $.removeCookie(i, { domain: hostname, path: '/' });
+            }
+
+            index = hostname.indexOf('.');
+
+            // We can be on a sub-domain, so keep checking the main domain as well.
+            hostname = (index === -1) ? '' : hostname.substring(index + 1);
+          }
+        }
+      }
+    }, 5000);
+  }
 
 })(jQuery, Drupal, drupalSettings);

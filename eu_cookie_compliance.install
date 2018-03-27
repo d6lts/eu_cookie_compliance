@@ -111,3 +111,16 @@ function eu_cookie_compliance_update_8105() {
     ->set('show_disagree_button', TRUE)
     ->save();
 }
+
+/**
+ * Create new config value to handle consent options.
+ */
+function eu_cookie_compliance_update_8106() {
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('method', 'default')
+    ->set('disagree_button_label', 'No, thanks')
+    ->set('disabled_javascripts', '')
+    ->set('whitelisted_cookies', '')
+    ->save();
+}

@@ -29,7 +29,8 @@
   float: left;
 }
 
-.eu-cookie-compliance-agree-button,
+.eu-cookie-compliance-default-button,
+.eu-cookie-compliance-secondary-button,
 .eu-cookie-compliance-more-button,
 .eu-cookie-compliance-hide-button {
   cursor: pointer;
