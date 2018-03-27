@@ -179,6 +179,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
         'default' => $this->t('Consent by default. Don’t provide any option to opt out.'),
         'opt_in' => $this->t('Opt-in. Don’t track visitors unless they specifically give consent. (GDPR compliant)'),
         'opt_out' => $this->t('Opt-out. Track visitors by default, unless they choose to opt out.'),
+        'auto' => $this->t('Automatic. Respect the DNT (Do not track) setting in the browser, if present. Uses opt-in when DNT is 1 or not set, and consent by default when DNT is 0.'),
       ],
       '#default_value' => $config->get('method'),
     );

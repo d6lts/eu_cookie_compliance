@@ -134,6 +134,16 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
 
     $method = $config->get('method');
 
+    if ($method == 'auto') {
+      $dnt = !empty($_SERVER['HTTP_DNT']) ? $_SERVER['HTTP_DNT'] : NULL;
+      if ($dnt === 0) {
+        $method = 'default';
+      }
+      else {
+        $method = 'opt_in';
+      }
+    }
+
     switch ($method) {
       case 'default':
         $click_confirmation = $config->get('popup_clicking_confirmation');
