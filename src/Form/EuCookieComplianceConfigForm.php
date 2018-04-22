@@ -120,6 +120,17 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $default_filter_format = 'full_html';
     }
 
+    $consent_storages = \Drupal::service('plugin.manager.eu_cookie_compliance.consent_storage');
+    $plugin_definitions = $consent_storages->getDefinitions();
+
+    $consent_storage_options = [];
+    $consent_storage_options['do_not_store'] = $this->t('Do not store');
+    foreach ($plugin_definitions as $plugin_name => $plugin_definition) {
+      /* @var \Drupal\Core\StringTranslation\TranslatableMarkup $plugin_definition_name */
+      $plugin_definition_name = $plugin_definition['name'];
+      $consent_storage_options[$plugin_name] = $plugin_definition_name->render();
+    }
+
     $form['popup_enabled'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Enable banner'),
@@ -137,6 +148,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     foreach ($this->getRoles() as $role_name => $role) {
       // Exclude Admin roles.
+      /* @var \Drupal\user\Entity\Role $role */
       if (!$role->isAdmin()) {
         $role_names[$role_name] = $role->label();
         // Fetch permissions for the roles.
@@ -218,6 +230,29 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#title' => $this->t('Whitelisted cookies'),
       '#default_value' => $config->get('whitelisted_cookies'),
       '#description' => $this->t('Include the name of cookies, each on a separate line. When using the opt-in or opt-out consent options, this module will <strong>prevent cookies that are not on the whitelist</strong> from being stored in the browser when consent isn’t given. PHP session cookies and the cookie for this module are always whitelisted.'),
+    );
+
+    $form['consent_storage'] = array(
+      '#type' => 'details',
+      '#title' => $this->t('Store record of consent'),
+      '#open' => TRUE,
+      '#states' => array(
+        'visible' => array(
+          "input[name='method']" => array('!value' => 'default'),
+        ),
+      ),
+    );
+
+    $form['consent_storage']['info'] = array(
+      '#type' => 'markup',
+      '#markup' => $this->t('Depending on your implementation of GDPR, you may have to store a record when the user consents. This module comes with a basic consent storage plugin that writes a record to the database. Note that if your site has significant traffic, the basic consent storage may become a bottleneck, as every consent action will require a write to the database. You can easily create your own module with a ConsentStorage Plugin that extends ConsentStorageBase, using BasicConsentStorage from this module as a template. If you create a highly performant consent storage plugin, please consider contributing it back to the Drupal community as a contrib module.'),
+    );
+
+    $form['consent_storage']['consent_storage_method'] = array(
+      '#type' => 'radios',
+      '#title' => $this->t('Consent Storage Method'),
+      '#default_value' => $config->get('consent_storage_method'),
+      '#options' => $consent_storage_options,
     );
 
     $form['popup_message'] = array(
@@ -677,6 +712,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     $permission_name = 'display eu cookie compliance popup';
 
     foreach ($this->getRoles() as $role_name => $role) {
+      /* @var \Drupal\user\Entity\Role $role */
       if (!$role->isAdmin()) {
         if (array_key_exists($role_name, $form_state->getValue('see_the_banner')) && $form_state->getValue('see_the_banner')[$role_name]) {
           user_role_grant_permissions($role_name, [$permission_name]);
@@ -756,6 +792,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('disagree_button_label', $form_state->getValue('disagree_button_label'))
       ->set('whitelisted_cookies', $form_state->getValue('whitelisted_cookies'))
       ->set('disabled_javascripts', $form_state->getValue('disabled_javascripts'))
+      ->set('consent_storage_method', $form_state->getValue('consent_storage_method'))
       ->save();
 
     parent::submitForm($form, $form_state);
@@ -769,7 +806,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   Form state.
    */
-  public function validatePopupLink($element, FormStateInterface &$form_state) {
+  public function validatePopupLink(array $element, FormStateInterface &$form_state) {
     if (empty($element['#value'])) {
       return;
     }

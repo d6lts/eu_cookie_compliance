@@ -250,6 +250,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       'popup_link_new_window' => $config->get('popup_link_new_window'),
       'popup_position'       => $config->get('popup_position'),
       'popup_language'       => $language->getId(),
+      'store_consent'        => $config->get('consent_storage_method') != 'do_not_store',
       'better_support_for_screen_readers'         => !empty($config->get('better_support_for_screen_readers')) ? $config->get('better_support_for_screen_readers') : FALSE,
       'cookie_name'          => !empty($config->get('cookie_name')) ? $config->get('cookie_name') : '',
       'reload_page'          => !empty($config->get('reload_page')) ? $config->get('reload_page') : FALSE,
@@ -343,7 +344,7 @@ function eu_cookie_compliance_theme($existing, $type, $theme, $path) {
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Form State Interface.
  */
-function eu_cookie_compliance_validate_hex($element, FormStateInterface &$form_state) {
+function eu_cookie_compliance_validate_hex(array $element, FormStateInterface &$form_state) {
   if (!empty($element['#value']) && !preg_match('/^[0-9a-fA-F]{3,6}$/', $element['#value'])) {
     $form_state->setError($element, t('%name must be a HEX value (without leading #) or empty.', array('%name' => $element['#title'])));
   }
