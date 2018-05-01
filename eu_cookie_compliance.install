@@ -92,20 +92,19 @@ function eu_cookie_compliance_install() {
  * Implements hook_requirements().
  */
 function eu_cookie_compliance_requirements($phase) {
-  $requirements = array();
-  $popup_link = Drupal::config('eu_cookie_compliance.settings')->get('popup_link');
-  $show_policy = Drupal::config('eu_cookie_compliance.settings')->get('show_disagree_button');
+  $requirements = [];
 
-  if ($popup_link == '<front>' && $show_policy) {
-    $requirements['eu_cookie_compliance'] = array(
-      'title' => t('EU Cookie Compliance'),
-      'severity' => REQUIREMENT_ERROR,
-      'description' => t('Your privacy policy link is pointing at the front page. This is the default value after installation, and unless your privacy policy is actually posted at the front page, you will need to create a separate page for the privacy policy and link to that page.'),
-    );
-    if ($phase == 'runtime') {
-      $requirements['eu_cookie_compliance'] += array(
+  if ($phase == 'runtime') {
+    $popup_link = Drupal::config('eu_cookie_compliance.settings')->get('popup_link');
+    $show_policy = Drupal::config('eu_cookie_compliance.settings')->get('show_disagree_button');
+
+    if ($popup_link == '<front>' && $show_policy) {
+      $requirements['eu_cookie_compliance'] = [
+        'title' => t('EU Cookie Compliance'),
+        'severity' => REQUIREMENT_WARNING,
+        'description' => t('Your privacy policy link is pointing at the front page. This is the default value after installation, and unless your privacy policy is actually posted at the front page, you will need to create a separate page for the privacy policy and link to that page.'),
         'value' => t('Privacy Policy link not provided'),
-      );
+      ];
     }
   }
 
