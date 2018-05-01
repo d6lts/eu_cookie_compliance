@@ -5,6 +5,7 @@ namespace Drupal\eu_cookie_compliance\Plugin;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
+use Drupal\Component\Plugin\FallbackPluginManagerInterface;
 
 /**
  * Provides an ConsentStorage plugin manager.
@@ -13,7 +14,7 @@ use Drupal\Core\Plugin\DefaultPluginManager;
  * @see \Drupal\eu_cookie_compliance\Plugin\ConsentStorageInterface
  * @see plugin_api
  */
-class ConsentStorageManager extends DefaultPluginManager {
+class ConsentStorageManager extends DefaultPluginManager implements FallbackPluginManagerInterface {
 
   /**
    * Constructs a ConsentStorageManager object.
@@ -36,6 +37,13 @@ class ConsentStorageManager extends DefaultPluginManager {
     );
     $this->alterInfo('consent_storage_info');
     $this->setCacheBackend($cache_backend, 'consent_storage_info_plugins');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFallbackPluginId($plugin_id, array $configuration = []) {
+    return 'basic';
   }
 
 }

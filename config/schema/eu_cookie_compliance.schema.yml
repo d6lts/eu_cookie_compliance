@@ -151,3 +151,6 @@ eu_cookie_compliance.settings:
     whitelisted_cookies:
       type: string
       label: 'Whitelisted cookies'
+    consent_storage_method:
+      type: string
+      label: 'Consent storage method'

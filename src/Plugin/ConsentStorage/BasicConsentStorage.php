@@ -37,7 +37,7 @@ class BasicConsentStorage extends ConsentStorageBase {
         'uid' => $uid,
         'ip_address' => $ip_address,
         'timestamp' => $timestamp,
-        'revision_id' => $revision_id,
+        'revision_id' => $revision_id ? $revision_id : 0 ,
         'consent_type' => $consent_type,
       ]
     )->execute();

@@ -250,7 +250,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $form['consent_storage']['consent_storage_method'] = array(
       '#type' => 'radios',
-      '#title' => $this->t('Consent Storage Method'),
+      '#title' => $this->t('Consent storage method'),
       '#default_value' => $config->get('consent_storage_method'),
       '#options' => $consent_storage_options,
     );

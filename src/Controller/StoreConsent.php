@@ -21,12 +21,12 @@ class StoreConsent extends ControllerBase {
       ->get('eu_cookie_compliance.settings')
       ->get('consent_storage_method');
     // If we're not going to log consent, return NULL.
-    if ($consent_storage_method == 'do_not_store') {
+    if (!$consent_storage_method || $consent_storage_method == 'do_not_store') {
       return new JsonResponse(NULL);
     }
 
     // Get plugin.
-    /* @var \Drupal\eu_cookie_compliance\Plugin\ConsentStorage\BasicConsentStorage $consent_storage */
+    /* @var \Drupal\eu_cookie_compliance\Plugin\ConsentStorageInterface $consent_storage */
     $consent_storage = $consent_storages->createInstance($consent_storage_method);
     // Register consent.
     $result = $consent_storage->registerConsent($target);
