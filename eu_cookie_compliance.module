@@ -422,6 +422,10 @@ function _eu_cookie_compliance_explode_multiple_lines($text) {
  *   URL to the node if found, otherwise FALSE.
  */
 function _eu_cookie_compliance_find_privacy_policy() {
+  if (!\Drupal::entityTypeManager()->hasDefinition('node')) {
+    return FALSE;
+  }
+
   $pattern = 'privacy|privacy +policy|cookie +policy|terms +of +use|terms +of +service|terms +and +conditions';
 
   $connection = Database::getConnection();
