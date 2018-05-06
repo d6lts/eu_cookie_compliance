@@ -86,8 +86,12 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
   $path_match = FALSE;
 
   if (!empty($config->get('exclude_paths'))) {
+    // Check both the URL path and the URL alias against the list to exclude.
     $path = Drupal::service('path.current')->getPath();
+    $url_alias_path = \Drupal::service('path.alias_manager')->getAliasByPath($path);
     $path_match = Drupal::service('path.matcher')->matchPath($path, $config->get('exclude_paths'));
+    $path_match_url_alias = Drupal::service('path.matcher')->matchPath($url_alias_path, $config->get('exclude_paths'));
+    $path_match = $path_match || $path_match_url_alias;
     $exclude_paths = $config->get('exclude_paths');
     Drupal::moduleHandler()->alter('eu_cookie_compliance_path_match', $path_match, $path, $exclude_paths);
   }
