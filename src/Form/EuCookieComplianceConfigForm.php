@@ -279,7 +279,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#title' => $this->t('Cookie information banner message'),
       '#default_value' => $config->get('popup_info.value'),
       '#required' => TRUE,
-      '#format' => !empty($config->get('popup_info.format')) ? $config->get('popup_info.format') : $default_filter_format,
+      '#format' => !empty($config->get('popup_info.format')) && FilterFormat::load($config->get('popup_info.format')) ? $config->get('popup_info.format') : $default_filter_format,
     ];
 
     $form['popup_message']['use_mobile_message'] = [
@@ -298,7 +298,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#title' => $this->t('Cookie information banner message - mobile'),
       '#default_value' => $config->get('mobile_popup_info.value'),
       '#required' => FALSE,
-      '#format' => !empty($config->get('mobile_popup_info.format')) ? $config->get('mobile_popup_info.format') : $default_filter_format,
+      '#format' => !empty($config->get('mobile_popup_info.format')) && FilterFormat::load($config->get('mobile_popup_info.format')) ? $config->get('mobile_popup_info.format') : $default_filter_format,
     ];
 
     $form['popup_message']['mobile_breakpoint'] = [
@@ -396,7 +396,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#title' => $this->t('“Thank you” banner message'),
       '#default_value' => !empty($config->get('popup_agreed')['value']) ? $config->get('popup_agreed')['value'] : '',
       '#required' => TRUE,
-      '#format' => !empty($config->get('popup_agreed')['format']) ? $config->get('popup_agreed')['format'] : $default_filter_format,
+      '#format' => !empty($config->get('popup_agreed')['format']) && FilterFormat::load($config->get('popup_info.format')) ? $config->get('popup_agreed')['format'] : $default_filter_format,
     ];
 
     $form['thank_you']['popup_find_more_button_message'] = [
