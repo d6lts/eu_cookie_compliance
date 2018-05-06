@@ -12,6 +12,7 @@ use Drupal\Core\Routing\RequestContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\user\RoleStorageInterface;
+use Drupal\filter\Entity\FilterFormat;
 
 /**
  * Provides settings for eu_cookie_compliance module.
@@ -116,7 +117,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     $config = $this->config('eu_cookie_compliance.settings');
 
     $default_filter_format = filter_default_format();
-    if ($default_filter_format == 'restricted_html') {
+    if ($default_filter_format == 'restricted_html' && FilterFormat::load('full_html')) {
       $default_filter_format = 'full_html';
     }
 
