@@ -68,7 +68,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
   if (!empty($config->get('domains_list'))) {
     global $base_url;
 
-    $domains_list = str_replace(array("\r\n", "\r"), "\n", $config->get('domains_list'));
+    $domains_list = str_replace(["\r\n", "\r"], "\n", $config->get('domains_list'));
     $domains_list = explode("\n", $domains_list);
     $domains_list = preg_replace('{/$}', '', $domains_list);
     $domain_match = in_array($base_url, $domains_list);
@@ -173,9 +173,9 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
         break;
     }
 
-    $popup_text_info = str_replace(array("\r", "\n"), '', $config->get('popup_info.value'));
-    $popup_text_agreed = str_replace(array("\r", "\n"), '', $config->get('popup_agreed.value'));
-    $html_info = array(
+    $popup_text_info = str_replace(["\r", "\n"], '', $config->get('popup_info.value'));
+    $popup_text_agreed = str_replace(["\r", "\n"], '', $config->get('popup_agreed.value'));
+    $html_info = [
       '#theme' => 'eu_cookie_compliance_popup_info',
       '#message' => check_markup($popup_text_info, $config->get('popup_info.format'), FALSE),
       '#agree_button' => $primary_button_label,
@@ -183,9 +183,9 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       '#secondary_button_label' => $secondary_button_label,
       '#primary_button_class' => $primary_button_class,
       '#secondary_button_class' => $secondary_button_class,
-    );
-    $mobile_popup_text_info = str_replace(array("\r", "\n"), '', $config->get('mobile_popup_info.value'));
-    $mobile_html_info = array(
+    ];
+    $mobile_popup_text_info = str_replace(["\r", "\n"], '', $config->get('mobile_popup_info.value'));
+    $mobile_html_info = [
       '#theme' => 'eu_cookie_compliance_popup_info',
       '#message' => check_markup($mobile_popup_text_info, $config->get('popup_info.format'), FALSE),
       '#agree_button' => $primary_button_label,
@@ -193,13 +193,13 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       '#secondary_button_label' => $secondary_button_label,
       '#primary_button_class' => $primary_button_class,
       '#secondary_button_class' => $secondary_button_class,
-    );
-    $html_agreed = array(
+    ];
+    $html_agreed = [
       '#theme' => 'eu_cookie_compliance_popup_agreed',
       '#message' => check_markup($popup_text_agreed, $config->get('popup_agreed.format'), FALSE),
       '#hide_button' => $config->get('popup_hide_button_message'),
       '#find_more_button' => ($config->get('show_disagree_button') == TRUE) ? $config->get('popup_find_more_button_message') : FALSE,
-    );
+    ];
 
     $was_debugging = FALSE;
 
@@ -231,7 +231,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     }
     $popup_link = $popup_link->toString();
 
-    $data['variables'] = array(
+    $data['variables'] = [
       'popup_enabled'        => $config->get('popup_enabled'),
       'popup_agreed_enabled' => $config->get('popup_agreed_enabled'),
       'popup_hide_agreed'    => $config->get('popup_hide_agreed'),
@@ -260,7 +260,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       'disagree_do_not_show_popup' => !empty($config->get('disagree_do_not_show_popup')) ? $config->get('disagree_do_not_show_popup') : FALSE,
       'method'               => $method,
       'whitelisted_cookies'  => !empty($config->get('whitelisted_cookies')) ? $config->get('whitelisted_cookies') : '',
-    );
+    ];
 
     $attachments['#attached']['drupalSettings']['eu_cookie_compliance'] = $data['variables'];
     if ($config->get('use_bare_css')) {
@@ -313,27 +313,27 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
  * Implements hook_theme().
  */
 function eu_cookie_compliance_theme($existing, $type, $theme, $path) {
-  return array(
-    'eu_cookie_compliance_popup_info' => array(
+  return [
+    'eu_cookie_compliance_popup_info' => [
       'template' => 'eu_cookie_compliance_popup_info',
-      'variables' => array(
+      'variables' => [
         'message' => NULL,
         'agree_button' => NULL,
         'disagree_button' => NULL,
         'secondary_button_label' => NULL,
         'primary_button_class' => NULL,
         'secondary_button_class' => NULL,
-      ),
-    ),
-    'eu_cookie_compliance_popup_agreed' => array(
+      ],
+    ],
+    'eu_cookie_compliance_popup_agreed' => [
       'template' => 'eu_cookie_compliance_popup_agreed',
-      'variables' => array(
+      'variables' => [
         'message' => NULL,
         'hide_button' => NULL,
         'find_more_button' => NULL,
-      ),
-    ),
-  );
+      ],
+    ],
+  ];
 }
 
 /**
@@ -346,7 +346,7 @@ function eu_cookie_compliance_theme($existing, $type, $theme, $path) {
  */
 function eu_cookie_compliance_validate_hex(array $element, FormStateInterface &$form_state) {
   if (!empty($element['#value']) && !preg_match('/^[0-9a-fA-F]{3,6}$/', $element['#value'])) {
-    $form_state->setError($element, t('%name must be a HEX value (without leading #) or empty.', array('%name' => $element['#title'])));
+    $form_state->setError($element, t('%name must be a HEX value (without leading #) or empty.', ['%name' => $element['#title']]));
   }
 }
 
@@ -355,11 +355,11 @@ function eu_cookie_compliance_validate_hex(array $element, FormStateInterface &$
  */
 function eu_cookie_compliance_user_in_eu() {
   $geoip_match = FALSE;
-  $eu_countries_default = array(
+  $eu_countries_default = [
     NULL, 'BE', 'BG', 'CZ', 'DK', 'DE', 'EE', 'IE', 'EL', 'ES', 'FR', 'HR',
     'IT', 'CY', 'LV', 'LT', 'LU', 'HU', 'MT', 'NL', 'AT', 'PL', 'PT', 'RO',
     'SI', 'SK', 'FI', 'SE', 'UK', 'GB', 'NO',
-  );
+  ];
   // Allow custom array of countries to be loaded from settings.php, defaulting
   // to the array above.
   $config = Drupal::config('eu_cookie_compliance.settings');
@@ -376,10 +376,10 @@ function eu_cookie_compliance_user_in_eu() {
     $geoip_match = TRUE;
   }
 
-  return array(
+  return [
     'country' => $country_code,
     'in_eu' => $geoip_match,
-  );
+  ];
 }
 
 /**

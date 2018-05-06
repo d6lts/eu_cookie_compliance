@@ -132,11 +132,11 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $consent_storage_options[$plugin_name] = $plugin_definition_name->render();
     }
 
-    $form['popup_enabled'] = array(
+    $form['popup_enabled'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable banner'),
       '#default_value' => $config->get('popup_enabled'),
-    );
+    ];
 
     // List of checkbox values.
     $role_names = [];
@@ -174,18 +174,18 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#default_value' => $role_values,
     ];
 
-    $form['consent_option'] = array(
+    $form['consent_option'] = [
       '#type' => 'details',
       '#title' => $this->t('Consent for processing of personal information'),
       '#open' => TRUE,
-    );
+    ];
 
-    $form['consent_option']['info'] = array(
+    $form['consent_option']['info'] = [
       '#type' => 'markup',
       '#markup' => $this->t('The EU General Data Protection Regulation (GDPR) (see <a href="https://www.eugdpr.org/" target="_blank">https://www.eugdpr.org/</a>) comes into enforcement from 25 May 2018 and introduces new requirements for web sites which handle information that can be used to identify individuals. The regulation underlines that consent must be <strong>unambiguous</strong> and involve a <strong>clear affirmative action</strong>. When evaluating how to best handle the requirements in the GDPR, remember that if you have a basic web site where the visitors don’t log in, you always have the option to <strong>not process data that identifies individuals</strong>, in which case you may not need this module. Also note that GDPR applies to any electronic processing or storage of personal data that your organization may do, and simply installing a module may not be enough to become fully GDPR compliant.'),
-    );
+    ];
 
-    $form['consent_option']['method'] = array(
+    $form['consent_option']['method'] = [
       '#type' => 'radios',
       '#title' => $this->t('Consent method'),
       '#options' => [
@@ -195,74 +195,74 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
         'auto' => $this->t('Automatic. Respect the DNT (Do not track) setting in the browser, if present. Uses opt-in when DNT is 1 or not set, and consent by default when DNT is 0.'),
       ],
       '#default_value' => $config->get('method'),
-    );
+    ];
 
-    $form['javascripts'] = array(
+    $form['javascripts'] = [
       '#type' => 'details',
       '#title' => $this->t('Disable the following Javascripts when consent isn’t given'),
       '#open' => TRUE,
-      '#states' => array(
-        'visible' => array(
-          "input[name='method']" => array('!value' => 'default'),
-        ),
-      ),
-    );
+      '#states' => [
+        'visible' => [
+          "input[name='method']" => ['!value' => 'default'],
+        ],
+      ],
+    ];
 
-    $form['javascripts']['disabled_javascripts'] = array(
+    $form['javascripts']['disabled_javascripts'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Disable JavaScripts'),
       '#default_value' => $config->get('disabled_javascripts'),
       '#description' => $this->t('Include the full path of JavaScripts, each on a separate line. When using the opt-in or opt-out consent options, you can block certain JavaScript files from being loaded when consent isn’t given. The on-site JavaScripts should be written as root relative paths <strong>without the leading slash</strong>, and off-site JavaScripts should be written as complete URLs <strong>with the leading http(s)://</strong>. Note that after the user gives consent, the scripts will be executed in the order you enter here.'),
-    );
+    ];
 
-    $form['cookies'] = array(
+    $form['cookies'] = [
       '#type' => 'details',
       '#title' => $this->t('Cookie handling'),
       '#open' => TRUE,
-      '#states' => array(
-        'visible' => array(
-          "input[name='method']" => array('!value' => 'default'),
-        ),
-      ),
-    );
+      '#states' => [
+        'visible' => [
+          "input[name='method']" => ['!value' => 'default'],
+        ],
+      ],
+    ];
 
-    $form['cookies']['whitelisted_cookies'] = array(
+    $form['cookies']['whitelisted_cookies'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Whitelisted cookies'),
       '#default_value' => $config->get('whitelisted_cookies'),
       '#description' => $this->t('Include the name of cookies, each on a separate line. When using the opt-in or opt-out consent options, this module will <strong>prevent cookies that are not on the whitelist</strong> from being stored in the browser when consent isn’t given. PHP session cookies and the cookie for this module are always whitelisted.'),
-    );
+    ];
 
-    $form['consent_storage'] = array(
+    $form['consent_storage'] = [
       '#type' => 'details',
       '#title' => $this->t('Store record of consent'),
       '#open' => TRUE,
-      '#states' => array(
-        'visible' => array(
-          "input[name='method']" => array('!value' => 'default'),
-        ),
-      ),
-    );
+      '#states' => [
+        'visible' => [
+          "input[name='method']" => ['!value' => 'default'],
+        ],
+      ],
+    ];
 
-    $form['consent_storage']['info'] = array(
+    $form['consent_storage']['info'] = [
       '#type' => 'markup',
       '#markup' => $this->t('Depending on your implementation of GDPR, you may have to store a record when the user consents. This module comes with a basic consent storage plugin that writes a record to the database. Note that if your site has significant traffic, the basic consent storage may become a bottleneck, as every consent action will require a write to the database. You can easily create your own module with a ConsentStorage Plugin that extends ConsentStorageBase, using BasicConsentStorage from this module as a template. If you create a highly performant consent storage plugin, please consider contributing it back to the Drupal community as a contrib module.'),
-    );
+    ];
 
-    $form['consent_storage']['consent_storage_method'] = array(
+    $form['consent_storage']['consent_storage_method'] = [
       '#type' => 'radios',
       '#title' => $this->t('Consent storage method'),
       '#default_value' => $config->get('consent_storage_method'),
       '#options' => $consent_storage_options,
-    );
+    ];
 
-    $form['popup_message'] = array(
+    $form['popup_message'] = [
       '#type' => 'details',
       '#title' => $this->t('Cookie information banner'),
       '#open' => TRUE,
-    );
+    ];
 
-    $form['popup_message']['popup_clicking_confirmation'] = array(
+    $form['popup_message']['popup_clicking_confirmation'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Consent by clicking'),
       '#default_value' => $config->get('popup_clicking_confirmation'),
@@ -272,36 +272,36 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
           'input[name="method"]' => ['value' => 'default'],
         ],
       ],
-    );
+    ];
 
-    $form['popup_message']['popup_info'] = array(
+    $form['popup_message']['popup_info'] = [
       '#type' => 'text_format',
       '#title' => $this->t('Cookie information banner message'),
       '#default_value' => $config->get('popup_info.value'),
       '#required' => TRUE,
       '#format' => !empty($config->get('popup_info.format')) ? $config->get('popup_info.format') : $default_filter_format,
-    );
+    ];
 
-    $form['popup_message']['use_mobile_message'] = array(
+    $form['popup_message']['use_mobile_message'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Use a different message for mobile phones'),
       '#default_value' => !empty($config->get('use_mobile_message')) ? $config->get('use_mobile_message') : FALSE,
-    );
+    ];
 
-    $form['popup_message']['container'] = array(
+    $form['popup_message']['container'] = [
       '#type' => 'container',
-      '#states' => array('visible' => array('input[name="use_mobile_message"]' => array('checked' => TRUE))),
-    );
+      '#states' => ['visible' => ['input[name="use_mobile_message"]' => ['checked' => TRUE]]],
+    ];
 
-    $form['popup_message']['container']['mobile_popup_info'] = array(
+    $form['popup_message']['container']['mobile_popup_info'] = [
       '#type' => 'text_format',
       '#title' => $this->t('Cookie information banner message - mobile'),
       '#default_value' => $config->get('mobile_popup_info.value'),
       '#required' => FALSE,
       '#format' => !empty($config->get('mobile_popup_info.format')) ? $config->get('mobile_popup_info.format') : $default_filter_format,
-    );
+    ];
 
-    $form['popup_message']['mobile_breakpoint'] = array(
+    $form['popup_message']['mobile_breakpoint'] = [
       '#type' => 'number',
       '#title' => $this->t('Mobile breakpoint'),
       '#default_value' => !empty($config->get('mobile_breakpoint')) ? $config->get('mobile_breakpoint') : '768',
@@ -310,20 +310,20 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#maxlength' => 4,
       '#required' => FALSE,
       '#description' => $this->t('The mobile message will be used when the window width is below or equal to the given value.'),
-      '#states' => array(
-        'visible' => array(
-          "input[name='use_mobile_message']" => array('checked' => TRUE),
-        ),
-      ),
-    );
+      '#states' => [
+        'visible' => [
+          "input[name='use_mobile_message']" => ['checked' => TRUE],
+        ],
+      ],
+    ];
 
-    $form['popup_message']['popup_agree_button_message'] = array(
+    $form['popup_message']['popup_agree_button_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Agree button label'),
       '#default_value' => $config->get('popup_agree_button_message'),
       '#size' => 30,
       '#required' => TRUE,
-    );
+    ];
 
     $form['popup_message']['disagree_button'] = [
       '#type' => 'checkbox',
@@ -331,16 +331,16 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('If this option is checked, the cookie policy button will be shown on the site. Disabling this option will hide both the “Cookie Policy” button on the information banner and the “More info” button on the “Thank you” banner.'),
       '#default_value' => $config->get('show_disagree_button'),
       '#states' => [
-        'visible' => array(
-          "input[name='method']" => array('value' => 'default'),
-        ),
+        'visible' => [
+          "input[name='method']" => ['value' => 'default'],
+        ],
         'checked' => [
           'input[name="method"]' => ['value' => 'default'],
         ],
       ],
     ];
 
-    $form['popup_message']['popup_disagree_button_message'] = array(
+    $form['popup_message']['popup_disagree_button_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Cookie policy button label'),
       '#default_value' => $config->get('popup_disagree_button_message'),
@@ -355,9 +355,9 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
           ['input[name="method"]' => ['!value' => 'default']],
         ],
       ],
-    );
+    ];
 
-    $form['popup_message']['disagree_button_label'] = array(
+    $form['popup_message']['disagree_button_label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Disagree button label'),
       '#default_value' => $config->get('disagree_button_label'),
@@ -370,36 +370,36 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
           'input[name="method"]' => ['!value' => 'default'],
         ],
       ],
-    );
+    ];
 
-    $form['thank_you'] = array(
+    $form['thank_you'] = [
       '#type' => 'details',
       '#open' => TRUE,
       '#title' => $this->t('Thank you banner'),
-    );
+    ];
 
-    $form['thank_you']['popup_agreed_enabled'] = array(
+    $form['thank_you']['popup_agreed_enabled'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable “Thank you” banner'),
       '#default_value' => $config->get('popup_agreed_enabled'),
-    );
+    ];
 
-    $form['thank_you']['popup_hide_agreed'] = array(
+    $form['thank_you']['popup_hide_agreed'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Clicking hides “Thank you” banner'),
       '#default_value' => $config->get('popup_hide_agreed'),
       '#description' => $this->t('Clicking a link or button hides the “Thank you” message automatically.'),
-    );
+    ];
 
-    $form['thank_you']['popup_agreed'] = array(
+    $form['thank_you']['popup_agreed'] = [
       '#type' => 'text_format',
       '#title' => $this->t('“Thank you” banner message'),
       '#default_value' => !empty($config->get('popup_agreed')['value']) ? $config->get('popup_agreed')['value'] : '',
       '#required' => TRUE,
       '#format' => !empty($config->get('popup_agreed')['format']) ? $config->get('popup_agreed')['format'] : $default_filter_format,
-    );
+    ];
 
-    $form['thank_you']['popup_find_more_button_message'] = array(
+    $form['thank_you']['popup_find_more_button_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t('More info button label'),
       '#default_value' => $config->get('popup_find_more_button_message'),
@@ -414,43 +414,43 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
           ['input[name="method"]' => ['!value' => 'default']],
         ],
       ],
-    );
+    ];
 
-    $form['thank_you']['popup_hide_button_message'] = array(
+    $form['thank_you']['popup_hide_button_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Hide button label'),
       '#default_value' => $config->get('popup_hide_button_message'),
       '#size' => 30,
       '#required' => TRUE,
-    );
+    ];
 
-    $form['privacy'] = array(
+    $form['privacy'] = [
       '#type' => 'details',
       '#open' => TRUE,
       '#title' => $this->t('Privacy Policy'),
-    );
+    ];
 
-    $form['privacy']['popup_link'] = array(
+    $form['privacy']['popup_link'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Privacy policy link'),
       '#default_value' => $config->get('popup_link'),
       '#maxlength' => 1024,
       '#required' => TRUE,
       '#description' => $this->t('Enter link to your privacy policy or other page that will explain cookies to your users, external links should start with http:// or https://.'),
-      '#element_validate' => array(array($this, 'validatePopupLink')),
-    );
+      '#element_validate' => [[$this, 'validatePopupLink']],
+    ];
 
-    $form['privacy']['popup_link_new_window'] = array(
+    $form['privacy']['popup_link_new_window'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Open privacy policy link in a new window'),
       '#default_value' => $config->get('popup_link_new_window'),
-    );
+    ];
 
-    $form['appearance'] = array(
+    $form['appearance'] = [
       '#type' => 'details',
       '#open' => TRUE,
       '#title' => $this->t('Appearance'),
-    );
+    ];
 
     $form_color_picker_type = 'textfield';
 
@@ -465,47 +465,47 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
 
     $popup_position_value = ($config->get('popup_position') === TRUE ? 'top' : ($config->get('popup_position') === FALSE ? 'bottom' : $config->get('popup_position')));
 
-    $form['appearance']['popup_position'] = array(
+    $form['appearance']['popup_position'] = [
       '#type' => 'radios',
       '#title' => $this->t('Position'),
       '#default_value' => $popup_position_value,
       '#options' => $popup_position_options,
-    );
+    ];
 
-    $form['appearance']['use_bare_css'] = array(
+    $form['appearance']['use_bare_css'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Include minimal CSS, I want to style the banner in the theme CSS.'),
       '#default_value' => !empty($config->get('use_bare_css')) ? $config->get('use_bare_css') : 0,
       '#description' => $this->t('This may be useful if you want the banner to share the button style of your theme. Note that you will have to configure values like the banner width, text color and background color in your CSS file.'),
-    );
+    ];
 
-    $form['appearance']['popup_text_hex'] = array(
+    $form['appearance']['popup_text_hex'] = [
       '#type' => $form_color_picker_type,
       '#title' => $this->t('Text color'),
       '#default_value' => $config->get('popup_text_hex'),
       '#description' => $this->t('Change the text color of the banner. Provide HEX value without the #.'),
-      '#element_validate' => array('eu_cookie_compliance_validate_hex'),
-      '#states' => array(
-        'visible' => array(
-          "input[name='use_bare_css']" => array('checked' => FALSE),
-        ),
-      ),
-    );
+      '#element_validate' => ['eu_cookie_compliance_validate_hex'],
+      '#states' => [
+        'visible' => [
+          "input[name='use_bare_css']" => ['checked' => FALSE],
+        ],
+      ],
+    ];
 
-    $form['appearance']['popup_bg_hex'] = array(
+    $form['appearance']['popup_bg_hex'] = [
       '#type' => $form_color_picker_type,
       '#title' => $this->t('Background color'),
       '#default_value' => $config->get('popup_bg_hex'),
       '#description' => $this->t('Change the background color of the banner. Provide HEX value without the #.'),
-      '#element_validate' => array('eu_cookie_compliance_validate_hex'),
-      '#states' => array(
-        'visible' => array(
-          "input[name='use_bare_css']" => array('checked' => FALSE),
-        ),
-      ),
-    );
+      '#element_validate' => ['eu_cookie_compliance_validate_hex'],
+      '#states' => [
+        'visible' => [
+          "input[name='use_bare_css']" => ['checked' => FALSE],
+        ],
+      ],
+    ];
 
-    $form['appearance']['popup_height'] = array(
+    $form['appearance']['popup_height'] = [
       '#type' => 'number',
       '#title' => $this->t('Banner height in pixels'),
       '#default_value' => !empty($config->get('popup_height')) ? $config->get('popup_height') : '',
@@ -514,14 +514,14 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#maxlength' => 5,
       '#required' => FALSE,
       '#description' => $this->t('Enter an integer value for a desired height in pixels or leave empty for automatically adjusted height.'),
-      '#states' => array(
-        'visible' => array(
-          "input[name='use_bare_css']" => array('checked' => FALSE),
-        ),
-      ),
-    );
+      '#states' => [
+        'visible' => [
+          "input[name='use_bare_css']" => ['checked' => FALSE],
+        ],
+      ],
+    ];
 
-    $form['appearance']['popup_width'] = array(
+    $form['appearance']['popup_width'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Banner width in pixels or a percentage value'),
       '#default_value' => $config->get('popup_width'),
@@ -529,52 +529,52 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#size' => 5,
       '#maxlength' => 5,
       '#description' => $this->t('Set the width of the banner. This can be either an integer value or percentage of the screen width. For example: 200 or 50%.'),
-      '#states' => array(
-        'visible' => array("input[name='use_bare_css']" => array('checked' => FALSE)),
-        'required' => array("input[name='use_bare_css']" => array('checked' => FALSE)),
-      ),
-    );
+      '#states' => [
+        'visible' => ["input[name='use_bare_css']" => ['checked' => FALSE]],
+        'required' => ["input[name='use_bare_css']" => ['checked' => FALSE]],
+      ],
+    ];
 
-    $form['eu_only'] = array(
+    $form['eu_only'] = [
       '#type' => 'details',
       '#open' => TRUE,
       '#title' => t('EU countries'),
-    );
+    ];
 
     if ($this->moduleHandler->moduleExists('smart_ip') || extension_loaded('geoip')) {
-      $form['eu_only']['eu_only'] = array(
+      $form['eu_only']['eu_only'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Only display banner in EU countries'),
         '#default_value' => !empty($config->get('eu_only')) ? $config->get('eu_only') : 0,
         '#description' => $this->t('You can limit the number of countries for which the banner is displayed by checking this option. If you want to provide a list of countries other than current EU states, you may place an array in <code>$config[\'eu_cookie_compliance.settings\'][\'eu_countries\']</code> in your <code>settings.php</code> file. Using the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or the <a href="http://www.php.net/manual/en/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
-      );
-      $form['eu_only']['eu_only_js'] = array(
+      ];
+      $form['eu_only']['eu_only_js'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('JavaScript-based (for Varnish): Only display banner in EU countries'),
         '#default_value' => !empty($config->get('eu_only_js')) ? $config->get('eu_only_js') : 0,
         '#description' => $this->t('This option also works for visitors that bypass Varnish. You can limit the number of countries for which the banner is displayed by checking this option. If you want to provide a list of countries other than current EU states, you may place an array in <code>$config[\'eu_cookie_compliance.settings\'][\'eu_countries\']</code> in your <code>settings.php</code> file. Using the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or the <a href="http://www.php.net/manual/en/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
-      );
+      ];
     }
     else {
-      $form['eu_only']['info'] = array(
+      $form['eu_only']['info'] = [
         '#markup' => t('You can choose to show the banner only to visitors from EU countries. In order to achieve this, you need to install the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or enable the <a href="http://www.php.net/manual/en/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
-      );
+      ];
     }
 
-    $form['advanced'] = array(
+    $form['advanced'] = [
       '#type' => 'details',
       '#open' => FALSE,
       '#title' => $this->t('Advanced'),
-    );
+    ];
 
-    $form['advanced']['fixed_top_position'] = array(
+    $form['advanced']['fixed_top_position'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('If the banner is at the top, don’t scroll the banner with the page'),
       '#default_value' => $config->get('fixed_top_position'),
       '#description' => $this->t('Use position:fixed for the banner when displayed at the top.'),
-    );
+    ];
 
-    $form['advanced']['popup_delay'] = array(
+    $form['advanced']['popup_delay'] = [
       '#type' => 'number',
       '#title' => $this->t('Banner sliding animation time in milliseconds'),
       '#default_value' => $config->get('popup_delay'),
@@ -582,22 +582,22 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#size' => 5,
       '#maxlength' => 5,
       '#required' => TRUE,
-    );
+    ];
 
-    $form['advanced']['disagree_do_not_show_popup'] = array(
+    $form['advanced']['disagree_do_not_show_popup'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Don’t show cookie policy when the user clicks the “Cookie Policy” button.'),
       '#default_value' => !empty($config->get('disagree_do_not_show_popup')) ? $config->get('disagree_do_not_show_popup') : 0,
       '#description' => $this->t('Enabling this will make it possible to record the fact that the user disagrees without the user having to see the privacy policy.'),
-    );
+    ];
 
-    $form['advanced']['reload_page'] = array(
+    $form['advanced']['reload_page'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Reload page after user clicks the “Agree” button.'),
       '#default_value' => !empty($config->get('reload_page')) ? $config->get('reload_page') : 0,
-    );
+    ];
 
-    $form['advanced']['popup_scrolling_confirmation'] = array(
+    $form['advanced']['popup_scrolling_confirmation'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Consent by scrolling'),
       '#default_value' => $config->get('popup_scrolling_confirmation'),
@@ -607,74 +607,74 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
           ['input[name="method"]' => ['value' => 'default']],
         ],
       ],
-    );
+    ];
 
-    $form['advanced']['cookie_name'] = array(
+    $form['advanced']['cookie_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Cookie name'),
       '#default_value' => !empty($config->get('cookie_name')) ? $config->get('cookie_name') : '',
       '#description' => $this->t('Sets the cookie name that is used to check whether the user has agreed or not.  This option is useful when policies change and the user needs to agree again.'),
-    );
+    ];
 
     // Adding option to add/remove banner on specified domains.
-    $exclude_domains_option_active = array(
+    $exclude_domains_option_active = [
       0 => $this->t('Add'),
       1 => $this->t('Remove'),
-    );
+    ];
 
-    $form['advanced']['domains_option'] = array(
+    $form['advanced']['domains_option'] = [
       '#type' => 'radios',
       '#title' => $this->t('Add/remove banner on specified domains'),
       '#default_value' => $config->get('domains_option'),
       '#options' => $exclude_domains_option_active,
       '#description' => $this->t('Specify if you want to add or remove banner on the listed below domains.'),
-    );
+    ];
 
-    $form['advanced']['domains_list'] = array(
+    $form['advanced']['domains_list'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Domains list'),
       '#default_value' => $config->get('domains_list'),
       '#description' => $this->t('Specify domains with protocol (e.g., http or https). Enter one domain per line.'),
-    );
+    ];
 
-    $form['advanced']['exclude_paths'] = array(
+    $form['advanced']['exclude_paths'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Exclude paths'),
       '#default_value' => !empty($config->get('exclude_paths')) ? $config->get('exclude_paths') : '',
-      '#description' => $this->t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array(
+      '#description' => $this->t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", [
         '%blog' => '/blog',
         '%blog-wildcard' => '/blog/*',
         '%front' => '<front>',
-      )),
-    );
+      ]),
+    ];
 
-    $form['advanced']['exclude_admin_theme'] = array(
+    $form['advanced']['exclude_admin_theme'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Exclude admin pages'),
       '#default_value' => $config->get('exclude_admin_theme'),
-    );
+    ];
 
-    $form['advanced']['exclude_uid_1'] = array(
+    $form['advanced']['exclude_uid_1'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Don’t show the banner for UID 1.'),
       '#default_value' => !empty($config->get('exclude_uid_1')) ? $config->get('exclude_uid_1') : 0,
-    );
+    ];
 
-    $form['advanced']['better_support_for_screen_readers'] = array(
+    $form['advanced']['better_support_for_screen_readers'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Let screen readers see the banner before other links on the page.'),
       '#default_value' => !empty($config->get('better_support_for_screen_readers')) ? $config->get('better_support_for_screen_readers') : 0,
       '#description' => $this->t('Enable this if you want to place the banner as the first HTML element on the page. This will make it possible for screen readers to close the banner without tabbing through all links on the page.'),
-    );
+    ];
 
-    $form['advanced']['domain'] = array(
+    $form['advanced']['domain'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Domain'),
       '#default_value' => $config->get('domain'),
       '#description' => $this->t('Sets the domain of the cookie to a specific url. Used when you need consistency across domains. This is language independent. Note: Make sure you actually enter a domain that the browser can make use of. For example if your site is accessible at both www.domain.com and domain.com, you will not be able to hide the banner at domain.com if your value for this field is www.domain.com.'),
-    );
+    ];
 
-    $form['advanced']['cookie_lifetime'] = array(
+    $form['advanced']['cookie_lifetime'] = [
       '#type' => 'number',
       '#title' => $this->t('Cookie lifetime'),
       '#description' => $this->t("How long does the system remember the user's choice, in days."),
@@ -683,7 +683,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#size' => 5,
       '#maxlength' => 5,
       '#required' => TRUE,
-    );
+    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -761,7 +761,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('popup_disagree_button_message', $form_state->getValue('popup_disagree_button_message'))
       ->set('popup_info', $form_state->getValue('popup_info'))
       ->set('use_mobile_message', $form_state->getValue('use_mobile_message'))
-      ->set('mobile_popup_info', $form_state->getValue('use_mobile_message') ? $form_state->getValue('mobile_popup_info') : array('value' => '', 'format' => filter_default_format()))
+      ->set('mobile_popup_info', $form_state->getValue('use_mobile_message') ? $form_state->getValue('mobile_popup_info') : ['value' => '', 'format' => filter_default_format()])
       ->set('mobile_breakpoint', $form_state->getValue('mobile_breakpoint'))
       ->set('popup_agreed_enabled', $form_state->getValue('popup_agreed_enabled'))
       ->set('popup_hide_agreed', $form_state->getValue('popup_hide_agreed'))
@@ -816,17 +816,17 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     if (UrlHelper::isExternal($input)) {
       $allowed_protocols = ['http', 'https'];
       if (!in_array(parse_url($input, PHP_URL_SCHEME), $allowed_protocols)) {
-        $form_state->setError($element, $this->t('Invalid protocol specified for the %name (valid protocols: %protocols).', array(
+        $form_state->setError($element, $this->t('Invalid protocol specified for the %name (valid protocols: %protocols).', [
           '%name' => $element['#title'],
           '%protocols' => implode(', ', $allowed_protocols),
-        )));
+        ]));
       }
       else {
         try {
           Url::fromUri($input);
         }
         catch (\Exception $exc) {
-          $form_state->setError($element, $this->t('Invalid %name (:message).', array('%name' => $element['#title'], ':message' => $exc->getMessage())));
+          $form_state->setError($element, $this->t('Invalid %name (:message).', ['%name' => $element['#title'], ':message' => $exc->getMessage()]));
         }
       }
     }
@@ -839,7 +839,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
         Url::fromUserInput($input);
       }
       catch (\Exception $exc) {
-        $form_state->setError($element, $this->t('Invalid URL in %name field (:message).', array('%name' => $element['#title'], ':message' => $exc->getMessage())));
+        $form_state->setError($element, $this->t('Invalid URL in %name field (:message).', ['%name' => $element['#title'], ':message' => $exc->getMessage()]));
       }
     }
   }
