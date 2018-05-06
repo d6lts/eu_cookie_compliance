@@ -103,7 +103,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     }
   }
 
-  $geoip_match = TRUE;
+  $geoip_match = ['in_eu' => TRUE];
   if (!empty($config->get('eu_only')) && $config->get('eu_only')) {
     $geoip_match = eu_cookie_compliance_user_in_eu();
   }
@@ -120,7 +120,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
   $modules_allow_popup = TRUE;
   Drupal::moduleHandler()->alter('eu_cookie_compliance_show_popup', $modules_allow_popup);
 
-  if ($config->get('popup_enabled') && Drupal::currentUser()->hasPermission('display eu cookie compliance popup') && $geoip_match && $domain_allow && !$path_match && !$admin_theme_match && $uid1_match && $modules_allow_popup) {
+  if ($config->get('popup_enabled') && Drupal::currentUser()->hasPermission('display eu cookie compliance popup') && $geoip_match['in_eu'] && $domain_allow && !$path_match && !$admin_theme_match && $uid1_match && $modules_allow_popup) {
     $language = Drupal::languageManager()->getCurrentLanguage();
 
     $data['css'] = '';

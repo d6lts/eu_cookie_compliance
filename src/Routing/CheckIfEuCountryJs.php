@@ -14,7 +14,7 @@ class CheckIfEuCountryJs {
    */
   public function routes() {
     $routes = [];
-    if (\Drupal::moduleHandler()->moduleExists('smart_ip')) {
+    if (\Drupal::config('eu_cookie_compliance.settings')->get('eu_only_js')) {
       $routes['eu_cookie_compliance.check_if_eu_country_js'] = new Route(
         '/eu-cookie-compliance-check',
         [
