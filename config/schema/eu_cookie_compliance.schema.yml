@@ -142,7 +142,7 @@ eu_cookie_compliance.settings:
     better_support_for_screen_readers:
       type: boolean
       label: 'Let screen readers see the banner before other links on the page'
-    mehod:
+    method:
       type: string
       label: 'Consent method'
     disabled_javascripts:
