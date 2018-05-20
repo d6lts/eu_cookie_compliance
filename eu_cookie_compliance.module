@@ -310,6 +310,27 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     ];
     $cache_tags = isset($attachments['#cache']['tags']) ? $attachments['#cache']['tags'] : [];
     $attachments['#cache']['tags'] = Cache::mergeTags($cache_tags, $config->getCacheTags());
+
+    // Check if disabled scripts are in page html_head.
+    $disabled_javascripts = $config->get('disabled_javascripts');
+    $disabled_javascripts = _eu_cookie_compliance_explode_multiple_lines($disabled_javascripts);
+    $disabled_javascripts = array_filter($disabled_javascripts);
+
+    if (!empty($disabled_javascripts)) {
+      foreach ($attachments['#attached']['html_head'] as $index => $asset) {
+        $is_script = !empty($asset[0]['#type']) && $asset[0]['#type'] == 'html_tag' && $asset[0]['#tag'] == 'script';
+        $is_src = !empty($asset[0]['#attributes']['src']);
+        if (!$is_script || !$is_src) {
+          continue;
+        }
+        $src = $asset[0]['#attributes']['src'];
+        $src = preg_replace('/\.js\?[^"]+/', '.js', $src);
+        $src = preg_replace('/^\//', '', $src);
+        if (in_array($src, $disabled_javascripts)) {
+          $attachments['#attached']['html_head'][$index][0]['#access'] = FALSE;
+        }
+      }
+    }
   }
 }
 
@@ -455,4 +476,25 @@ function _eu_cookie_compliance_find_privacy_policy() {
     return ('/node/' . array_shift($result));
   }
   return FALSE;
+}
+
+function eu_cookie_compliance_module_set_weight() {
+  $weight = 1;
+  $exclude_modules = [
+    // We need to exclude Google Analytics and handle it separately, since it
+    // should have weight higher than this module.
+    'google_analytics',
+    'eu_cookie_compliance',
+  ];
+
+  $extension_config = \Drupal::configFactory()->get('core.extension');
+  // Loop through all installed modules to find the highest weight.
+  foreach ($extension_config->get('module') as $module_name => $module_weight) {
+    if ($module_weight > $weight && !in_array($module_name, $exclude_modules)) {
+      $weight = $module_weight + 1;
+    }
+  }
+  // Set weight of Google Analytics to this module + 1.
+  module_set_weight('google_analytics', $weight + 1);
+  module_set_weight('eu_cookie_compliance', $weight);
 }

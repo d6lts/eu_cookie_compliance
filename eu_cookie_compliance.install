@@ -86,6 +86,8 @@ function eu_cookie_compliance_install() {
       ->set('popup_link', $cookie_policy)
       ->save();
   }
+
+  eu_cookie_compliance_module_set_weight();
 }
 
 /**
@@ -196,4 +198,11 @@ function eu_cookie_compliance_update_8107() {
     ->getEditable('eu_cookie_compliance.settings')
     ->set('consent_storage_method', 'do_not_store')
     ->save();
+}
+
+/**
+ * Change module weight to load after other modules, ensure all JSs are handled.
+ */
+function eu_cookie_compliance_update_8108() {
+  eu_cookie_compliance_module_set_weight();
 }

@@ -749,6 +749,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     $query->condition('cid', 'js:%', 'LIKE');
     $query->execute();
 
+    eu_cookie_compliance_module_set_weight();
+
     // Save settings.
     $this->config('eu_cookie_compliance.settings')
       ->set('domain', $form_state->getValue('domain'))
