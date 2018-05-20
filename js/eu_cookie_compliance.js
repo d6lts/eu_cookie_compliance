@@ -250,8 +250,14 @@
       }
     }
 
-    date.setDate(date.getDate() + parseInt(drupalSettings.eu_cookie_compliance.cookie_lifetime));
-    $.cookie(cookieName, status, { expires: date, path: path, domain: domain });
+    var cookie_session = parseInt(drupalSettings.eu_cookie_compliance.cookie_session);
+    if (cookie_session) {
+      $.cookie(cookieName, status, { path: path, domain: domain });
+    } else {
+      var lifetime = parseInt(drupalSettings.eu_cookie_compliance.cookie_lifetime);
+      date.setDate(date.getDate() + lifetime);
+      $.cookie(cookieName, status, { expires: date, path: path, domain: domain });
+    }
     $(document).trigger('eu_cookie_compliance.changeStatus', [status]);
 
     // Store consent if applicable.

@@ -674,6 +674,13 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('Sets the domain of the cookie to a specific url. Used when you need consistency across domains. This is language independent. Note: Make sure you actually enter a domain that the browser can make use of. For example if your site is accessible at both www.domain.com and domain.com, you will not be able to hide the banner at domain.com if your value for this field is www.domain.com.'),
     ];
 
+    $form['advanced']['cookie_session'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Prompt for consent (from the same user) at every new browser session'),
+      '#description' => $this->t("This sets cookie lifetime to 0, invalidating the cookie at the end of the browser session. To set a cookie lifetime greater than 0, uncheck this option. Note that some users will find this behavior highly annoying, and it's recommended to double-check with the legal advisor whether you really need this option enabled."),
+      '#default_value' => $config->get('cookie_session'),
+    ];
+
     $form['advanced']['cookie_lifetime'] = [
       '#type' => 'number',
       '#title' => $this->t('Cookie lifetime'),
@@ -683,6 +690,11 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#size' => 5,
       '#maxlength' => 5,
       '#required' => TRUE,
+      '#states' => [
+        'enabled' => [
+          "input[name='cookie_session']" => ['checked' => FALSE],
+        ],
+      ],
     ];
 
     return parent::buildForm($form, $form_state);
@@ -782,6 +794,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('exclude_paths', $form_state->getValue('exclude_paths'))
       ->set('exclude_admin_theme', $form_state->getValue('exclude_admin_theme'))
       ->set('cookie_lifetime', $form_state->getValue('cookie_lifetime'))
+      ->set('cookie_session', $form_state->getValue('cookie_session'))
       ->set('eu_only', $form_state->getValue('eu_only'))
       ->set('eu_only_js', $form_state->getValue('eu_only_js'))
       ->set('use_bare_css', $form_state->getValue('use_bare_css'))

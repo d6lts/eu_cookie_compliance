@@ -261,6 +261,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       'domain'               => $config->get('domain'),
       'popup_eu_only_js'     => !empty($config->get('eu_only_js')) ? $config->get('eu_only_js') : FALSE,
       'cookie_lifetime'      => $config->get('cookie_lifetime'),
+      'cookie_session'       => $config->get('cookie_session'),
       'disagree_do_not_show_popup' => !empty($config->get('disagree_do_not_show_popup')) ? $config->get('disagree_do_not_show_popup') : FALSE,
       'method'               => $method,
       'whitelisted_cookies'  => !empty($config->get('whitelisted_cookies')) ? $config->get('whitelisted_cookies') : '',
