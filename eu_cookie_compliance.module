@@ -267,12 +267,28 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       'whitelisted_cookies'  => !empty($config->get('whitelisted_cookies')) ? $config->get('whitelisted_cookies') : '',
     ];
 
+    $ga_id_is_set = FALSE;
+    // To disable Google Analytics until cookies are agreed, we need to have
+    // the GA id available in the settings.
+    if (\Drupal::moduleHandler()->moduleExists('google_analytics')) {
+      if ($ga_config = \Drupal::config('google_analytics.settings')) {
+        if ($id = $ga_config->get('account')) {
+          $ga_id_is_set = TRUE;
+          $data['variables']['GA_id'] = $id;
+        }
+      }
+    }
+
     $attachments['#attached']['drupalSettings']['eu_cookie_compliance'] = $data['variables'];
     if ($config->get('use_bare_css')) {
       $attachments['#attached']['library'][] = 'eu_cookie_compliance/eu_cookie_compliance_bare';
     }
     else {
       $attachments['#attached']['library'][] = 'eu_cookie_compliance/eu_cookie_compliance';
+    }
+    // Disable Google Analytics until cookies are agreed.
+    if (\Drupal::moduleHandler()->moduleExists('google_analytics') && $ga_id_is_set && $config->get('disable_google_analytics') && $config->get('method') != 'default') {
+      $attachments['#attached']['library'][] = 'eu_cookie_compliance/eu_cookie_compliance.google_analytics';
     }
     // Add inline javascript.
     $disabled_javascripts = $config->get('disabled_javascripts');
@@ -479,6 +495,9 @@ function _eu_cookie_compliance_find_privacy_policy() {
   return FALSE;
 }
 
+/**
+ * Set proper module weight.
+ */
 function eu_cookie_compliance_module_set_weight() {
   $weight = 1;
   $exclude_modules = [

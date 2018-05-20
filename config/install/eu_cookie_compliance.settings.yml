@@ -48,3 +48,5 @@ disagree_button_label: 'No, thanks'
 disabled_javascripts: ''
 whitelisted_cookies: ''
 consent_storage_method: 'do_not_store'
+cookie_session: false
+disable_google_analytics: true
