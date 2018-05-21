@@ -482,9 +482,6 @@ function _eu_cookie_compliance_find_privacy_policy() {
 function eu_cookie_compliance_module_set_weight() {
   $weight = 1;
   $exclude_modules = [
-    // We need to exclude Google Analytics and handle it separately, since it
-    // should have weight higher than this module.
-    'google_analytics',
     'eu_cookie_compliance',
   ];
 
@@ -495,7 +492,5 @@ function eu_cookie_compliance_module_set_weight() {
       $weight = $module_weight + 1;
     }
   }
-  // Set weight of Google Analytics to this module + 1.
-  module_set_weight('google_analytics', $weight + 1);
   module_set_weight('eu_cookie_compliance', $weight);
 }
