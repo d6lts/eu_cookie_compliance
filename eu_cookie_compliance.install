@@ -7,6 +7,7 @@
 
 use Drupal\user\Entity\Role;
 use Drupal\Core\Database\Database;
+use Drupal\filter\Entity\FilterFormat;
 
 /**
  * Implements hook_schema().
@@ -206,3 +207,25 @@ function eu_cookie_compliance_update_8107() {
 function eu_cookie_compliance_update_8108() {
   eu_cookie_compliance_module_set_weight();
 }
+
+/**
+ * Add config variables for the withdraw banner.
+ */
+function eu_cookie_compliance_update_8109() {
+  $default_filter_format = filter_default_format();
+  if ($default_filter_format == 'restricted_html' && FilterFormat::load('full_html')) {
+    $default_filter_format = 'full_html';
+  }
+
+  \Drupal::configFactory()
+    ->getEditable('eu_cookie_compliance.settings')
+    ->set('withdraw_message', [
+      'value' => '<h2>We use cookies on this site to enhance your user experience</h2><p>You have given your consent for us to set cookies.</p>',
+      'format' => $default_filter_format,
+    ])
+    ->set('withdraw_action_button_label', 'Withdraw consent')
+    ->set('withdraw_tab_button_label', 'Privacy settings')
+    ->set('withdraw_enabled', TRUE)
+    ->save();
+}
+

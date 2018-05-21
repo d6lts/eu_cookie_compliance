@@ -65,9 +65,89 @@
       } else if (status === 1 && drupalSettings.eu_cookie_compliance.popup_agreed_enabled) {
         Drupal.eu_cookie_compliance.createPopup(drupalSettings.eu_cookie_compliance.popup_html_agreed);
         Drupal.eu_cookie_compliance.attachHideEvents();
+      } else if (status === 2 && drupalSettings.eu_cookie_compliance.withdraw_enabled) {
+        Drupal.eu_cookie_compliance.createWithdrawBanner(drupalSettings.eu_cookie_compliance.withdraw_markup);
+        Drupal.eu_cookie_compliance.attachWithdrawEvents();
       }
     }
     catch (e) {
+    }
+  };
+
+  Drupal.eu_cookie_compliance.createWithdrawBanner = function (html) {
+    var $html = $('<div></div>').html(html);
+    var $banner = $('.eu-cookie-withdraw-banner', $html);
+    $html.attr('id', 'sliding-popup');
+    $html.addClass('eu-cookie-withdraw-wrapper');
+
+    if (!drupalSettings.eu_cookie_compliance.popup_use_bare_css) {
+      $banner.height(drupalSettings.eu_cookie_compliance.popup_height)
+          .width(drupalSettings.eu_cookie_compliance.popup_width);
+    }
+    $html.hide();
+    var height = 0;
+    if (drupalSettings.eu_cookie_compliance.popup_position) {
+      $html.prependTo('body');
+      height = $html.outerHeight();
+
+      $html.show()
+          .addClass('sliding-popup-top')
+          .addClass('clearfix')
+          .css({ top: -1 * height });
+      // For some reason, the tab outerHeight is -10 if we don't use a timeout
+      // function to reveal the tab.
+      setTimeout(function () {
+        var tabHeight = $('.eu-cookie-withdraw-tab').outerHeight();
+        var height = $html.outerHeight();
+
+        $html.animate({ top: -1 * (height - tabHeight) }, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
+          $html.trigger('eu_cookie_compliance_popup_open');
+        });
+      }.bind($html), 0);
+    } else {
+      if (drupalSettings.eu_cookie_compliance.better_support_for_screen_readers) {
+        $html.prependTo('body');
+      } else {
+        $html.appendTo('body');
+      }
+      height = $html.outerHeight();
+      $html.show()
+          .addClass('sliding-popup-bottom')
+          .css({ bottom: -1 * height });
+      // For some reason, the tab outerHeight is -10 if we don't use a timeout
+      // function to reveal the tab.
+      setTimeout(function () {
+        var tabHeight = $('.eu-cookie-withdraw-tab').outerHeight();
+        var height = $html.outerHeight();
+
+        $html.animate({ bottom: -1 * (height - tabHeight) }, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
+          $html.trigger('eu_cookie_compliance_popup_open');
+        });
+      }.bind($html), 0);
+    }
+  };
+
+  Drupal.eu_cookie_compliance.toggleWithdrawBanner = function () {
+    var $wrapper = $('#sliding-popup');
+    var $tab = $('.eu-cookie-withdraw-tab');
+    var $bannerIsShowing = drupalSettings.eu_cookie_compliance.popup_position ? parseInt($wrapper.css('top')) === 0 : parseInt($wrapper.css('bottom')) === 0;
+    var tabHeight = $tab.outerHeight();
+    var height = $wrapper.outerHeight();
+    if (drupalSettings.eu_cookie_compliance.popup_position) {
+      if ($bannerIsShowing) {
+        $wrapper.animate({'top' : -1 * (height - tabHeight)}, drupalSettings.eu_cookie_compliance.popup_delay);
+      }
+      else {
+        $wrapper.animate({'top' : 0}, drupalSettings.eu_cookie_compliance.popup_delay);
+      }
+    }
+    else {
+      if ($bannerIsShowing) {
+        $wrapper.animate({'bottom' : -1 * (height - tabHeight)}, drupalSettings.eu_cookie_compliance.popup_delay);
+      }
+      else {
+        $wrapper.animate({'bottom' : 0}, drupalSettings.eu_cookie_compliance.popup_delay);
+      }
     }
   };
 
@@ -156,6 +236,11 @@
     $('.find-more-button').not('.find-more-button-processed').addClass('find-more-button-processed').click(Drupal.eu_cookie_compliance.moreInfoAction);
   };
 
+  Drupal.eu_cookie_compliance.attachWithdrawEvents = function () {
+    $('.eu-cookie-withdraw-button').click(Drupal.eu_cookie_compliance.withdrawAction);
+    $('.eu-cookie-withdraw-tab').click(Drupal.eu_cookie_compliance.toggleWithdrawBanner);
+  };
+
   Drupal.eu_cookie_compliance.acceptAction = function () {
     var agreedEnabled = drupalSettings.eu_cookie_compliance.popup_agreed_enabled;
     var nextStatus = 1;
@@ -178,6 +263,11 @@
   Drupal.eu_cookie_compliance.declineAction = function () {
     Drupal.eu_cookie_compliance.setStatus(0);
     $('#sliding-popup').animate({ bottom: $('#sliding-popup').outerHeight() * -1 }).trigger('eu_cookie_compliance_popup_close');
+  };
+
+  Drupal.eu_cookie_compliance.withdrawAction = function () {
+    Drupal.eu_cookie_compliance.setStatus(null);
+    location.reload();
   };
 
   Drupal.eu_cookie_compliance.moreInfoAction = function () {
@@ -233,6 +323,11 @@
 
     if (drupalSettings.eu_cookie_compliance.reload_page) {
       location.reload();
+    }
+
+    if (value === 2 && drupalSettings.eu_cookie_compliance.withdraw_enabled) {
+      Drupal.eu_cookie_compliance.createWithdrawBanner(drupalSettings.eu_cookie_compliance.withdraw_markup);
+      Drupal.eu_cookie_compliance.attachWithdrawEvents();
     }
 
     Drupal.eu_cookie_compliance.setStatus(value);

@@ -154,3 +154,22 @@ eu_cookie_compliance.settings:
     consent_storage_method:
       type: string
       label: 'Consent storage method'
+    withdraw_message:
+      type: mapping
+      label: 'Withdraw consent banner message'
+      mapping:
+        value:
+          type: text
+          label: 'Withdraw consent banner message - Value'
+        format:
+          type: string
+          label: 'Withdraw consent banner message - Format'
+    withdraw_tab_button_label:
+      type: label
+      label: 'Privacy settings tab label'
+    withdraw_action_button_label:
+      type: label
+      label: 'Withdraw consent action button label'
+    withdraw_enabled:
+      type: boolean
+      label: 'Enable floating privacy settings tab and withdraw consent banner'

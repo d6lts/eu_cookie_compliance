@@ -372,6 +372,50 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ],
     ];
 
+    $form['withdraw_consent'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Withdraw consent'),
+      '#open' => TRUE,
+      '#states' => [
+        'visible' => [
+          "input[name='method']" => ['!value' => 'default'],
+        ],
+      ],
+    ];
+
+    $form['withdraw_consent']['info'] = [
+      '#type' => 'markup',
+      '#markup' => t('GDPR requires that withdrawing consent for handling personal information should be as easy as giving consent. This module offers a tab button that when clicked brings up a message and a button that can be used to withdraw consent.'),
+    ];
+
+    $form['withdraw_consent']['withdraw_enabled'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Enable floating privacy settings tab and withdraw consent banner'),
+      '#default_value' => $config->get('withdraw_enabled'),
+    ];
+
+    $form['withdraw_consent']['withdraw_message'] = [
+      '#type' => 'text_format',
+      '#title' => t('Withdraw consent banner message'),
+      '#default_value' => isset($config->get('withdraw_message')['value']) ? $config->get('withdraw_message')['value'] : '',
+      '#description' => t('Text that will be displayed in the banner that appears when the privacy settings tab is clicked.'),
+      '#format' => isset($config->get('withdraw_message')['format']) ? $config->get('withdraw_message')['format'] : $default_filter_format,
+    ];
+
+    $form['withdraw_consent']['withdraw_tab_button_label'] = [
+      '#type' => 'textfield',
+      '#title' => t('Privacy settings tab label'),
+      '#default_value' => $config->get('withdraw_tab_button_label'),
+      '#description' => t('Tab button that reveals/hides the withdraw message and action button when clicked.'),
+    ];
+
+    $form['withdraw_consent']['withdraw_action_button_label'] = [
+      '#type' => 'textfield',
+      '#title' => t('Withdraw consent action button label'),
+      '#default_value' => $config->get('withdraw_action_button_label'),
+      '#description' => t('This button will withdraw consent when clicked.'),
+    ];
+
     $form['thank_you'] = [
       '#type' => 'details',
       '#open' => TRUE,
@@ -809,6 +853,10 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('whitelisted_cookies', $form_state->getValue('whitelisted_cookies'))
       ->set('disabled_javascripts', $form_state->getValue('disabled_javascripts'))
       ->set('consent_storage_method', $form_state->getValue('consent_storage_method'))
+      ->set('withdraw_message', $form_state->getValue('withdraw_message'))
+      ->set('withdraw_action_button_label', $form_state->getValue('withdraw_action_button_label'))
+      ->set('withdraw_tab_button_label', $form_state->getValue('withdraw_tab_button_label'))
+      ->set('withdraw_enabled', $form_state->getValue('withdraw_enabled'))
       ->save();
 
     parent::submitForm($form, $form_state);
