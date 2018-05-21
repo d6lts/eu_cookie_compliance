@@ -154,9 +154,3 @@ eu_cookie_compliance.settings:
     consent_storage_method:
       type: string
       label: 'Consent storage method'
-    cookie_session:
-      type: boolean
-      label: 'Prompt for consent (from the same user) at every new browser session'
-    disable_google_analytics:
-      type: boolean
-      label: 'Block Google Analytics'

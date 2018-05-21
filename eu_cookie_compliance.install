@@ -206,15 +206,3 @@ function eu_cookie_compliance_update_8107() {
 function eu_cookie_compliance_update_8108() {
   eu_cookie_compliance_module_set_weight();
 }
-
-/**
- * Block Google Analytics if the consent method isn't "Consent by default".
- */
-function eu_cookie_compliance_update_8109() {
-  $method = \Drupal::configFactory()
-    ->get('eu_cookie_compliance.settings')
-    ->get('method');
-  \Drupal::configFactory()
-    ->getEditable('eu_cookie_compliance.settings')
-    ->set('disable_google_analytics', ($method != 'default' && !empty($method)))->save();
-}

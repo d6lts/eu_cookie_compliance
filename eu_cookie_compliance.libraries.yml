@@ -24,9 +24,3 @@ eu_cookie_compliance_bare:
     - core/drupalSettings
     - core/jquery.once
     - core/jquery.cookie
-eu_cookie_compliance.google_analytics:
-  version: 1.0
-  js:
-    js/google_analytics.js: {}
-  dependencies:
-    - eu_cookie_compliance/eu_cookie_compliance

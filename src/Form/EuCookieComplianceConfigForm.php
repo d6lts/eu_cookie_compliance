@@ -215,13 +215,6 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('Include the full path of JavaScripts, each on a separate line. When using the opt-in or opt-out consent options, you can block certain JavaScript files from being loaded when consent isn’t given. The on-site JavaScripts should be written as root relative paths <strong>without the leading slash</strong>, and off-site JavaScripts should be written as complete URLs <strong>with the leading http(s)://</strong>. Note that after the user gives consent, the scripts will be executed in the order you enter here.'),
     ];
 
-    $form['javascripts']['disable_google_analytics'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Block Google Analytics'),
-      '#default_value' => $config->get('disable_google_analytics'),
-      '#description' => $this->t('Prevents Google Analytics from running when the user hasn’t consented.'),
-    ];
-
     $form['cookies'] = [
       '#type' => 'details',
       '#title' => $this->t('Cookie handling'),
@@ -816,7 +809,6 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('whitelisted_cookies', $form_state->getValue('whitelisted_cookies'))
       ->set('disabled_javascripts', $form_state->getValue('disabled_javascripts'))
       ->set('consent_storage_method', $form_state->getValue('consent_storage_method'))
-      ->set('disable_google_analytics', $form_state->getValue('disable_google_analytics'))
       ->save();
 
     parent::submitForm($form, $form_state);
