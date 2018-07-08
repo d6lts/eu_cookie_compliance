@@ -26,15 +26,9 @@ function eu_cookie_compliance_help($route_name, RouteMatchInterface $route_match
     case 'help.page.eu_cookie_compliance':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('This module intends to deal with the EU Directive on Privacy and Electronic Communications that comes into effect on 26th May 2012.
-        From that date, if you are not compliant or visibly working towards compliance,
-        you run the risk of enforcement action, which can include a fine of up to
-        half a million pounds for a serious breach.') . '</p>';
+      $output .= '<p>' . t('This module intends to deal with the EU Directive on Privacy and Electronic Communications that comes into effect on 26th May 2012. From that date, if you are not compliant or visibly working towards compliance, you run the risk of enforcement action, which can include a fine of up to half a million pounds for a serious breach.') . '</p>';
       $output .= '<h3>' . t('How it works') . '</h3>';
-      $output .= '<p>' . t('The module displays a banner at the bottom or the top of website to make users aware of the fact that cookies are being set. The user may then give
-        his/her consent or move to a page that provides more details. Consent is given
-        by user pressing the agree buttons or by continuing browsing the website. Once
-        consent is given another banner appears with a “Thank you” message.') . '</p>';
+      $output .= '<p>' . t('The module displays a banner at the bottom or the top of website to make users aware of the fact that cookies are being set. The user may then give his/her consent or move to a page that provides more details. Consent is given by user pressing the agree buttons or by continuing browsing the website. Once consent is given another banner appears with a "Thank you" message.') . '</p>';
       $output .= '<p>' . t('The module provides a settings page where the banner can be customized. There are also template files for the banners that can be overridden by your theme.') . '</p>';
       $output .= '<h3>' . t('Installation') . '</h3>';
       $output .= '<ol><p><li>' . t('Unzip the files to the "sites/all/modules" OR "modules" directory and enable the module.') . '</li></p>';

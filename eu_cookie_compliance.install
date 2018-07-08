@@ -106,7 +106,7 @@ function eu_cookie_compliance_requirements($phase) {
         'title' => t('EU Cookie Compliance'),
         'severity' => REQUIREMENT_WARNING,
         'description' => t('Your privacy policy link is pointing at the front page. This is the default value after installation, and unless your privacy policy is actually posted at the front page, you will need to create a separate page for the privacy policy and link to that page.'),
-        'value' => t('Privacy Policy link not provided'),
+        'value' => t('Privacy policy link not provided'),
       ];
     }
   }

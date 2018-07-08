@@ -15,16 +15,16 @@ eu_cookie_compliance.settings:
       label: 'Consent by scrolling'
     eu_only:
       type: boolean
-      label: 'Only display banner in EU countries'
+      label: 'Only display banner in EU countries.'
     eu_only_js:
       type: boolean
-      label: 'Only display banner in EU countries (Javascript based)'
+      label: 'Only display banner in EU countries (Javascript based).'
     popup_position:
       type: boolean
       label: 'Place the banner at the top of the website'
     fixed_top_position:
       type: boolean
-      label: 'If the banner is at the top, don’t scroll the banner with the page'
+      label: "If the banner is at the top, don't scroll the banner with the page."
     popup_info:
       type: mapping
       label: 'Cookie information banner message'
@@ -56,10 +56,10 @@ eu_cookie_compliance.settings:
       label: 'Mobile breakpoint'
     popup_agreed_enabled:
       type: boolean
-      label: 'Enable “Thank you” banner'
+      label: 'Enable "Thank you" banner.'
     popup_hide_agreed:
       type: boolean
-      label: 'Clicking hides “Thank you” banner'
+      label: 'Clicking hides "Thank you" banner.'
     disagree_button_label:
       type: label
       label: 'Disagree button label'
@@ -84,7 +84,7 @@ eu_cookie_compliance.settings:
       label: 'Privacy policy link'
     popup_link_new_window:
       type: boolean
-      label: 'Open privacy policy link in a new window'
+      label: 'Open privacy policy link in a new window.'
     popup_height:
       type: integer
       label: 'Banner height in pixels'
@@ -99,10 +99,10 @@ eu_cookie_compliance.settings:
       label: 'Show "Cookie Policy" and "More info" buttons'
     popup_bg_hex:
       type: string
-      label: 'Background Color'
+      label: 'Background color'
     popup_text_hex:
       type: string
-      label: 'Text Color'
+      label: 'Text color'
     domain:
       type: string
       label: 'Domain'
@@ -117,7 +117,7 @@ eu_cookie_compliance.settings:
       label: 'Exclude paths'
     exclude_admin_theme:
       type: boolean
-      label: 'Exclude admin pages'
+      label: 'Exclude admin pages.'
     cookie_lifetime:
       type: integer
       label: 'Cookie lifetime'
@@ -129,16 +129,16 @@ eu_cookie_compliance.settings:
       label: 'Include minimal CSS, I want to style the overlay in the theme CSS'
     disagree_do_not_show_popup:
       type: boolean
-      label: 'Don’t show cookie policy when the user clicks the “Cookie Policy” button.'
+      label: 'Do not show cookie policy when the user clicks the "Cookie Policy" button.'
     reload_page:
       type: boolean
-      label: 'Reload page after user clicks the “Agree” button.'
+      label: 'Reload page after user clicks the "Agree" button.'
     cookie_name:
       type: string
       label: 'Cookie name'
     exclude_uid_1:
       type: boolean
-      label: 'Don’t show the banner for UID 1.'
+      label: "Don't show the banner for UID 1."
     better_support_for_screen_readers:
       type: boolean
       label: 'Let screen readers see the banner before other links on the page'
