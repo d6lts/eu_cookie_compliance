@@ -23,7 +23,7 @@ function eu_cookie_compliance_menu() {
     'file' => 'eu_cookie_compliance.admin.inc',
   );
   $items['eu-cookie-compliance/store_consent/%'] = array(
-    'title' => 'EU Cookie Compliance STore Consent',
+    'title' => 'EU Cookie Compliance store consent',
     'page callback' => 'eu_cookie_compliance_store_consent',
     'page arguments' => array(2),
     'access arguments' => array('display EU Cookie Compliance popup'),
@@ -31,7 +31,7 @@ function eu_cookie_compliance_menu() {
   );
   if (module_exists('geoip') || module_exists('smart_ip') || extension_loaded('geoip')) {
     $items['eu-cookie-compliance-check'] = array(
-      'title' => 'Check if visit is in EU',
+      'title' => 'Check if visit is from EU',
       'page callback' => 'eu_cookie_compliance_json',
       'type' => MENU_CALLBACK,
       'access arguments' => array('display EU Cookie Compliance popup'),

@@ -41,7 +41,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
   );
 
   $form['eu_cookie_compliance']['info'] = array(
-    '#markup' => t('<p><strong>Note:</strong> In order for the module to work, <code>$scripts</code> needs to be output before <code>$page_bottom</code> in your <code>html.tpl.php</code>.</p>'),
+    '#markup' => '<p>' . t('<strong>Note:</strong> In order for the module to work, <code>$scripts</code> needs to be output before <code>$page_bottom</code> in your <code>html.tpl.php</code>.') . '</p>',
   );
 
   $form['eu_cookie_compliance']['popup_enabled'] = array(
@@ -97,15 +97,15 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
 
   $form['consent_option']['eu_cookie_compliance']['info'] = array(
     '#type' => 'markup',
-    '#markup' => t('The EU General Data Protection Regulation (GDPR) (see <a href="https://www.eugdpr.org/" target="_blank">https://www.eugdpr.org/</a>) comes into enforcement from 25 May 2018 and introduces new requirements for web sites which handle information that can be used to identify individuals. The regulation underlines that consent must be <strong>unambiguous</strong> and involve a <strong>clear affirmative action</strong>. When evaluating how to best handle the requirements in the GDPR, remember that if you have a basic web site where the visitors don’t log in, you always have the option to <strong>not process data that identifies individuals</strong>, in which case you may not need this module. Also note that GDPR applies to any electronic processing or storage of personal data that your organization may do, and simply installing a module may not be enough to become fully GDPR compliant.'),
+    '#markup' => t("The EU General Data Protection Regulation (GDPR) (see <a href=\"https://www.eugdpr.org/\" target=\"_blank\">https://www.eugdpr.org/</a>) comes into enforcement from 25 May 2018 and introduces new requirements for web sites which handle information that can be used to identify individuals. The regulation underlines that consent must be <strong>unambiguous</strong> and involve a <strong>clear affirmative action</strong>. When evaluating how to best handle the requirements in the GDPR, remember that if you have a basic web site where the visitors don't log in, you always have the option to <strong>not process data that identifies individuals</strong>, in which case you may not need this module. Also note that GDPR applies to any electronic processing or storage of personal data that your organization may do, and simply installing a module may not be enough to become fully GDPR compliant."),
   );
 
   $form['consent_option']['eu_cookie_compliance']['method'] = array(
     '#type' => 'radios',
     '#title' => t('Consent method'),
     '#options' => array(
-      'default' => t('Consent by default. Don’t provide any option to opt out.'),
-      'opt_in' => t('Opt-in. Don’t track visitors unless they specifically give consent. (GDPR compliant)'),
+      'default' => t("Consent by default. Don't provide any option to opt out."),
+      'opt_in' => t("Opt-in. Don't track visitors unless they specifically give consent. (GDPR compliant)"),
       'opt_out' => t('Opt-out. Track visitors by default, unless they choose to opt out.'),
       'auto' => t('Automatic. Respect the DNT (Do not track) setting in the browser, if present. Uses opt-in when DNT is 1 or not set, and consent by default when DNT is 0.'),
     ),
@@ -114,7 +114,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
 
   $form['javascripts'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Disable the following Javascripts when consent isn’t given'),
+    '#title' => t("Disable the following JavaScripts when consent isn't given"),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
     '#states' => array(
@@ -133,7 +133,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
     '#type' => 'textarea',
     '#title' => t('Disable JavaScripts'),
     '#default_value' => isset($popup_settings['disabled_javascripts']) ? $popup_settings['disabled_javascripts'] : '',
-    '#description' => t('Include the full path of JavaScripts, each on a separate line. When using the opt-in or opt-out consent options, you can block certain JavaScript files from being loaded when consent isn’t given. The on-site JavaScripts should be written as root relative paths <strong>without the leading slash</strong>, and off-site JavaScripts should be written as complete URLs <strong>with the leading http(s)://.</strong> Note that after the user gives consent, the scripts will be executed in the order you enter here.'),
+    '#description' => t("Include the full path of JavaScripts, each on a separate line. When using the opt-in or opt-out consent options, you can block certain JavaScript files from being loaded when consent isn't given. The on-site JavaScripts should be written as root relative paths <strong>without the leading slash</strong>, and off-site JavaScripts should be written as complete URLs <strong>with the leading http(s)://</strong>. Note that after the user gives consent, the scripts will be executed in the order you enter here."),
   );
 
   $form['cookies'] = array(
@@ -157,7 +157,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
     '#type' => 'textarea',
     '#title' => t('Whitelisted cookies'),
     '#default_value' => isset($popup_settings['whitelisted_cookies']) ? $popup_settings['whitelisted_cookies'] : '',
-    '#description' => t('Include the name of cookies, each on a separate line. When using the opt-in or opt-out consent options, this module will <strong>prevent cookies that are not on the whitelist</strong> from being stored in the browser when consent isn’t given. PHP session cookies and the cookie for this module are always whitelisted.'),
+    '#description' => t("Include the name of cookies, each on a separate line. When using the opt-in or opt-out consent options, this module will <strong>prevent cookies that are not on the whitelist</strong> from being stored in the browser when consent isn't given. PHP session cookies and the cookie for this module are always whitelisted."),
   );
 
   $form['consent_storage'] = array(
@@ -179,7 +179,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
 
   $form['consent_storage']['eu_cookie_compliance']['consent_storage_method'] = array(
     '#type' => 'radios',
-    '#title' => t('Consent Storage Method'),
+    '#title' => t('Consent storage method'),
     '#default_value' => $popup_settings['consent_storage_method'],
     '#options' => $consent_storage_options,
   );
@@ -218,7 +218,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
 
   $form['popup_message']['eu_cookie_compliance']['use_mobile_message'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Use a different message for mobile phones'),
+    '#title' => t('Use a different message for mobile phones.'),
     '#default_value' => isset($popup_settings['use_mobile_message']) ? $popup_settings['use_mobile_message'] : 0,
   );
 
@@ -240,7 +240,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
     '#type' => 'textfield',
     '#title' => t('Mobile breakpoint'),
     '#default_value' => isset($popup_settings['mobile_breakpoint']) ? $popup_settings['mobile_breakpoint'] : 768,
-    '#field_suffix' => ' ' . t('pixels'),
+    '#field_suffix' => t('px'),
     '#size' => 4,
     '#maxlength' => 4,
     '#required' => FALSE,
@@ -371,13 +371,13 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
 
   $form['thank_you']['eu_cookie_compliance']['popup_agreed_enabled'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Enable “Thank you” banner'),
+    '#title' => t('Enable "Thank you" banner.'),
     '#default_value' => isset($popup_settings['popup_agreed_enabled']) ? $popup_settings['popup_agreed_enabled'] : 1,
   );
 
   $form['thank_you']['eu_cookie_compliance']['popup_hide_agreed'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Clicking hides “Thank you” banner'),
+    '#title' => t('Clicking hides "Thank you" banner.'),
     '#default_value' => isset($popup_settings['popup_hide_agreed']) ? $popup_settings['popup_hide_agreed'] : 0,
     '#description' => t('Clicking a link or button hides the thank you message automatically.'),
   );
@@ -420,7 +420,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
-    '#title' => t('Privacy Policy'),
+    '#title' => t('Privacy policy'),
   );
 
   $form['privacy']['eu_cookie_compliance'] = array(
@@ -437,10 +437,20 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
     '#required' => TRUE,
     '#description' => t('Enter link to your privacy policy or other page that will explain cookies to your users. For external links prepend http://. The field supports tokens.'),
   );
+  if (module_exists('token')) {
+    $form['privacy']['eu_cookie_compliance']['popup_link']['#element_validate'][] = 'token_element_validate';
+    $form['privacy']['eu_cookie_compliance']['popup_link']['#token_types'][] = 'node';
+
+    $form['privacy']['eu_cookie_compliance']['popup_link_token_tree'] = array(
+      '#theme' => 'token_tree',
+      '#token_types' => array('node'),
+      '#dialog' => TRUE,
+    );
+  }
 
   $form['privacy']['eu_cookie_compliance']['popup_link_new_window'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Open privacy policy link in a new window'),
+    '#title' => t('Open privacy policy link in a new window.'),
     '#default_value' => isset($popup_settings['popup_link_new_window']) ? $popup_settings['popup_link_new_window'] : 1,
   );
 
@@ -485,7 +495,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
 
   $form['appearance']['eu_cookie_compliance']['popup_text_hex'] = array(
     '#type' => $form_color_picker_type,
-    '#title' => t('Text Color'),
+    '#title' => t('Text color'),
     '#default_value' => isset($popup_settings['popup_text_hex']) ? check_plain($popup_settings['popup_text_hex']) : 'ffffff',
     '#description' => t('Change the text color of the banner. Provide HEX value without the #.'),
     '#element_validate' => array('eu_cookie_compliance_validate_hex'),
@@ -498,7 +508,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
 
   $form['appearance']['eu_cookie_compliance']['popup_bg_hex'] = array(
     '#type' => $form_color_picker_type,
-    '#title' => t('Background Color'),
+    '#title' => t('Background color'),
     // Garland colors => 0779BF.
     '#default_value' => isset($popup_settings['popup_bg_hex']) ? check_plain($popup_settings['popup_bg_hex']) : '0779bf',
     '#description' => t('Change the background color of the banner. Provide HEX value without the #.'),
@@ -512,8 +522,9 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
 
   $form['appearance']['eu_cookie_compliance']['popup_height'] = array(
     '#type' => 'textfield',
-    '#title' => t('Banner height in pixels'),
+    '#title' => t('Banner height'),
     '#default_value' => isset($popup_settings['popup_height']) ? $popup_settings['popup_height'] : '',
+    '#field_suffix' => t('px'),
     '#size' => 5,
     '#maxlength' => 5,
     '#required' => FALSE,
@@ -529,6 +540,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
     '#type' => 'textfield',
     '#title' => t('Banner width in pixels or a percentage value'),
     '#default_value' => isset($popup_settings['popup_width']) ? $popup_settings['popup_width'] : '100%',
+    '#field_suffix' => t('px or %'),
     '#size' => 5,
     '#maxlength' => 5,
     '#required' => FALSE,
@@ -555,13 +567,13 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
   if (module_exists('geoip') || module_exists('smart_ip') || extension_loaded('geoip')) {
     $form['eu_only']['eu_cookie_compliance']['eu_only'] = array(
       '#type' => 'checkbox',
-      '#title' => t('Only display banner in EU countries'),
+      '#title' => t('Only display banner in EU countries.'),
       '#default_value' => isset($popup_settings['eu_only']) ? $popup_settings['eu_only'] : 0,
       '#description' => t('You can limit the number of countries for which the banner is displayed by checking this option. If you want to provide a list of countries other than current EU states, you may place an array in <code>$conf[\'eu_cookie_compliance_eu_countries\']</code> in your <code>settings.php</code> file. Using the <a href="http://drupal.org/project/geoip">geoip</a> module or the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or the <a href="http://www.php.net/manual/en/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
     );
     $form['eu_only']['eu_cookie_compliance']['eu_only_js'] = array(
       '#type' => 'checkbox',
-      '#title' => t('JavaScript-based (for Varnish): Only display banner in EU countries'),
+      '#title' => t('JavaScript-based (for Varnish): Only display banner in EU countries.'),
       '#default_value' => isset($popup_settings['eu_only_js']) ? $popup_settings['eu_only_js'] : 0,
       '#description' => t('This option also works for visitors that bypass Varnish. You can limit the number of countries for which the banner is displayed by checking this option. If you want to provide a list of countries other than current EU states, you may place an array in <code>$conf[\'eu_cookie_compliance_eu_countries\']</code> in your <code>settings.php</code> file. Using the <a href="http://drupal.org/project/geoip">geoip</a> module or the <a href="http://drupal.org/project/smart_ip">smart_ip</a> module or the <a href="http://www.php.net/manual/en/function.geoip-country-code-by-name.php">geoip_country_code_by_name()</a> PHP function.'),
     );
@@ -586,14 +598,15 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
 
   $form['advanced']['eu_cookie_compliance']['fixed_top_position'] = array(
     '#type' => 'checkbox',
-    '#title' => t('If the banner is at the top, don’t scroll the banner with the page'),
+    '#title' => t("If the banner is at the top, don't scroll the banner with the page."),
     '#default_value' => isset($popup_settings['fixed_top_position']) ? $popup_settings['fixed_top_position'] : 0,
     '#description' => t('Use position:fixed for the banner when displayed at the top.'),
   );
 
   $form['advanced']['eu_cookie_compliance']['popup_delay'] = array(
     '#type' => 'textfield',
-    '#title' => t('Banner sliding animation time in milliseconds'),
+    '#title' => t('Banner sliding animation time'),
+    '#field_suffix' => t('ms'),
     '#default_value' => isset($popup_settings['popup_delay']) ? $popup_settings['popup_delay'] : 1000,
     '#size' => 5,
     '#maxlength' => 5,
@@ -602,14 +615,14 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
 
   $form['advanced']['eu_cookie_compliance']['disagree_do_not_show_popup'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Do not show cookie policy when the user clicks the “Cookie policy” button.'),
+    '#title' => t('Do not show cookie policy when the user clicks the "Cookie policy" button.'),
     '#default_value' => isset($popup_settings['disagree_do_not_show_popup']) ? $popup_settings['disagree_do_not_show_popup'] : 0,
     '#description' => t('Enabling this will make it possible to record the fact that the user disagrees without the user having to see the privacy policy.'),
   );
 
   $form['advanced']['eu_cookie_compliance']['reload_page'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Reload page after user clicks the “Agree” button.'),
+    '#title' => t('Reload page after user clicks the "Agree" button.'),
     '#default_value' => isset($popup_settings['reload_page']) ? $popup_settings['reload_page'] : 0,
   );
 
@@ -636,14 +649,15 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
     '#type' => 'textfield',
     '#title' => t('Cookie name'),
     '#default_value' => isset($popup_settings['cookie_name']) ? $popup_settings['cookie_name'] : '',
-    '#description' => t('Sets the cookie name that is used to check whether the user has agreed or not.  This option is useful when policies change and the user needs to agree again.'),
+    '#description' => t('Sets the cookie name that is used to check whether the user has agreed or not. This option is useful when policies change and the user needs to agree again.'),
   );
 
   $form['advanced']['eu_cookie_compliance_cookie_lifetime'] = array(
     '#type' => 'textfield',
     '#title' => t('Cookie lifetime'),
     '#default_value' => variable_get('eu_cookie_compliance_cookie_lifetime', 100),
-    '#description' => t('How long does the system remember the user’s choice, in days.'),
+    '#field_suffix' => t('days'),
+    '#description' => t("How many days the system remember the user's choice."),
     '#states' => array(
       'enabled' => array(
         "input[name='eu_cookie_compliance[cookie_session]']" => array('checked' => FALSE),
@@ -674,25 +688,28 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
     '#type' => 'textarea',
     '#title' => t('Exclude paths'),
     '#default_value' => isset($popup_settings['exclude_paths']) ? $popup_settings['exclude_paths'] : '',
-    '#description' => t('Specify pages by using their paths. Enter one path per line. The ‘*’ character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.', array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>')),
+    '#description' => t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>')),
   );
 
   $form['advanced']['eu_cookie_compliance']['exclude_admin_pages'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Exclude admin pages'),
+    '#title' => t('Exclude admin pages.'),
     '#default_value' => isset($popup_settings['exclude_admin_pages']) ? $popup_settings['exclude_admin_pages'] : '',
   );
 
   $form['advanced']['eu_cookie_compliance']['exclude_uid_1'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Don’t show the banner for UID 1.'),
+    '#title' => t("Don't show the banner for UID 1."),
     '#default_value' => isset($popup_settings['exclude_uid_1']) ? $popup_settings['exclude_uid_1'] : 0,
   );
 
   $form['advanced']['eu_cookie_compliance']['script_scope'] = array(
     '#type' => 'select',
     '#title' => t('Script scope'),
-    '#options' => array('header' => t('Header (Scripts variable)'), 'footer' => t('Footer (Page bottom variable)')),
+    '#options' => array(
+      'header' => t('Header (Scripts variable)'),
+      'footer' => t('Footer (Page bottom variable)')
+    ),
     '#default_value' => isset($popup_settings['script_scope']) ? $popup_settings['script_scope'] : 'footer',
     '#description' => t('If you want to use the hasAgreed() function from other scripts, you may want to change this to header.'),
   );
@@ -706,7 +723,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
 
   $form['advanced']['eu_cookie_compliance']['cookie_session'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Prompt for consent (from the same user) at every new browser session'),
+    '#title' => t('Prompt for consent (from the same user) at every new browser session.'),
     '#description' => t("This sets cookie lifetime to 0, invalidating the cookie at the end of the browser session. To set a cookie lifetime greater than 0, uncheck this option. Note that some users will find this behavior highly annoying, and it's recommended to double-check with the legal advisor whether you really need this option enabled."),
     '#default_value' => isset($popup_settings['cookie_session']) ? $popup_settings['cookie_session'] : FALSE,
   );
