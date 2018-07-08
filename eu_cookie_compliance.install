@@ -182,7 +182,7 @@ function eu_cookie_compliance_update_8105() {
 function eu_cookie_compliance_update_8106() {
   \Drupal::configFactory()
     ->getEditable('eu_cookie_compliance.settings')
-    ->set('method', 'default')
+    ->set('method', 'opt_in')
     ->set('disagree_button_label', 'No, thanks')
     ->set('disabled_javascripts', '')
     ->set('whitelisted_cookies', '')

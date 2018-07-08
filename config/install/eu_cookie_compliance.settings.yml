@@ -43,7 +43,7 @@ cookie_name: ''
 exclude_uid_1: false
 better_support_for_screen_readers: false
 use_mobile_message: false
-method: 'default'
+method: 'opt_in'
 disagree_button_label: 'No, thanks'
 disabled_javascripts: ''
 whitelisted_cookies: ''
