@@ -193,7 +193,60 @@ function eu_cookie_compliance_update_8106() {
  * Add table to handle basic consent.
  */
 function eu_cookie_compliance_update_8107() {
-  $schema = \Drupal::moduleHandler()->invoke('eu_cookie_compliance', 'schema');
+  $schema['eu_cookie_compliance_basic_consent'] = [
+    'description' => 'Basic consent storage for EU Cookie Compliance / GDPR.',
+    'fields' => [
+      'cid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique consent storage ID.',
+      ],
+      'uid' => [
+        'description' => '{users}.uid for user.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'timestamp' => [
+        'description' => 'Time of consent.',
+        'type' => 'int',
+        'unsigned' => FALSE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'ip_address' => [
+        'description' => 'The IP address.',
+        'type' => 'varchar',
+        // Maximum length of an ipv6 IP address.
+        'length' => 45,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'consent_type' => [
+        'description' => 'The type of consent, such as "banner" for the banner and form_id for forms.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'revision_id' => [
+        'description' => 'Revision of the privacy policy at the time of consent.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['cid'],
+    'indexes' => [
+      'uid' => ['uid'],
+    ],
+    'foreign keys' => [
+      'uid' => ['users' => 'uid'],
+    ],
+  ];
+
   Database::getConnection()->schema()->createTable('eu_cookie_compliance_basic_consent', $schema['eu_cookie_compliance_basic_consent']);
   \Drupal::configFactory()
     ->getEditable('eu_cookie_compliance.settings')
