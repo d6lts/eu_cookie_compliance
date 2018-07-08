@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\user\RoleStorageInterface;
 use Drupal\filter\Entity\FilterFormat;
+use Drupal\Core\Cache\Cache;
 
 /**
  * Provides settings for eu_cookie_compliance module.
@@ -801,7 +802,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $form_state->setValue('disabled_javascripts', '');
     }
 
-    \Drupal::cache('data')->deleteAll();
+    // Clear cached javascript.
+    Cache::invalidateTags(['library_info']);
 
     eu_cookie_compliance_module_set_weight();
 
