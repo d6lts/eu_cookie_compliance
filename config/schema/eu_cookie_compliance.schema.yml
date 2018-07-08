@@ -118,6 +118,9 @@ eu_cookie_compliance.settings:
     exclude_admin_theme:
       type: boolean
       label: 'Exclude admin pages.'
+    cookie_session:
+      type: integer
+      label: 'Cookie session'
     cookie_lifetime:
       type: integer
       label: 'Cookie lifetime'
