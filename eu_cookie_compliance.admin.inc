@@ -109,7 +109,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
       'opt_out' => t('Opt-out. Track visitors by default, unless they choose to opt out.'),
       'auto' => t('Automatic. Respect the DNT (Do not track) setting in the browser, if present. Uses opt-in when DNT is 1 or not set, and consent by default when DNT is 0.'),
     ),
-    '#default_value' => isset($popup_settings['method']) ? $popup_settings['method'] : 'default',
+    '#default_value' => isset($popup_settings['method']) ? $popup_settings['method'] : 'opt_in',
   );
 
   $form['javascripts'] = array(
