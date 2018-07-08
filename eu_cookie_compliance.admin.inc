@@ -269,9 +269,6 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
       'visible' => array(
         "input[name='eu_cookie_compliance[method]']" => array('value' => 'default'),
       ),
-      'checked' => array(
-        'input[name="eu_cookie_compliance[method]"]' => array('value' => 'default'),
-      ),
     ),
   );
 
