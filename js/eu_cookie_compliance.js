@@ -68,6 +68,9 @@
       } else if (status === 2 && drupalSettings.eu_cookie_compliance.withdraw_enabled) {
         Drupal.eu_cookie_compliance.createWithdrawBanner(drupalSettings.eu_cookie_compliance.withdraw_markup);
         Drupal.eu_cookie_compliance.attachWithdrawEvents();
+      } else if ( status === 0 && Drupal.settings.eu_cookie_compliance.method === 'opt_in' && Drupal.settings.eu_cookie_compliance.withdraw_enabled) {
+        Drupal.eu_cookie_compliance.createWithdrawBanner(Drupal.settings.eu_cookie_compliance.withdraw_markup);
+        Drupal.eu_cookie_compliance.attachWithdrawEvents();
       }
     }
     catch (e) {
