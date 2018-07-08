@@ -179,8 +179,8 @@ function eu_cookie_compliance_page_build(&$page) {
       $method = !empty($popup_settings['method']) ? $popup_settings['method'] : 'default';
 
       if ($method == 'auto') {
-        $dnt = !empty($_SERVER['HTTP_DNT']) ? $_SERVER['HTTP_DNT'] : NULL;
-        if ($dnt === 0) {
+        $dnt = isset($_SERVER['HTTP_DNT']) ? $_SERVER['HTTP_DNT'] : NULL;
+        if ((int) $dnt === 0 && $dnt !== NULL) {
           $method = 'default';
         }
         else {
