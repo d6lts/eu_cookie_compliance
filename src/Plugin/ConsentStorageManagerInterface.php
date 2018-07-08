@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\eu_cookie_complaince\Plugin;
+namespace Drupal\eu_cookie_compliance\Plugin;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
 
