@@ -100,10 +100,9 @@
       // For some reason, the tab outerHeight is -10 if we don't use a timeout
       // function to reveal the tab.
       setTimeout(function () {
-        var tabHeight = $('.eu-cookie-withdraw-tab').outerHeight();
         var height = $html.outerHeight();
 
-        $html.animate({ top: -1 * (height - tabHeight) }, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
+        $html.animate({ top: -1 * (height) }, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
           $html.trigger('eu_cookie_compliance_popup_open');
         });
       }.bind($html), 0);
@@ -120,10 +119,9 @@
       // For some reason, the tab outerHeight is -10 if we don't use a timeout
       // function to reveal the tab.
       setTimeout(function () {
-        var tabHeight = $('.eu-cookie-withdraw-tab').outerHeight();
         var height = $html.outerHeight();
 
-        $html.animate({ bottom: -1 * (height - tabHeight) }, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
+        $html.animate({ bottom: -1 * (height) }, drupalSettings.eu_cookie_compliance.popup_delay, null, function () {
           $html.trigger('eu_cookie_compliance_popup_open');
         });
       }.bind($html), 0);
@@ -134,11 +132,10 @@
     var $wrapper = $('#sliding-popup');
     var $tab = $('.eu-cookie-withdraw-tab');
     var $bannerIsShowing = drupalSettings.eu_cookie_compliance.popup_position ? parseInt($wrapper.css('top')) === 0 : parseInt($wrapper.css('bottom')) === 0;
-    var tabHeight = $tab.outerHeight();
     var height = $wrapper.outerHeight();
     if (drupalSettings.eu_cookie_compliance.popup_position) {
       if ($bannerIsShowing) {
-        $wrapper.animate({'top' : -1 * (height - tabHeight)}, drupalSettings.eu_cookie_compliance.popup_delay);
+        $wrapper.animate({'top' : -1 * (height)}, drupalSettings.eu_cookie_compliance.popup_delay);
       }
       else {
         $wrapper.animate({'top' : 0}, drupalSettings.eu_cookie_compliance.popup_delay);
@@ -146,7 +143,7 @@
     }
     else {
       if ($bannerIsShowing) {
-        $wrapper.animate({'bottom' : -1 * (height - tabHeight)}, drupalSettings.eu_cookie_compliance.popup_delay);
+        $wrapper.animate({'bottom' : -1 * (height)}, drupalSettings.eu_cookie_compliance.popup_delay);
       }
       else {
         $wrapper.animate({'bottom' : 0}, drupalSettings.eu_cookie_compliance.popup_delay);
