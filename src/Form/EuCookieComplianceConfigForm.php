@@ -335,9 +335,6 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
         'visible' => [
           "input[name='method']" => ['value' => 'default'],
         ],
-        'checked' => [
-          'input[name="method"]' => ['value' => 'default'],
-        ],
       ],
     ];
 
