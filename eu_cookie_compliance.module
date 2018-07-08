@@ -403,12 +403,22 @@ function eu_cookie_compliance_theme() {
 function eu_cookie_compliance_get_settings($setting = 'all') {
   $popup_settings = variable_get('eu_cookie_compliance', array());
 
+  // Certain settings are required, so make sure they always return a valid
+  // value. For example, this might not be set properly for all translations
+  // when using translations of the variables.
+  $required_settings = array(
+    'consent_storage_method' => 'do_not_store'
+  );
+
   if ($setting == 'all') {
     return $popup_settings;
   }
 
   if (isset($popup_settings[$setting])) {
     return $popup_settings[$setting];
+  }
+  elseif (isset($required_settings[$setting])) {
+    return $required_settings[$setting];
   }
   else {
     return NULL;
