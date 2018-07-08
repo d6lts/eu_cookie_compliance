@@ -276,7 +276,7 @@
   Drupal.eu_cookie_compliance.moreInfoAction = function () {
     if (drupalSettings.eu_cookie_compliance.disagree_do_not_show_popup) {
       Drupal.eu_cookie_compliance.setStatus(0);
-      $('#sliding-popup').remove().trigger('eu_cookie_compliance_popup_close');
+      $('#sliding-popup').trigger('eu_cookie_compliance_popup_close').remove();
     } else {
       if (drupalSettings.eu_cookie_compliance.popup_link_new_window) {
         window.open(drupalSettings.eu_cookie_compliance.popup_link);
@@ -310,7 +310,7 @@
           $('#sliding-popup').html(drupalSettings.eu_cookie_compliance.popup_html_agreed).animate({ top: 0 }, drupalSettings.eu_cookie_compliance.popup_delay);
           Drupal.eu_cookie_compliance.attachHideEvents();
         } else if (status === 1) {
-          $('#sliding-popup').remove().trigger('eu_cookie_compliance_popup_close');
+          $('#sliding-popup').trigger('eu_cookie_compliance_popup_close').remove();
         }
       });
     } else {
@@ -319,7 +319,7 @@
           $('#sliding-popup').html(drupalSettings.eu_cookie_compliance.popup_html_agreed).animate({ bottom: 0 }, drupalSettings.eu_cookie_compliance.popup_delay);
           Drupal.eu_cookie_compliance.attachHideEvents();
         } else if (status === 1) {
-          $('#sliding-popup').remove().trigger('eu_cookie_compliance_popup_close');
+          $('#sliding-popup').trigger('eu_cookie_compliance_popup_close').remove();
         }
       });
     }
