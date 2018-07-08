@@ -139,8 +139,8 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     $method = $config->get('method');
 
     if ($method == 'auto') {
-      $dnt = !empty($_SERVER['HTTP_DNT']) ? $_SERVER['HTTP_DNT'] : NULL;
-      if ($dnt === 0) {
+      $dnt = isset($_SERVER['HTTP_DNT']) ? $_SERVER['HTTP_DNT'] : NULL;
+      if ((int) $dnt === 0 && $dnt !== NULL) {
         $method = 'default';
       }
       else {
