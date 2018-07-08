@@ -258,7 +258,13 @@
 
   Drupal.eu_cookie_compliance.declineAction = function () {
     Drupal.eu_cookie_compliance.setStatus(0);
-    $('#sliding-popup').animate({ bottom: $('#sliding-popup').outerHeight() * -1 }).trigger('eu_cookie_compliance_popup_close');
+    let popup = $('#sliding-popup');
+    if (popup.hasClass('sliding-popup-top')) {
+      popup.animate({ top: popup.outerHeight() * -1 }).trigger('eu_cookie_compliance_popup_close');
+    }
+    else {
+      popup.animate({ bottom: popup.outerHeight() * -1 }).trigger('eu_cookie_compliance_popup_close');
+    }
   };
 
   Drupal.eu_cookie_compliance.withdrawAction = function () {
