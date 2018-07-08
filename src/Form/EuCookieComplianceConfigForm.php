@@ -801,9 +801,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $form_state->setValue('disabled_javascripts', '');
     }
 
-    $query = \Drupal::database()->delete('cache_data');
-    $query->condition('cid', 'js:%', 'LIKE');
-    $query->execute();
+    \Drupal::cache('data')->deleteAll();
 
     eu_cookie_compliance_module_set_weight();
 
