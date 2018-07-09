@@ -309,7 +309,7 @@ function eu_cookie_compliance_page_build(&$page) {
       $load_disabled_scripts = '';
       $disabled_javascripts = _eu_cookie_compliance_explode_multiple_lines($disabled_javascripts);
       foreach ($disabled_javascripts as $script) {
-        if (substr($script, 0, 4) !== 'http') {
+        if (substr($script, 0, 4) !== 'http' && substr($script, 0, 2) !== '//') {
           $script = '/' . $script;
         }
         $load_disabled_scripts .= '
