@@ -74,6 +74,8 @@ function eu_cookie_compliance_schema() {
  * Implements hook_install().
  */
 function eu_cookie_compliance_install() {
+  module_load_include('module', 'eu_cookie_compliance', 'eu_cookie_compliance');
+
   $roles = Role::loadMultiple();
   $permission = 'display eu cookie compliance popup';
   foreach ($roles as $rid => $role) {
@@ -258,6 +260,7 @@ function eu_cookie_compliance_update_8107() {
  * Change module weight to load after other modules, ensure all JSs are handled.
  */
 function eu_cookie_compliance_update_8108() {
+  module_load_include('module', 'eu_cookie_compliance', 'eu_cookie_compliance');
   eu_cookie_compliance_module_set_weight();
 }
 
