@@ -232,6 +232,10 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       $popup_link = Url::fromUri($popup_link);
     }
     else {
+      // Guard against translations being entered without leading slash.
+      if (substr( $popup_link, 0, 1) != '/' && substr( $popup_link, 0, 1) != '?' && substr( $popup_link, 0, 1) != '#') {
+        $popup_link = '/' . $popup_link;
+      }
       $popup_link = $popup_link === '<front>' ? '/' : $popup_link;
       $popup_link = Url::fromUserInput($popup_link);
     }
