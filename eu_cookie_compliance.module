@@ -407,7 +407,8 @@ function eu_cookie_compliance_get_settings($setting = 'all') {
   // value. For example, this might not be set properly for all translations
   // when using translations of the variables.
   $required_settings = array(
-    'consent_storage_method' => 'do_not_store'
+    'consent_storage_method' => 'do_not_store',
+    'show_disagree_button' => TRUE,
   );
 
   if ($setting == 'all') {

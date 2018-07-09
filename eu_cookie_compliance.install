@@ -135,9 +135,11 @@ function eu_cookie_compliance_uninstall() {
  */
 function eu_cookie_compliance_requirements($phase) {
   $requirements = array();
-  $settings = variable_get('eu_cookie_compliance', array());
 
   if ($phase == 'runtime') {
+    module_load_include('module', 'eu_cookie_compliance', 'eu_cookie_compliance');
+    $settings = eu_cookie_compliance_get_settings();
+
     if (!empty($settings['popup_link']) && $settings['popup_link'] == '<front>' && !empty($settings['show_disagree_button']) && $settings['show_disagree_button']) {
       $requirements['eu_cookie_compliance'] = array(
         'title' => t('EU Cookie Compliance'),
