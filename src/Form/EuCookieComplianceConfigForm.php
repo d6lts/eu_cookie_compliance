@@ -118,7 +118,8 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
     $config = $this->config('eu_cookie_compliance.settings');
 
     $default_filter_format = filter_default_format();
-    if ($default_filter_format == 'restricted_html' && FilterFormat::load('full_html')) {
+    $full_html_format = FilterFormat::load('full_html');
+    if ($default_filter_format == 'restricted_html' && !empty($full_html_format) && $full_html_format->get('status')) {
       $default_filter_format = 'full_html';
     }
 
@@ -275,12 +276,20 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ],
     ];
 
+    $config_format = $config->get('popup_info.format');
+    if (!empty($config_format)) {
+      $filter_format = FilterFormat::load($config_format);
+      if (empty($filter_format) || !$filter_format->get('status')) {
+        $config_format = $default_filter_format;
+      }
+    }
+
     $form['popup_message']['popup_info'] = [
       '#type' => 'text_format',
       '#title' => $this->t('Cookie information banner message'),
       '#default_value' => $config->get('popup_info.value'),
       '#required' => TRUE,
-      '#format' => !empty($config->get('popup_info.format')) && FilterFormat::load($config->get('popup_info.format')) ? $config->get('popup_info.format') : $default_filter_format,
+      '#format' => $config_format,
     ];
 
     $form['popup_message']['use_mobile_message'] = [
@@ -294,12 +303,20 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#states' => ['visible' => ['input[name="use_mobile_message"]' => ['checked' => TRUE]]],
     ];
 
+    $config_format = $config->get('mobile_popup_info.format');
+    if (!empty($config_format)) {
+      $filter_format = FilterFormat::load($config_format);
+      if (empty($filter_format) || !$filter_format->get('status')) {
+        $config_format = $default_filter_format;
+      }
+    }
+
     $form['popup_message']['container']['mobile_popup_info'] = [
       '#type' => 'text_format',
       '#title' => $this->t('Cookie information banner message - mobile'),
       '#default_value' => $config->get('mobile_popup_info.value'),
       '#required' => FALSE,
-      '#format' => !empty($config->get('mobile_popup_info.format')) && FilterFormat::load($config->get('mobile_popup_info.format')) ? $config->get('mobile_popup_info.format') : $default_filter_format,
+      '#format' => $config_format,
     ];
 
     $form['popup_message']['mobile_breakpoint'] = [
@@ -392,12 +409,20 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('withdraw_enabled'),
     ];
 
+    $config_format = $config->get('popup_info.format');
+    if (!empty($config_format)) {
+      $filter_format = FilterFormat::load($config_format);
+      if (empty($filter_format) || !$filter_format->get('status')) {
+        $config_format = $default_filter_format;
+      }
+    }
+
     $form['withdraw_consent']['withdraw_message'] = [
       '#type' => 'text_format',
       '#title' => t('Withdraw consent banner message'),
       '#default_value' => isset($config->get('withdraw_message')['value']) ? $config->get('withdraw_message')['value'] : '',
       '#description' => t('Text that will be displayed in the banner that appears when the privacy settings tab is clicked.'),
-      '#format' => isset($config->get('withdraw_message')['format']) ? $config->get('withdraw_message')['format'] : $default_filter_format,
+      '#format' => $config_format,
     ];
 
     $form['withdraw_consent']['withdraw_tab_button_label'] = [
@@ -433,12 +458,20 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#description' => $this->t('Clicking a link or button hides the "Thank you" message automatically.'),
     ];
 
+    $config_format = $config->get('popup_info.format');
+    if (!empty($config_format)) {
+      $filter_format = FilterFormat::load($config_format);
+      if (empty($filter_format) || !$filter_format->get('status')) {
+        $config_format = $default_filter_format;
+      }
+    }
+
     $form['thank_you']['popup_agreed'] = [
       '#type' => 'text_format',
       '#title' => $this->t('"Thank you" banner message'),
       '#default_value' => !empty($config->get('popup_agreed')['value']) ? $config->get('popup_agreed')['value'] : '',
       '#required' => TRUE,
-      '#format' => !empty($config->get('popup_agreed')['format']) && FilterFormat::load($config->get('popup_info.format')) ? $config->get('popup_agreed')['format'] : $default_filter_format,
+      '#format' => $config_format,
     ];
 
     $form['thank_you']['popup_find_more_button_message'] = [

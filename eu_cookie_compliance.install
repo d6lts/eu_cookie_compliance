@@ -269,7 +269,8 @@ function eu_cookie_compliance_update_8108() {
  */
 function eu_cookie_compliance_update_8109() {
   $default_filter_format = filter_default_format();
-  if ($default_filter_format == 'restricted_html' && FilterFormat::load('full_html')) {
+  $full_html_format = FilterFormat::load('full_html');
+  if ($default_filter_format == 'restricted_html' && !empty($full_html_format) && $full_html_format->get('status')) {
     $default_filter_format = 'full_html';
   }
 
