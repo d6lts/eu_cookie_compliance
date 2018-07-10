@@ -312,11 +312,9 @@ function eu_cookie_compliance_page_build(&$page) {
         if (substr($script, 0, 4) !== 'http' && substr($script, 0, 2) !== '//') {
           $script = '/' . $script;
         }
-        $load_disabled_scripts .= '
-          var scriptTag = document.createElement(\'script\');
-          scriptTag.src = \'' . $script . '\';
-          document.body.appendChild(scriptTag);
-        ';
+        $load_disabled_scripts .= 'var scriptTag = document.createElement("script");';
+        $load_disabled_scripts .= 'scriptTag.src = ' . drupal_json_encode($script) . ';';
+        $load_disabled_scripts .= 'document.body.appendChild(scriptTag);';
       }
     }
 
