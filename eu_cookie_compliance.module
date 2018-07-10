@@ -322,7 +322,7 @@ function eu_cookie_compliance_page_build(&$page) {
 
     // Add the cookie name inline, since Drupal.settings will not be available
     // if the script is loaded in the header.
-    drupal_add_js('var eu_cookie_compliance_cookie_name = "' . (!empty($popup_settings['cookie_name']) ? $popup_settings['cookie_name'] : '') . '";', array('type' => 'inline', 'scope' => $script_scope));
+    drupal_add_js('var eu_cookie_compliance_cookie_name = ' . drupal_json_encode(!empty($popup_settings['cookie_name']) ? $popup_settings['cookie_name'] : '') . ';', array('type' => 'inline', 'scope' => $script_scope));
 
     drupal_add_js(array('eu_cookie_compliance' => $data['variables']), array('type' => 'setting', 'scope' => $script_scope));
     if (!isset($popup_settings['use_bare_css']) || $popup_settings['use_bare_css'] == 0) {

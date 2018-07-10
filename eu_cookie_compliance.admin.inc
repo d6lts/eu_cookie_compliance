@@ -790,6 +790,11 @@ function eu_cookie_compliance_admin_form_validate($form, &$form_state) {
     $form_state['values']['eu_cookie_compliance']['disabled_javascripts'] = '';
   }
 
+  // Validate cookie name against valid characters.
+  if (preg_match('/[&\'\x00-\x20\x22\x28-\x29\x2c\x2f\x3a-\x40\x5b-\x5d\x7b\x7d\x7f]/', $form_state['values']['eu_cookie_compliance']['cookie_name'])) {
+    form_set_error('eu_cookie_compliance][cookie_name', t('Invalid cookie name, please remove any special characters and try again.'));
+  }
+
   eu_cookie_compliance_clear_caches();
 }
 
