@@ -778,6 +778,19 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+
+    // Validate cookie name against valid characters.
+    if (preg_match('/[&\'\x00-\x20\x22\x28-\x29\x2c\x2f\x3a-\x40\x5b-\x5d\x7b\x7d\x7f]/', $form_state->getValue('cookie_name'))) {
+      $form_state->setErrorByName('cookie_name', $this->t('Invalid cookie name, please remove any special characters and try again.'));
+    }
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Clear values if we are using minimal css.
     if ($form_state->getValue('use_bare_css')) {
