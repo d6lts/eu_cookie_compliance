@@ -61,13 +61,22 @@ Installation.
    available for sites that use Varnish (or other caching strategies). The
    JavaScript based variant also works for visitors that bypass Varnish.
 
-8. To translate the message displayed, enable the i18n_variable module in the
-   i18n package. After enabling "EU Cookie Compliance" at
-   admin/config/regional/i18n/variable, you will be able to set your
-   translations on the settings page for this module.
+Translations.
+=============
 
-NOTICE: The module does not audit your cookies nor does it prevent cookies
-from being set.
+To translate the message in the banners, enable the "i18n_variable" submodule in
+the i18n project.
+
+https://www.drupal.org/project/i18n
+
+After enabling "EU Cookie Compliance" at admin/config/regional/i18n/variable,
+you will be able to set your translations on the settings page for this module.
+
+Using Domain Access? Instead of using the "domain_settings" module, you need to
+use the "domain_variable_i18n" sub-module from the domain_variable project,
+or you won't be able to translate the module settings.
+
+https://www.drupal.org/project/domain_variable
 
 For developers.
 ===============
