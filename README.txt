@@ -17,6 +17,19 @@ consent is given another banner appears with a thank you message.
 The module provides a settings page where the banner can be customised. There
 are also template files for the banners that can be overridden by your theme.
 
+Upgrade info.
+=============
+7.24 introduces a dependency on ctools. Please (install and) enable ctools when
+you upgrade from a version below 7.24.
+
+https://www.drupal.org/project/ctools
+
+For translations, 7.15 introduced a soft dependency on i18n_variable. If you
+need to translate the banners, download i18n and install the i18n_variable and
+its dependencies.
+
+https://www.drupal.org/project/i18n
+
 Installation.
 =============
 1. Unzip the files to the "sites/all/modules" directory and enable the module.
