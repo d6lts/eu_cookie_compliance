@@ -184,7 +184,7 @@ function eu_cookie_compliance_update_8105() {
 function eu_cookie_compliance_update_8106() {
   \Drupal::configFactory()
     ->getEditable('eu_cookie_compliance.settings')
-    ->set('method', 'opt_in')
+    ->set('method', 'default')
     ->set('disagree_button_label', 'No, thanks')
     ->set('disabled_javascripts', '')
     ->set('whitelisted_cookies', '')
@@ -286,3 +286,21 @@ function eu_cookie_compliance_update_8109() {
     ->save();
 }
 
+/**
+ * Disable withdraw tab and banner in the consent method "Consent by default".
+ */
+function eu_cookie_compliance_update_8110() {
+  $withdraw_enabled = \Drupal::configFactory()
+    ->get('eu_cookie_compliance.settings')
+    ->get('withdraw_enabled');
+  $method = \Drupal::configFactory()
+    ->get('eu_cookie_compliance.settings')
+    ->get('method');
+
+  if ($method == 'default' && $withdraw_enabled == 1) {
+    \Drupal::configFactory()
+      ->getEditable('eu_cookie_compliance.settings')
+      ->set('withdraw_enabled', FALSE)
+      ->save();
+  }
+}
