@@ -551,6 +551,8 @@ function _eu_cookie_compliance_explode_multiple_lines($text) {
   if (count($text) == 1) {
     $text = explode("\n", $text[0]);
   }
+
+  array_walk($text, '_eu_cookie_compliance_convert_relative_uri');
   return $text;
 }
 
@@ -649,4 +651,21 @@ function eu_cookie_compliance_store_consent($type) {
 
   drupal_json_output($result);
   drupal_exit();
+}
+
+/**
+ * Convert uri to relative path.
+ *
+ * Example public://file.js to /sites/default/files/file.js.
+ *
+ * @param string $element
+ *   Url to transform.
+ * @param string $key
+ *   Key.
+ *
+ * @return mixed
+ *   Paths converted.
+ */
+function _eu_cookie_compliance_convert_relative_uri(&$element, $key) {
+  $element = preg_replace('/^\//', '', file_create_url($element));
 }
