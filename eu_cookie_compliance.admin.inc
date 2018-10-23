@@ -180,7 +180,7 @@ function eu_cookie_compliance_admin_form(array $form, array $form_state) {
   $form['consent_storage']['eu_cookie_compliance']['consent_storage_method'] = array(
     '#type' => 'radios',
     '#title' => t('Consent storage method'),
-    '#default_value' => $popup_settings['consent_storage_method'],
+    '#default_value' => isset($popup_settings['consent_storage_method']) ? $popup_settings['consent_storage_method'] : 'do_not_store',
     '#options' => $consent_storage_options,
   );
 

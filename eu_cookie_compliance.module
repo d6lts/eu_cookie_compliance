@@ -303,7 +303,7 @@ function eu_cookie_compliance_page_build(&$page) {
     $script_scope = isset($popup_settings['script_scope']) ? $popup_settings['script_scope'] : 'footer';
 
     // Add inline javascript.
-    $disabled_javascripts = $popup_settings['disabled_javascripts'];
+    $disabled_javascripts = isset($popup_settings['disabled_javascripts']) ? $popup_settings['disabled_javascripts'] : '';
     $load_disabled_scripts = '';
     if ($disabled_javascripts != '') {
       $load_disabled_scripts = '';
