@@ -154,7 +154,7 @@
       $popup.prependTo('body');
       height = $popup.outerHeight();
       $popup.show()
-        .attr({ class: 'sliding-popup-top clearfix' })
+        .attr({ 'class': 'sliding-popup-top clearfix' })
         .css({ top: -1 * height })
         .animate({ top: 0 }, Drupal.settings.eu_cookie_compliance.popup_delay, null, function () {
           $popup.trigger('eu_cookie_compliance_popup_open');
@@ -168,7 +168,7 @@
 
       height = $popup.outerHeight();
       $popup.show()
-        .attr({ class: 'sliding-popup-bottom' })
+        .attr({ 'class': 'sliding-popup-bottom' })
         .css({ bottom: -1 * height })
         .animate({ bottom: 0 }, Drupal.settings.eu_cookie_compliance.popup_delay, null, function () {
           $popup.trigger('eu_cookie_compliance_popup_open');
@@ -250,7 +250,7 @@
 
   Drupal.eu_cookie_compliance.declineAction = function () {
     Drupal.eu_cookie_compliance.setStatus(0);
-    let popup = $('#sliding-popup');
+    var popup = $('#sliding-popup');
     if (popup.hasClass('sliding-popup-top')) {
       popup.animate({ top: popup.outerHeight() * -1 }).trigger('eu_cookie_compliance_popup_close');
     }
