@@ -16,7 +16,7 @@
  * @return array
  *   Admin form render array.
  */
-function eu_cookie_compliance_admin_form($form, $form_state) {
+function eu_cookie_compliance_admin_form(array $form, array $form_state) {
   ctools_include('plugins');
 
   $form = array();
@@ -685,7 +685,11 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
     '#type' => 'textarea',
     '#title' => t('Exclude paths'),
     '#default_value' => isset($popup_settings['exclude_paths']) ? $popup_settings['exclude_paths'] : '',
-    '#description' => t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>')),
+    '#description' => t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array(
+      '%blog' => 'blog',
+      '%blog-wildcard' => 'blog/*',
+      '%front' => '<front>',
+    )),
   );
 
   $form['advanced']['eu_cookie_compliance']['exclude_admin_pages'] = array(
@@ -705,7 +709,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
     '#title' => t('Script scope'),
     '#options' => array(
       'header' => t('Header (Scripts variable)'),
-      'footer' => t('Footer (Page bottom variable)')
+      'footer' => t('Footer (Page bottom variable)'),
     ),
     '#default_value' => isset($popup_settings['script_scope']) ? $popup_settings['script_scope'] : 'footer',
     '#description' => t('If you want to use the hasAgreed() function from other scripts, you may want to change this to header.'),
@@ -739,7 +743,7 @@ function eu_cookie_compliance_admin_form($form, $form_state) {
  * @param array $form_state
  *   Form state array.
  */
-function eu_cookie_compliance_admin_form_validate($form, &$form_state) {
+function eu_cookie_compliance_admin_form_validate(array $form, array &$form_state) {
   if ((!preg_match('/^[1-9][0-9]{0,4}$/', $form_state['values']['eu_cookie_compliance']['popup_delay'])) && ($form_state['values']['eu_cookie_compliance']['popup_delay'] != '0')) {
     form_set_error('eu_cookie_compliance][popup_delay', t('Delay must be an integer value.'));
   }
@@ -806,7 +810,7 @@ function eu_cookie_compliance_admin_form_validate($form, &$form_state) {
  * @param array $form_state
  *   Form state array.
  */
-function eu_cookie_compliance_admin_form_submit($form, &$form_state) {
+function eu_cookie_compliance_admin_form_submit(array $form, array &$form_state) {
   $permission = 'display EU Cookie Compliance popup';
   $roles = $form_state['values']['see_the_banner'];
   foreach ($roles as $rid => $value) {
@@ -827,7 +831,7 @@ function eu_cookie_compliance_admin_form_submit($form, &$form_state) {
  * @param array $form_state
  *   Form state array.
  */
-function eu_cookie_compliance_validate_hex($element, &$form_state) {
+function eu_cookie_compliance_validate_hex(array $element, array &$form_state) {
   if (!empty($element['#value']) && !preg_match('/^[0-9a-fA-F]{3,6}$/', $element['#value'])) {
     form_error($element, t('%name must be a HEX value (without leading #) or empty.', array('%name' => $element['#title'])));
   }

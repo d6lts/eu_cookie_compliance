@@ -2,8 +2,7 @@
 
 /**
  * @file
- * This is a template file for a pop-up prompting user to give their consent for
- * the website to set cookies.
+ * Template file for consent banner.
  *
  * When overriding this template it is important to note that jQuery will use
  * the following classes to assign actions to buttons:
