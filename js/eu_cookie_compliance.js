@@ -7,6 +7,7 @@
 (function ($, Drupal, drupalSettings) {
 
   'use strict';
+  var euCookieComplianceBlockCookies;
 
   Drupal.behaviors.euCookieCompliancePopup = {
     attach: function (context) {
@@ -413,8 +414,8 @@
     var euCookieComplianceWhitelist = drupalSettings.eu_cookie_compliance.whitelisted_cookies.split(/\r\n|\n|\r/g);
 
     // Add the EU Cookie Compliance cookie.
-    euCookieComplianceWhitelist.push((drupalSettings.eu_cookie_compliance.cookie_name === '') ? 'cookie-agreed' : drupalSettings.eu_cookie_compliance.cookie_name);
-    var euCookieComplianceBlockCookies = setInterval(function () {
+    euCookieComplianceWhitelist.push((typeof drupalSettings.eu_cookie_compliance.cookie_name === 'undefined' || drupalSettings.eu_cookie_compliance.cookie_name === '') ? 'cookie-agreed' : drupalSettings.eu_cookie_compliance.cookie_name);
+    euCookieComplianceBlockCookies = setInterval(function () {
       // Load all cookies from jQuery.
       var cookies = $.cookie();
 
