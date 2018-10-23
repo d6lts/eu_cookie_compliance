@@ -176,7 +176,7 @@ function eu_cookie_compliance_page_build(&$page) {
         $show_disagree_buttons = FALSE;
       }
 
-      $method = !empty($popup_settings['method']) ? $popup_settings['method'] : 'opt_in';
+      $method = !empty($popup_settings['method']) ? $popup_settings['method'] : 'default';
 
       if ($method == 'auto') {
         $dnt = isset($_SERVER['HTTP_DNT']) ? $_SERVER['HTTP_DNT'] : NULL;
