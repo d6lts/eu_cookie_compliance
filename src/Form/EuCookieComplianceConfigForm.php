@@ -214,7 +214,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#type' => 'textarea',
       '#title' => $this->t('Disable JavaScripts'),
       '#default_value' => $config->get('disabled_javascripts'),
-      '#description' => $this->t("Include the full path of JavaScripts, each on a separate line. When using the opt-in or opt-out consent options, you can block certain JavaScript files from being loaded when consent isn't given. The on-site JavaScripts should be written as root relative paths <strong>without the leading slash</strong>, and off-site JavaScripts should be written as complete URLs <strong>with the leading http(s)://</strong>. Note that after the user gives consent, the scripts will be executed in the order you enter here."),
+      '#description' => $this->t("Include the full path of JavaScripts, each on a separate line. When using the opt-in or opt-out consent options, you can block certain JavaScript files from being loaded when consent isn't given. The on-site JavaScripts should be written as root relative paths <strong>without the leading slash</strong>, you can use public://path/to/file.js and private://path/to/file.js, and off-site JavaScripts should be written as complete URLs <strong>with the leading http(s)://</strong>. Note that after the user gives consent, the scripts will be executed in the order you enter here."),
     ];
 
     $form['cookies'] = [
