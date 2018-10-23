@@ -259,7 +259,7 @@
 
   Drupal.eu_cookie_compliance.declineAction = function () {
     Drupal.eu_cookie_compliance.setStatus(0);
-    let popup = $('#sliding-popup');
+    var popup = $('#sliding-popup');
     if (popup.hasClass('sliding-popup-top')) {
       popup.animate({ top: popup.outerHeight() * -1 }).trigger('eu_cookie_compliance_popup_close');
     }
