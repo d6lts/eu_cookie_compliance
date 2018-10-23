@@ -131,7 +131,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       $data['css'] .= '#sliding-popup.sliding-popup-top { position: fixed; }';
     }
 
-    $method = $config->get('method');
+    $method = $config->get('method') ? $config->get('method') : 'default';
 
     if ($method == 'auto') {
       $dnt = isset($_SERVER['HTTP_DNT']) ? $_SERVER['HTTP_DNT'] : NULL;
