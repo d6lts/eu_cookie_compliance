@@ -234,7 +234,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     }
     else {
       // Guard against translations being entered without leading slash.
-      if (substr( $popup_link, 0, 1) != '/' && substr( $popup_link, 0, 1) != '?' && substr( $popup_link, 0, 1) != '#') {
+      if (substr($popup_link, 0, 1) != '/' && substr($popup_link, 0, 1) != '?' && substr($popup_link, 0, 1) != '#') {
         $popup_link = '/' . $popup_link;
       }
       $popup_link = $popup_link === '<front>' ? '/' : $popup_link;
