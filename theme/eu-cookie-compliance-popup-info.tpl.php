@@ -26,7 +26,7 @@
  */
 ?>
 <div>
-  <div class ="popup-content info">
+  <div class="popup-content info">
     <div id="popup-text">
       <?php print $message ?>
       <?php if ($disagree_button) : ?>

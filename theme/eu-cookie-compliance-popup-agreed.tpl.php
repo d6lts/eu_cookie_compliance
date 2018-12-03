@@ -17,7 +17,7 @@
  */
 ?>
 <div>
-  <div class ="popup-content agreed">
+  <div class="popup-content agreed">
     <div id="popup-text">
       <?php print $message ?>
     </div>
