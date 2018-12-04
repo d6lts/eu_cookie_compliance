@@ -143,6 +143,9 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       }
     }
 
+    // Set default value for $popup_info_template.
+    $popup_info_template = 'eu_cookie_compliance_popup_info';
+
     switch ($method) {
       case 'default':
         $click_confirmation = $config->get('popup_clicking_confirmation');
@@ -151,6 +154,11 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
         $primary_button_class = 'agree-button eu-cookie-compliance-default-button';
         $secondary_button_label = '';
         $secondary_button_class = '';
+        $info_templates = [
+          'legacy' => 'eu_cookie_compliance_popup_info_consent_default',
+          'new' => 'eu_cookie_compliance_popup_info',
+        ];
+        $popup_info_template = $info_templates[$config->get('popup_info_template')];
         break;
 
       case 'opt_in':
@@ -176,7 +184,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     $popup_text_agreed = str_replace(["\r", "\n"], '', $config->get('popup_agreed.value'));
     $withdraw_markup = str_replace(["\r", "\n"], '', $config->get('withdraw_message.value'));
     $html_info = [
-      '#theme' => 'eu_cookie_compliance_popup_info',
+      '#theme' => $popup_info_template,
       '#message' => check_markup($popup_text_info, $config->get('popup_info.format'), FALSE),
       '#agree_button' => $primary_button_label,
       '#disagree_button' => ($config->get('show_disagree_button') == TRUE) ? $config->get('popup_disagree_button_message') : FALSE,
@@ -186,7 +194,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
     ];
     $mobile_popup_text_info = str_replace(["\r", "\n"], '', $config->get('mobile_popup_info.value'));
     $mobile_html_info = [
-      '#theme' => 'eu_cookie_compliance_popup_info',
+      '#theme' => $popup_info_template,
       '#message' => check_markup($mobile_popup_text_info, $config->get('popup_info.format'), FALSE),
       '#agree_button' => $primary_button_label,
       '#disagree_button' => ($config->get('show_disagree_button') == TRUE) ? $config->get('popup_disagree_button_message') : FALSE,
@@ -349,6 +357,17 @@ function eu_cookie_compliance_theme($existing, $type, $theme, $path) {
   return [
     'eu_cookie_compliance_popup_info' => [
       'template' => 'eu_cookie_compliance_popup_info',
+      'variables' => [
+        'message' => NULL,
+        'agree_button' => NULL,
+        'disagree_button' => NULL,
+        'secondary_button_label' => NULL,
+        'primary_button_class' => NULL,
+        'secondary_button_class' => NULL,
+      ],
+    ],
+    'eu_cookie_compliance_popup_info_consent_default' => [
+      'template' => 'eu_cookie_compliance_popup_info_consent_default',
       'variables' => [
         'message' => NULL,
         'agree_button' => NULL,

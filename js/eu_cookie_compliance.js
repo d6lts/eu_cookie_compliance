@@ -1,5 +1,6 @@
 /**
- * @file eu_cookie_compliance.js
+ * @file
+ * eu_cookie_compliance.js
  *
  * Defines the behavior of the eu cookie compliance banner.
  */

@@ -199,6 +199,28 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('method'),
     ];
 
+    $form['popup_info_template'] = [
+      '#type' => 'details',
+      '#title' => 'Select the popup info template for \'default by consent\' option',
+      '#open' => TRUE,
+      '#states' => [
+        'visible' => [
+          "input[name='method']" => ['value' => 'default'],
+        ],
+      ],
+    ];
+
+    $form['popup_info_template']['popup_info_template'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Info banner template'),
+      '#options' => [
+        'legacy' => t('Cookie policy button in popup-buttons section and styled similarly to the Agree button, 
+        as in earlier versions of this module'),
+        'new' => t('Cookie policy button in popup-text section, styled differently than Agree button.'),
+      ],
+      '#default_value' => $config->get('popup_info_template'),
+    ];
+
     $form['javascripts'] = [
       '#type' => 'details',
       '#title' => $this->t("Disable the following JavaScripts when consent isn't given"),
@@ -780,7 +802,11 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
-
+    // Set popup_info_template value to 'new' if method is not 'consent by
+    // default'.
+    if ($form_state->getValue('method') !== 'default') {
+      $form_state->setValue('popup_info_template', 'new');
+    }
     // Validate cookie name against valid characters.
     if (preg_match('/[&\'\x00-\x20\x22\x28-\x29\x2c\x2f\x3a-\x40\x5b-\x5d\x7b\x7d\x7f]/', $form_state->getValue('cookie_name'))) {
       $form_state->setErrorByName('cookie_name', $this->t('Invalid cookie name, please remove any special characters and try again.'));
@@ -838,7 +864,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       $form_state->setValue('disagree_button', TRUE);
       $form_state->setValue('popup_clicking_confirmation', FALSE);
       $form_state->setValue('popup_scrolling_confirmation', FALSE);
-
+      $form_state->setValue('popup_info_template', 'new');
     }
     else {
       $form_state->setValue('whitelisted_cookies', '');
@@ -861,6 +887,7 @@ class EuCookieComplianceConfigForm extends ConfigFormBase {
       ->set('show_disagree_button', $form_state->getValue('disagree_button'))
       ->set('popup_disagree_button_message', $form_state->getValue('popup_disagree_button_message'))
       ->set('popup_info', $form_state->getValue('popup_info'))
+      ->set('popup_info_template', $form_state->getValue('popup_info_template'))
       ->set('use_mobile_message', $form_state->getValue('use_mobile_message'))
       ->set('mobile_popup_info', $form_state->getValue('use_mobile_message') ? $form_state->getValue('mobile_popup_info') : ['value' => '', 'format' => filter_default_format()])
       ->set('mobile_breakpoint', $form_state->getValue('mobile_breakpoint'))
