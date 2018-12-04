@@ -413,6 +413,14 @@ function eu_cookie_compliance_user_in_eu() {
     $smart_ip_session = SmartIp::query($ip_address);
     $country_code = isset($smart_ip_session['countryCode']) ? $smart_ip_session['countryCode'] : NULL;
   }
+
+  // If the CloudFlare provided country header is available, use it as a
+  // fallback. See:
+  // https://support.cloudflare.com/hc/en-us/articles/200168236-What-does-Cloudflare-IP-Geolocation-do-
+  if (empty($country_code) && (isset($_SERVER['HTTP_CF_IPCOUNTRY']))) {
+    $country_code = $_SERVER['HTTP_CF_IPCOUNTRY'];
+  }
+
   if (in_array($country_code, $eu_countries) || $country_code == '' || $country_code == '-') {
     $geoip_match = TRUE;
   }
