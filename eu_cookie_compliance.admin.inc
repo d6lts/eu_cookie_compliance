@@ -112,6 +112,25 @@ function eu_cookie_compliance_admin_form(array $form, array $form_state) {
     '#default_value' => isset($popup_settings['method']) ? $popup_settings['method'] : 'opt_in',
   );
 
+  // The info_template element is initialized in function
+  // eu_cookie_compliance_update_7009().
+  $default_value = (!empty($popup_settings['info_template'])) ? $popup_settings['info_template'] : 'new';
+  $form['consent_option']['eu_cookie_compliance']['info_template'] = array(
+    '#type' => 'radios',
+    '#title' => t('Info banner template'),
+    '#options' => array(
+      'legacy' => t('Cookie policy button in popup-buttons section and styled similarly to the Agree button, 
+        as in earlier versions of this module'),
+      'new' => t('Cookie policy button in popup-text section, styled differently than the Agree button.'),
+    ),
+    '#default_value' => $default_value,
+    '#states' => array(
+      'visible' => array(
+        "input[name='eu_cookie_compliance[method]']" => array('value' => 'default'),
+      ),
+    ),
+  );
+
   $form['javascripts'] = array(
     '#type' => 'fieldset',
     '#title' => t("Disable the following JavaScripts when consent isn't given"),
@@ -788,6 +807,7 @@ function eu_cookie_compliance_admin_form_validate(array $form, array &$form_stat
     $form_state['values']['eu_cookie_compliance']['show_disagree_button'] = TRUE;
     $form_state['values']['eu_cookie_compliance']['popup_clicking_confirmation'] = FALSE;
     $form_state['values']['eu_cookie_compliance']['popup_scrolling_confirmation'] = FALSE;
+    $form_state['values']['eu_cookie_compliance']['info_template'] = 'new';
   }
   else {
     $form_state['values']['eu_cookie_compliance']['whitelisted_cookies'] = '';
