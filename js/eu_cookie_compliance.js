@@ -445,8 +445,10 @@
 
   // Block cookies when the user hasn't agreed.
   Drupal.behaviors.eu_cookie_compliance_popup_block_cookies = {
+    initialized: false,
     attach: function (context, settings) {
-      $(document).ready(function () {
+      if (!Drupal.behaviors.eu_cookie_compliance_popup_block_cookies.initialized && settings.eu_cookie_compliance) {
+        Drupal.behaviors.eu_cookie_compliance_popup_block_cookies.initialized = true;
         if ((settings.eu_cookie_compliance.method === 'opt_in' && (Drupal.eu_cookie_compliance.getCurrentStatus() === null || !Drupal.eu_cookie_compliance.hasAgreed()))
           || (settings.eu_cookie_compliance.method === 'opt_out' && !Drupal.eu_cookie_compliance.hasAgreed() && Drupal.eu_cookie_compliance.getCurrentStatus() !== null)
         ) {
@@ -496,7 +498,7 @@
             }
           }, 5000);
         }
-      });
+      }
     }
   }
 
