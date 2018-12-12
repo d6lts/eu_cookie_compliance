@@ -271,7 +271,13 @@
   };
 
   Drupal.eu_cookie_compliance.withdrawAction = function () {
-    Drupal.eu_cookie_compliance.setStatus(null);
+    if (drupalSettings.eu_cookie_compliance.method === 'opt_out') {
+      Drupal.eu_cookie_compliance.setStatus(0);
+    }
+    else {
+      Drupal.eu_cookie_compliance.setStatus(null);
+    }
+
     location.reload();
   };
 
