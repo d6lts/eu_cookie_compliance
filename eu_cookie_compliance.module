@@ -311,7 +311,7 @@ function eu_cookie_compliance_page_attachments(&$attachments) {
       [
         '#type' => 'html_tag',
         '#tag' => 'script',
-        '#value' => 'function euCookieComplianceLoadScripts() {' . $load_disabled_scripts . '}',
+        '#value' => 'function euCookieComplianceLoadScripts() {' . $load_disabled_scripts . 'Drupal.attachBehaviors();}',
       ],
       'eu-cookie-compliance-js',
     ];
