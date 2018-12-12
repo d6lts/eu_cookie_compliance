@@ -328,7 +328,7 @@ function eu_cookie_compliance_page_build(&$page) {
       }
     }
 
-    drupal_add_js('function euCookieComplianceLoadScripts() {' . $load_disabled_scripts . '}', array('type' => 'inline', 'scope' => $script_scope));
+    drupal_add_js('function euCookieComplianceLoadScripts() {' . $load_disabled_scripts . 'Drupal.attachBehaviors();}', array('type' => 'inline', 'scope' => $script_scope));
 
     // Add the cookie name inline, since Drupal.settings will not be available
     // if the script is loaded in the header.
