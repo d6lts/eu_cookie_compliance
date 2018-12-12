@@ -197,7 +197,7 @@
     $('.decline-button').click(Drupal.eu_cookie_compliance.declineAction);
 
     if (clickingConfirms) {
-      $('a, input[type=submit], button[type=submit]').bind('click.euCookieCompliance', Drupal.eu_cookie_compliance.acceptAction);
+      $('a, input[type=submit], button[type=submit]').not('.popup-content *').bind('click.euCookieCompliance', Drupal.eu_cookie_compliance.acceptAction);
     }
 
     if (scrollConfirms) {
