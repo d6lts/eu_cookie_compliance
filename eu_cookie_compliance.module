@@ -43,10 +43,10 @@ function eu_cookie_compliance_footer() {
   $popup_settings = eu_cookie_compliance_get_settings();
   if (!empty($popup_settings['popup_enabled']) && user_access( 'see EU Cookie Compliance popup' )) {
     global $language;
-    $popup_text_info = str_replace(array("\r", "\n"), '', filter_xss($popup_settings['popup_info']['value']));
-    $popup_text_agreed = str_replace(array("\r", "\n"), '', filter_xss($popup_settings['popup_agreed']['value']));
-    $html_info = theme('eu_cookie_compliance_popup_info', check_markup($popup_text_info, $popup_settings['popup_info']['format'], FALSE), filter_xss($popup_settings['popup_agree_button_message']), filter_xss($popup_settings['popup_disagree_button_message']));
-    $html_agreed = theme('eu_cookie_compliance_popup_agreed', check_markup($popup_text_agreed, $popup_settings['popup_agreed']['format'], FALSE), filter_xss($popup_settings['popup_hide_button_message']), filter_xss($popup_settings['popup_find_more_button_message']));
+    $popup_text_info = str_replace(array("\r", "\n"), '', filter_xss_admin($popup_settings['popup_info']['value']));
+    $popup_text_agreed = str_replace(array("\r", "\n"), '', filter_xss_admin($popup_settings['popup_agreed']['value']));
+    $html_info = theme('eu_cookie_compliance_popup_info', check_markup($popup_text_info, $popup_settings['popup_info']['format'], FALSE), filter_xss_admin($popup_settings['popup_agree_button_message']), filter_xss_admin($popup_settings['popup_disagree_button_message']));
+    $html_agreed = theme('eu_cookie_compliance_popup_agreed', check_markup($popup_text_agreed, $popup_settings['popup_agreed']['format'], FALSE), filter_xss_admin($popup_settings['popup_hide_button_message']), filter_xss_admin($popup_settings['popup_find_more_button_message']));
     $clicking_confirmation = (isset($popup_settings['popup_clicking_confirmation']))? $popup_settings['popup_clicking_confirmation'] : TRUE ;
     $variables = array(
       'popup_enabled' => $popup_settings['popup_enabled'],
